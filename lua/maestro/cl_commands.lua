@@ -8,35 +8,37 @@ local function command(ply, cmd, args, str)
 		end
 	net.SendToServer()
 end
-local function autocomplete(_, args)
-	args = string.sub(args, 2, -1)
-	args = string.lower(args)
-	args = string.Explode("%s", args, true)
-	PrintTable(args)
+local function autocomplete(_, str)
+	str = string.sub(str, 2, -1)
+	local args = string.Explode("%s+", str, true)
 	local t = {}
 	if #args == 1 then
 		for k, v in pairs(maestro.commands) do
-			if string.sub(k, 1, #args[1]):lower() == args[1] then
+			if string.sub(k, 1, #args[1]):lower() == args[1]:lower() then
 				table.insert(t, "ms " .. k)
 			end
 		end
 	else
 		local cmd, types
 		for k, v in pairs(maestro.commands) do
-			if k:lower() == args[1] then
+			if k:lower() == args[1]:lower() then
 				cmd = k
 				types = v
 			end
 		end
+		local params = table.Copy(args)
+		table.remove(params, 1)
 		if cmd then
-			if types[#args - 1] == "player" then
+			local cnct = table.concat(args, " ", 2, #args - 1)
+			cnct = " " .. cnct
+			if types[#params] == "player" then
 				for _, v in pairs(player.GetAll()) do
-					if v:Nick():lower():find(args[#args]) then
-						table.insert(t, "ms " .. cmd .. " \"" .. v:Nick() .. "\"")
+					if v:Nick():lower():find(params[#params]) then
+						table.insert(t, "ms " .. cmd .. cnct .. "\"" .. v:Nick() .. "\"")
 					end
 				end
-			elseif types[#args - 1] then
-				table.insert(t, "ms " .. cmd .. " <" .. types[#args - 1] .. ">")
+			elseif types[#params] then
+				table.insert(t, "ms " .. cmd .. cnct .. " <" .. types[#params] .. ">")
 			end
 		end
 	end

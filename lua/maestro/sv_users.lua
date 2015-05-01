@@ -33,5 +33,5 @@ function maestro.getrank(id)
 	if type(id) == "Player" then
 		id = id:SteamID()
 	end
-	return maestro.users[id].rank
+	return maestro.users[id].rank or "user"
 end

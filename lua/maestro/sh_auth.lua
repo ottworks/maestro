@@ -29,4 +29,5 @@ hook.Add("PlayerAuthed", "maestro_PlayerAuthed", function(ply, steam, uid)
 	if maestro.rank(name).visisble then
 		ply:SetNWString("rank", name)
 	end
+	maestro.sendranks(ply)
 end)

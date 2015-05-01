@@ -29,14 +29,21 @@ net.Receive("maestro_cmd", function(len, ply)
 	local num = net.ReadUInt(8)
 	local cmd = net.ReadString()
 	if maestro.commands[cmd] then
-		local args = {}
-		for i = 1, num - 1 do
-			args[i] = net.ReadString()
+		if maestro.rank(maestro.getrank(ply)).perms[cmd] then
+			local args = {}
+			for i = 1, num - 1 do
+				args[i] = net.ReadString()
+			end
+			for i = 1, #args do
+				args[i] = convertTo(args[i], maestro.commands[cmd].args[i])
+			end
+			local ret = maestro.commands[cmd].callback(ply, unpack(args))
+			if ret then
+				ply:ChatPrint("ms " .. cmd .. ": " .. ret)
+			end
+		else
+			ply:ChatPrint("ms " .. cmd .. ": Insufficient permissions!")
 		end
-		for i = 1, #args do
-			args[i] = convertTo(args[i], maestro.commands[cmd].args[i])
-		end
-		ply:ChatPrint("ms " .. cmd .. ": " .. maestro.commands[cmd].callback(ply, unpack(args)))
 	end
 end)
 

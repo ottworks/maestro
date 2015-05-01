@@ -13,12 +13,17 @@ function maestro.saveranks()
 	file.Write("maestro/ranks.txt", util.TableToJSON(maestro.ranks))
 end
 
-function maestro.rank(name, perms)
-	if perms then
-		maestro.ranks[name] = perms
+function maestro.rank(name, inherits, perms)
+	if inherits then
+		local r = {perms = perms, inherits = inherits}
+		setmetatable(r, {__index = maestro.ranks[inherits]})
+		maestro.ranks[name] = r
 		maestro.saveranks()
+		for _, v in pairs(player.GetAll()) do
+			maestro.sendranks(v)
+		end
 	else
-		return maestro.ranks[name] or {}
+		return maestro.ranks[name] or {perms = {}, inherits = "user"}
 	end
 end
 
