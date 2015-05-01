@@ -1,4 +1,5 @@
 maestro.ranks = {}
+util.AddNetworkString("maestro_ranks")
 
 if not file.Exists("maestro", "DATA") then
 	file.CreateDir("maestro")
@@ -19,4 +20,10 @@ function maestro.rank(name, perms)
 	else
 		return maestro.ranks[name] or {}
 	end
+end
+
+function maestro.sendranks(ply)
+	net.Start("maestro_ranks")
+		net.WriteTable(maestro.ranks)
+	net.Send(ply)
 end
