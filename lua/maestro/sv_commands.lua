@@ -25,6 +25,16 @@ local function convertTo(val, t)
 	return val
 end
 
+local function runcmd(cmd, args, ply)
+	for i = 1, #args do
+		args[i] = convertTo(args[i], maestro.commands[cmd].args[i])
+	end
+	local ret = maestro.commands[cmd].callback(ply, unpack(args))
+	if ret and IsValid(ply) then
+		ply:ChatPrint("ms " .. cmd .. ": " .. ret)
+	end
+end
+
 net.Receive("maestro_cmd", function(len, ply)
 	local num = net.ReadUInt(8)
 	local cmd = net.ReadString()
@@ -34,13 +44,7 @@ net.Receive("maestro_cmd", function(len, ply)
 			for i = 1, num - 1 do
 				args[i] = net.ReadString()
 			end
-			for i = 1, #args do
-				args[i] = convertTo(args[i], maestro.commands[cmd].args[i])
-			end
-			local ret = maestro.commands[cmd].callback(ply, unpack(args))
-			if ret then
-				ply:ChatPrint("ms " .. cmd .. ": " .. ret)
-			end
+			runcmd(cmd, args, ply)
 		else
 			ply:ChatPrint("ms " .. cmd .. ": Insufficient permissions!")
 		end
@@ -50,3 +54,9 @@ end)
 function maestro.command(cmd, args, callback)
 	maestro.commands[cmd] = {args = args, callback = callback}
 end
+
+concommand.Add("ms", function(ply, cmd, args, str)
+	local cmd = args[1]
+	table.remove(args, 1)
+	runcmd(cmd, args)
+end)

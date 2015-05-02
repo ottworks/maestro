@@ -2,6 +2,9 @@ maestro.command("slap", {"player", "number"}, function(caller, ply, dmg)
 	if not IsValid(ply) or not ply:IsPlayer() then
 		return "Invalid player!"
 	end
+	if not ply:Alive() then
+		return "Player is dead!"
+	end
 	dmg = dmg or 0
 	local info = DamageInfo()
 	info:SetDamage(dmg)
