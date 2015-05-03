@@ -4,7 +4,7 @@ maestro.command("who", {}, function(caller)
 		net.Send(caller)
 	else
 		for _, v in pairs(player.GetAll()) do
-			print(v:Nick() .. string.rep(" ", 40 - #v:Nick()) .. v:GetUserGroup())
+			print(v:Nick() .. string.rep(" ", 40 - #v:Nick()) .. maestro.userrank(v))
 		end
 	end
 end)

@@ -37,16 +37,16 @@ end
 
 net.Receive("maestro_cmd", function(len, ply)
 	local num = net.ReadUInt(8)
-	local cmd = net.ReadString()
+	local cmd = string.lower(net.ReadString())
 	if maestro.commands[cmd] then
-		if maestro.rank(maestro.getrank(ply)).perms[cmd] then
+		if maestro.rankget(maestro.userrank(ply)).perms[cmd] then
 			local args = {}
 			for i = 1, num - 1 do
 				args[i] = net.ReadString()
 			end
 			runcmd(cmd, args, ply)
 		else
-			ply:ChatPrint("ms " .. cmd .. ": Insufficient permissions!")
+			ply:ChatPrint(cmd .. ": Insufficient permissions!")
 		end
 	end
 end)
