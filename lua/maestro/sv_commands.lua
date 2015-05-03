@@ -8,17 +8,16 @@ function maestro.sendcommands(ply)
 	net.Send(ply)
 end
 
-local function getByName(name)
-	for _, v in pairs(player.GetAll()) do
-		if v:Nick():lower():find(name:lower()) then
-			return v
-		end
-	end
+player.GetBySteamID = player.GetBySteamID or function()
+	return false
+end
+player.GetBySteamID64 = player.GetBySteamID64 or function()
+	return false
 end
 
-local function convertTo(val, t)
+local function convertTo(val, t, ply)
 	if t == "player" then
-		return (player.GetBySteamID and player.GetBySteamID(val)) or getByName(val)
+		return maestro.target(val, ply)
 	elseif t == "number" then
 		return tonumber(val)
 	end
@@ -27,11 +26,13 @@ end
 
 local function runcmd(cmd, args, ply)
 	for i = 1, #args do
-		args[i] = convertTo(args[i], maestro.commands[cmd].args[i])
+		args[i] = convertTo(args[i], maestro.commands[cmd].args[i], ply)
 	end
 	local ret = maestro.commands[cmd].callback(ply, unpack(args))
 	if ret and IsValid(ply) then
-		ply:ChatPrint("ms " .. cmd .. ": " .. ret)
+		ply:ChatPrint(cmd .. ": " .. ret)
+	elseif ret then
+		print(cmd .. ": " .. ret)
 	end
 end
 

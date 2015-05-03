@@ -95,11 +95,16 @@ end
 function maestro.getranktable()
 	return ranks
 end
-function maestro.ranksetinherits(name, inherits)
+function maestro.ranksetinherits(name, inherits, all)
 	local r = ranks[name]
 	r.inherits = inherits
 	setmetatable(r.perms, {__index = ranks[inherits].perms})
-	maestro.saveranks()
+	if not all then
+		for rank, tab in pairs(ranks) do
+			maestro.ranksetinherits(rank, tab.inherits, true)
+		end
+		maestro.saveranks()
+	end
 end
 
 

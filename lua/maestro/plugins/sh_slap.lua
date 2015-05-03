@@ -1,15 +1,21 @@
-maestro.command("slap", {"player", "number"}, function(caller, ply, dmg)
-	if not IsValid(ply) or not ply:IsPlayer() then
+maestro.command("slap", {"player", "number"}, function(caller, targets, dmg)
+	if #targets == 0 then
 		return "Invalid player!"
 	end
-	if not ply:Alive() then
-		return "Player is dead!"
+	for i = 1, #targets do
+		local ply = targets[i]
+		if not ply:Alive() then
+			if #targets == 1 then
+				return "Player is dead!"
+			end
+			continue
+		end
+		dmg = dmg or 0
+		local info = DamageInfo()
+		info:SetDamage(dmg)
+		info:SetDamageType(DMG_CLUB)
+		ply:TakeDamageInfo(info)
+		ply:SetVelocity(Vector(math.random(-100, 100), math.random(-100, 100), math.random(250, 300)))
+		ply:EmitSound("player/pl_pain7.wav", 60, math.random(90, 110))
 	end
-	dmg = dmg or 0
-	local info = DamageInfo()
-	info:SetDamage(dmg)
-	info:SetDamageType(DMG_CLUB)
-	ply:TakeDamageInfo(info)
-	ply:SetVelocity(Vector(math.random(-100, 100), math.random(-100, 100), math.random(250, 300)))
-	ply:EmitSound("player/pl_pain7.wav", 60, math.random(90, 110))
 end)

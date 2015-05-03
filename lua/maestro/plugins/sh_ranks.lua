@@ -52,6 +52,9 @@ maestro.command("ranksetinherits", {"rank", "rank"}, function(caller, rank, inhe
 	maestro.ranksetinherits(rank, inherits)
 end)
 
-maestro.command("userrank", {"player", "rank"}, function(caller, ply, rank)
+maestro.command("userrank", {"player", "rank"}, function(caller, targets, rank)
+	if #targets > 1 then
+		return "You can't set the rank of more than 1 player!"
+	end
 	maestro.userrank(ply, rank)
 end)

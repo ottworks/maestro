@@ -8,6 +8,9 @@ local function command(ply, cmd, args, str)
 		end
 	net.SendToServer()
 end
+local function escape(str)
+	return string.gsub(str, "([%(%)%.%%%+%-%*%?%[%^%$])", "%%%1")
+end
 local function autocomplete(_, str)
 	str = string.sub(str, 2, -1)
 	local args = string.Explode("%s+", str, true)
@@ -32,10 +35,9 @@ local function autocomplete(_, str)
 			local cnct = table.concat(args, " ", 2, #args - 1)
 			cnct = " " .. cnct .. " "
 			cnct = cnct:gsub("%s+", " ")
-			print("_" .. cnct .. "_")
 			if types[#params] == "player" then
 				for _, v in pairs(player.GetAll()) do
-					if v:Nick():lower():find(params[#params]) then
+					if v:Nick():lower():find(escape(params[#params])) then
 						table.insert(t, "ms " .. cmd .. cnct .. "\"" .. v:Nick() .. "\"")
 					end
 				end
