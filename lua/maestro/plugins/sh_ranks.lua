@@ -54,7 +54,10 @@ end)
 
 maestro.command("userrank", {"player", "rank"}, function(caller, targets, rank)
 	if #targets > 1 then
-		return "You can't set the rank of more than 1 player!"
+		return "Query matched more than 1 player."
+	elseif #targets == 0 then
+		return "Query matched no players."
 	end
-	maestro.userrank(ply, rank)
+	local ply = targets[1]
+	return maestro.userrank(ply, rank)
 end)
