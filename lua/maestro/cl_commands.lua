@@ -30,7 +30,9 @@ local function autocomplete(_, str)
 		table.remove(params, 1)
 		if cmd then
 			local cnct = table.concat(args, " ", 2, #args - 1)
-			cnct = " " .. cnct
+			cnct = " " .. cnct .. " "
+			cnct = cnct:gsub("%s+", " ")
+			print("_" .. cnct .. "_")
 			if types[#params] == "player" then
 				for _, v in pairs(player.GetAll()) do
 					if v:Nick():lower():find(params[#params]) then
@@ -38,7 +40,7 @@ local function autocomplete(_, str)
 					end
 				end
 			elseif types[#params] then
-				table.insert(t, "ms " .. cmd .. cnct .. " <" .. types[#params] .. ">")
+				table.insert(t, "ms " .. cmd .. cnct .. "<" .. types[#params] .. ">")
 			end
 		end
 	end
