@@ -34,13 +34,6 @@ end
 local function escape(str)
 	return string.gsub(str, "([%(%)%.%%%+%-%*%?%[%^%$])", "%%%1")
 end
-local function getByName(name)
-	for _, v in pairs(player.GetAll()) do
-		if v:Nick():lower():find(escape(name:lower())) then
-			return v
-		end
-	end
-end
 
 function maestro.target(val, ply)
 	local magic = "!*^$#<>"

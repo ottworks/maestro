@@ -22,13 +22,11 @@ end
 function maestro.rankadd(name, inherits, perms)
 	perms = perms or {}
 	local r = {perms = perms, inherits = inherits}
-	setmetatable(r.perms, {__index = ranks[inherits].perms})
 	ranks[name] = r
-	maestro.saveranks()
+	maestro.ranksetinherits(name, inherits)
 	for _, v in pairs(player.GetAll()) do
 		maestro.sendranks(v)
 	end
-	maestro.saveranks()
 end
 function maestro.rankremove(name)
 	for _, v in pairs(player.GetAll()) do
@@ -50,8 +48,7 @@ end
 function maestro.ranksetperms(name, perms)
 	local r = maestro.rankget(name)
 	r.perms = perms
-	setmetatable(r.perms, {__index = maestro.rankget(r.inherits).perms})
-	maestro.saveranks()
+	maestro.ranksetinherits(name, r.inherits)
 end
 function maestro.rankaddperms(name, perms)
 	local r = ranks[name]
@@ -62,8 +59,7 @@ function maestro.rankaddperms(name, perms)
 		newperms[perm] = true
 	end
 	r.perms = newperms
-	setmetatable(r.perms, ranks[r.inherits].perms)
-	maestro.saveranks()
+	maestro.ranksetinherits(name, r.inherits)
 end
 function maestro.rankremoveperms(name, perms)
 	local r = ranks[name]
@@ -74,12 +70,11 @@ function maestro.rankremoveperms(name, perms)
 		newperms[perm] = false
 	end
 	r.perms = newperms
-	setmetatable(r.perms, ranks[r.inherits].perms)
-	maestro.saveranks()
+	maestro.ranksetinherits(name, r.inherits)
 end
 function maestro.rankresetperms(name)
-	ranks[name].perms = setmetatable({}, {__index = ranks[ranks[name].inherits].perms})
-	maestro.saveranks()
+	ranks[name].perms = {}
+	maestro.ranksetinherits(name, ranks[name].inherits)
 end
 function maestro.rankgetcantarget(name, str)
 	return ranks[name].cantarget
