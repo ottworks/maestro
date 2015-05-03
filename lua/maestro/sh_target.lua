@@ -112,8 +112,12 @@ function maestro.target(val, ply)
 				ret[ply] = true
 			end
 		end
-	elseif getByName(name) then
-		ret[getByName(name)] = true
+	else
+		for _, v in pairs(player.GetAll()) do
+			if v:Nick():lower():find(escape(name):lower()) then
+				ret[v] = true
+			end
+		end
 	end
 	if cnot then
 		ret = inverse(ret, toLookup(player.GetAll()))

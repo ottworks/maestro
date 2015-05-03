@@ -36,7 +36,7 @@ local function autocomplete(_, str)
 			cnct = " " .. cnct .. " "
 			cnct = cnct:gsub("%s+", " ")
 			if types[#params] == "player" then
-				local plys = maestro.target(params[#params])
+				local plys = maestro.target(params[#params], LocalPlayer())
 				for i = 1, #plys do
 					table.insert(t, "ms " .. cmd .. cnct .. "\"" .. plys[i]:Nick() .. "\"")
 				end

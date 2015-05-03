@@ -21,6 +21,9 @@ function maestro.userrank(id, rank)
 		else
 			ply = player.GetBySteamID()
 		end
+		if not id then
+			return
+		end
 		if IsValid(ply) then
 			if not maestro.rankget(rank).undercover then
 				ply:SetNWString("rank", rank)
