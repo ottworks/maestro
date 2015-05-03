@@ -53,7 +53,7 @@ function maestro.target(val, ply)
 	local group = false
 	local greater = false
 	local less = false
-	while magic:find(escape(s)) do
+	while magic:find(escape(s)) and #s > 0 do
 		if s == "!" then
 			cnot = not cnot
 		elseif s == "*" then
@@ -77,7 +77,9 @@ function maestro.target(val, ply)
 	if all then
 		ret = toLookup(player.GetAll())
 	elseif self then
-		ret[ply] = true
+		if IsValid(ply) then
+			ret[ply] = true
+		end
 	elseif id then
 		ret[player.GetBySteamID(name) or player.GetBySteamID64(name) or player.GetByID(name)] = true
 	elseif group then
