@@ -114,7 +114,7 @@ function maestro.target(val, ply)
 		ret[getByName(name)] = true
 	end
 	if cnot then
-		ret = inverse(ret, player.GetAll())
+		ret = inverse(ret, toLookup(player.GetAll()))
 	end
 	return toSequence(ret)
 end
