@@ -1,4 +1,4 @@
-maestro.command("rankadd", {"name", "rank", "permissions"}, function(caller, name, inherits, ...)
+maestro.command("rankadd", {"string:name", "rank:inherits", "string:permissions(multiple)"}, function(caller, name, inherits, ...)
 	local args = {...}
 	local perms = {}
 	for i = 1, #args do
@@ -12,7 +12,7 @@ maestro.command("rankremove", {"rank"}, function(caller, rank)
 	end
 	maestro.rankremove(rank)
 end)
-maestro.command("rankperms", {"rank", "permissions"}, function(caller, rank, ...)
+maestro.command("rankperms", {"rank", "string:permissions(multiple)"}, function(caller, rank, ...)
 	if not rank or not maestro.rankget(rank) then
 		return "Invalid rank!"
 	end
@@ -23,7 +23,7 @@ maestro.command("rankperms", {"rank", "permissions"}, function(caller, rank, ...
 	end
 	maestro.ranksetperms(rank, perms)
 end)
-maestro.command("rankaddperms", {"rank", "permissions"}, function(caller, rank, ...)
+maestro.command("rankaddperms", {"rank", "string:permissions(multiple)"}, function(caller, rank, ...)
 	if not rank or not maestro.rankget(rank) then
 		return "Invalid rank!"
 	end
@@ -34,7 +34,7 @@ maestro.command("rankaddperms", {"rank", "permissions"}, function(caller, rank, 
 	end
 	maestro.rankaddperms(rank, perms)
 end)
-maestro.command("rankremoveperms", {"rank", "permissions"}, function(caller, rank, ...)
+maestro.command("rankremoveperms", {"rank", "string:permissions(multiple)"}, function(caller, rank, ...)
 	if not rank or not maestro.rankget(rank) then
 		return "Invalid rank!"
 	end
@@ -48,11 +48,11 @@ end)
 maestro.command("rankresetperms", {"rank"}, function(caller, rank)
 	maestro.rankresetperms(rank)
 end)
-maestro.command("ranksetinherits", {"rank", "rank"}, function(caller, rank, inherits)
+maestro.command("ranksetinherits", {"rank", "rank:inherits"}, function(caller, rank, inherits)
 	maestro.ranksetinherits(rank, inherits)
 end)
 
-maestro.command("userrank", {"player", "rank"}, function(caller, targets, rank)
+maestro.command("userrank", {"player:target", "rank"}, function(caller, targets, rank)
 	if #targets > 1 then
 		return "Query matched more than 1 player."
 	elseif #targets == 0 then

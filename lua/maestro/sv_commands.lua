@@ -26,7 +26,7 @@ end
 
 local function runcmd(cmd, args, ply)
 	for i = 1, #args do
-		args[i] = convertTo(args[i], maestro.commands[cmd].args[i], ply)
+		args[i] = convertTo(args[i], string.match(maestro.commands[cmd].args[i], "[^:]+"), ply)
 	end
 	local ret = maestro.commands[cmd].callback(ply, unpack(args))
 	if ret and IsValid(ply) then
@@ -53,6 +53,9 @@ net.Receive("maestro_cmd", function(len, ply)
 end)
 
 function maestro.command(cmd, args, callback)
+	for k, arg in pairs(args) do
+		args[k] = string.gsub(arg, "%s", "_")
+	end
 	maestro.commands[cmd] = {args = args, callback = callback}
 end
 

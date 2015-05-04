@@ -1,4 +1,4 @@
-maestro.command("noclip", {"player", "boolean"}, function(caller, targets, state)
+maestro.command("noclip", {"player:target", "boolean:toggle"}, function(caller, targets, state)
 	if targets then
 		if state ~= nil then
 			for ply in pairs(targets) do

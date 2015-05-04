@@ -1,4 +1,4 @@
-maestro.command("goto", {"player"}, function(caller, targets)
+maestro.command("goto", {"player:target"}, function(caller, targets)
 	if #targets > 1 then
 		return "Query matched more than 1 player."
 	elseif #targets == 0 then

@@ -1,4 +1,4 @@
-maestro.command("slap", {"player", "number"}, function(caller, targets, dmg)
+maestro.command("slap", {"player:target", "number:force"}, function(caller, targets, dmg)
 	if #targets == 0 then
 		return "Invalid player!"
 	end

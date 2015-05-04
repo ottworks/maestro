@@ -1,4 +1,4 @@
- maestro.command("fly", {"player", "boolean"}, function(caller, targets, state)
+ maestro.command("fly", {"player:target", "boolean:toggle"}, function(caller, targets, state)
  	if targets then
 	 	if state ~= nil then
 	 		for _, ply in pairs(targets) do
