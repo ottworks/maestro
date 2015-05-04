@@ -29,7 +29,8 @@ function maestro.userrank(id, rank)
 				ply:SetNWString("rank", rank)
 			end
 		end
-		maestro.users[id] = {rank = rank}
+		maestro.users[id] = maestro.users[id] or {}
+		maestro.users[id].rank = rank
 		maestro.saveusers()
 	else
 		if type(id) == "Player" then

@@ -31,3 +31,5 @@ hook.Add("PlayerAuthed", "maestro_PlayerAuthed", function(ply, steam, uid)
 	end
 	maestro.sendranks(ply)
 end)
+
+hook.Remove("PlayerInitialSpawn", "PlayerAuthSpawn") --removing vanilla stuff resetting rank

@@ -5,5 +5,5 @@ maestro.command("kick", {"player", "reason"}, function(caller, targets, reason)
 	if #targets > 1 then
 		return "You can only kick 1 player at a time!"
 	end
-	ply:Kick(reason)
+	targets[1]:Kick(reason)
 end)
