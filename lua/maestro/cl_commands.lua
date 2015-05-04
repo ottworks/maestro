@@ -17,8 +17,10 @@ local function autocomplete(_, str)
 	local t = {}
 	if #args == 1 then
 		for k, v in pairs(maestro.commands) do
-			if string.sub(k, 1, #args[1]):lower() == args[1]:lower() then
-				table.insert(t, "ms " .. k)
+			if maestro.rankget(maestro.userrank(LocalPlayer())).perms[k] then
+				if string.sub(k, 1, #args[1]):lower() == args[1]:lower() then
+					table.insert(t, "ms " .. k)
+				end
 			end
 		end
 	else
