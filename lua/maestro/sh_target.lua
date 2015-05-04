@@ -1,5 +1,4 @@
 local function traversedown(rank, val)
-	print("traversing", rank, val)
 	if rank == val then
 		return true
 	end
@@ -83,7 +82,7 @@ function maestro.target(val, ply)
 		end
 	elseif greater then
 		local ranks = {}
-		for rank, tab in pairs(maestro.getranktable()) do
+		for rank, tab in pairs(maestro.ranks or maestro.getranktable()) do
 			if traversedown(rank, name) and rank ~= name then
 				ranks[rank] = true
 			end
@@ -95,7 +94,7 @@ function maestro.target(val, ply)
 		end
 	elseif less then
 		local ranks = {}
-		for rank, tab in pairs(maestro.getranktable()) do
+		for rank, tab in pairs(maestro.ranks or maestro.getranktable()) do
 			if not traversedown(rank, name) then
 				ranks[rank] = true
 			end
