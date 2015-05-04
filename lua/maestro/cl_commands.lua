@@ -43,6 +43,13 @@ local function autocomplete(_, str)
 				for i = 1, #plys do
 					table.insert(t, "ms " .. cmd .. cnct .. "\"" .. plys[i]:Nick() .. "\"")
 				end
+			elseif typ == "boolean" then
+				table.insert(t, "ms " .. cmd .. cnct .. "true")
+				table.insert(t, "ms " .. cmd .. cnct .. "false")
+			elseif typ == "rank" then
+				for rank in pairs(maestro.ranks) do
+					table.insert(t, "ms " .. cmd .. cnct .. rank)
+				end
 			elseif types[#params] then
 				table.insert(t, "ms " .. cmd .. cnct .. "<" .. types[#params] .. ">")
 			end
