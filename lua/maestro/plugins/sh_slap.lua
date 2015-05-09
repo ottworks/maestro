@@ -1,6 +1,6 @@
 maestro.command("slap", {"player:target", "number:force"}, function(caller, targets, dmg)
 	if #targets == 0 then
-		return "Invalid player!"
+		return "Query matched no players."
 	end
 	for i = 1, #targets do
 		local ply = targets[i]

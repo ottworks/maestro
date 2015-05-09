@@ -15,9 +15,9 @@ player.GetBySteamID64 = player.GetBySteamID64 or function()
 	return false
 end
 
-local function convertTo(val, t, ply)
+local function convertTo(val, t, ply, cmd)
 	if t == "player" then
-		return maestro.target(val, ply)
+		return maestro.target(val, ply, cmd)
 	elseif t == "number" then
 		return tonumber(val)
 	elseif t == "boolean" then
@@ -28,7 +28,7 @@ end
 
 local function runcmd(cmd, args, ply)
 	for i = 1, #args do
-		args[i] = convertTo(args[i], string.match(maestro.commands[cmd].args[i] or "", "[^:]+"), ply)
+		args[i] = convertTo(args[i], string.match(maestro.commands[cmd].args[i] or "", "[^:]+"), ply, cmd)
 	end
 	local ret = maestro.commands[cmd].callback(ply, unpack(args))
 	if ret and IsValid(ply) then

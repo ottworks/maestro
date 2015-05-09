@@ -74,17 +74,6 @@ function maestro.rankresetperms(name)
 	ranks[name].perms = {}
 	maestro.ranksetinherits(name, ranks[name].inherits)
 end
-function maestro.rankgetcantarget(name, str)
-	return ranks[name].cantarget
-end
-function maestro.ranksetcantarget(name, str)
-	ranks[name].cantarget = str
-	maestro.saveranks()
-end
-function maestro.rankresetcantarget(name, str)
-	ranks[name].cantarget = ""
-	maestro.saveranks()
-end
 function maestro.getranktable()
 	return ranks
 end
@@ -108,6 +97,26 @@ function maestro.ranksuperadmin(name, bool)
 	if ranks[name] then
 		ranks[name].superadmin = bool
 	end
+end
+function maestro.rankgetcantarget(name, str)
+	return ranks[name].cantarget
+end
+function maestro.ranksetcantarget(name, str)
+	ranks[name].cantarget = str
+	maestro.saveranks()
+end
+function maestro.rankresetcantarget(name)
+	ranks[name].cantarget = nil
+	maestro.saveranks()
+end
+function maestro.rankgetpermcantarget(name, perm)
+	return ranks[name].perms[perm]
+end
+function maestro.ranksetpermcantarget(name, perm, str)
+	ranks[name].perms[perm] = str
+end
+function maestro.rankresetpermcantarget(name, perm)
+	ranks[name].perms[perm] = true
 end
 
 

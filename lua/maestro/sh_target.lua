@@ -30,11 +30,20 @@ local function toSequence(tab)
 	end
 	return ret
 end
+local function intersect(t1, t2)
+	local ret = {}
+	for k in pairs(t1) do
+		if t2[k] then
+			ret[k] = true
+		end
+	end
+	return ret
+end
 local function escape(str)
 	return string.gsub(str, "([%(%)%.%%%+%-%*%?%[%^%$])", "%%%1")
 end
 
-function maestro.target(val, ply)
+function maestro.target(val, ply, cmd)
 	local magic = "!*^$#<>"
 	local cursor = 1
 	local s = string.sub(val, 1, 1)
@@ -113,6 +122,18 @@ function maestro.target(val, ply)
 	end
 	if cnot then
 		ret = inverse(ret, toLookup(player.GetAll()))
+	end
+	if ply and cmd then
+		local perm = maestro.rankgetpermcantarget(maestro.userrank(ply), cmd)
+		if perm ~= true then
+			local tab2 = toLookup(maestro.target(perm, ply))
+			ret = intersect(ret, tab2)
+		end
+		local ct = maestro.rankgetcantarget(maestro.userrank(ply))
+		if ct then
+			local tab2 = toLookup(maestro.target(ct, ply))
+			ret = intersect(ret, tab2)
+		end
 	end
 	return toSequence(ret)
 end
