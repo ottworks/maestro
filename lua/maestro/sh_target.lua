@@ -116,3 +116,55 @@ function maestro.target(val, ply)
 	end
 	return toSequence(ret)
 end
+
+
+
+local f1 = "%s+%S"
+local f2 = "[^%s\"]%s"
+local f3 = "\"%s"
+function maestro.split(input)
+	input = " " .. input .. " "
+	local cursor = 0
+	local quote = false
+	local word = false
+	local out = {}
+	while cursor < #input do
+		local a, b
+		if not quote and not word then
+			a, b = input:find(f1, cursor)
+			if a then
+				cursor = a
+				local t = input:sub(b, b)
+				if t == "\"" then
+					quote = b
+				else
+					word = b
+				end
+			end
+		elseif quote then
+			a, b = input:find(f3, cursor)
+			if a then
+				cursor = a
+				table.insert(out, input:sub(quote + 1, a - 1))
+				quote = false
+			end
+		else
+			a, b = input:find(f2, cursor)
+			if a then
+				cursor = a
+				table.insert(out, input:sub(word, a))
+				word = false
+			end
+		end
+		cursor = cursor + 1
+	end
+	if quote or word then
+		table.insert(out, input:sub(word or (quote + 1)))
+	end
+	if #out > 0 then
+		if input:sub(-2) == "  " then
+			table.insert(out, "")
+		end
+	end
+	return out
+end

@@ -13,9 +13,16 @@ local function escape(str)
 end
 local function autocomplete(_, str)
 	str = string.sub(str, 2, -1)
-	local args = string.Explode("%s+", str, true)
+	local args = maestro.split(str)
+	--PrintTable(args)
 	local t = {}
-	if #args == 1 then
+	if #args == 0 then
+		for k, v in pairs(maestro.commands) do
+			if maestro.rankget(maestro.userrank(LocalPlayer())).perms[k] then
+				table.insert(t, "ms " .. k)
+			end
+		end
+	elseif #args == 1 then
 		for k, v in pairs(maestro.commands) do
 			if maestro.rankget(maestro.userrank(LocalPlayer())).perms[k] then
 				if string.sub(k, 1, #args[1]):lower() == args[1]:lower() then
