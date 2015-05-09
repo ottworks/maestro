@@ -51,6 +51,12 @@ end)
 maestro.command("ranksetinherits", {"rank", "rank:inherits"}, function(caller, rank, inherits)
 	maestro.ranksetinherits(rank, inherits)
 end)
+maestro.command("rankadmin", {"rank", "boolean:admin"}, function(caller, rank, bool)
+	maestro.rankadmin(rank, bool)
+end)
+maestro.command("ranksuperadmin", {"rank", "boolean:superadmin"}, function(caller, rank, bool)
+	maestro.ranksuperadmin(rank, bool)
+end)
 
 maestro.command("userrank", {"player:target", "rank"}, function(caller, targets, rank)
 	if #targets > 1 then

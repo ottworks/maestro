@@ -15,6 +15,7 @@ for rank, tab in pairs(ranks) do
 end
 function maestro.saveranks()
 	file.Write("maestro/ranks.txt", util.TableToJSON(ranks))
+	maestro.broadcastranks()
 end
 
 
@@ -24,9 +25,6 @@ function maestro.rankadd(name, inherits, perms)
 	local r = {perms = perms, inherits = inherits}
 	ranks[name] = r
 	maestro.ranksetinherits(name, inherits)
-	for _, v in pairs(player.GetAll()) do
-		maestro.sendranks(v)
-	end
 end
 function maestro.rankremove(name)
 	for _, v in pairs(player.GetAll()) do
@@ -101,11 +99,25 @@ function maestro.ranksetinherits(name, inherits, all)
 		maestro.saveranks()
 	end
 end
-
+function maestro.rankadmin(name, bool)
+	if ranks[name] then
+		ranks[name].admin = bool
+	end
+end
+function maestro.ranksuperadmin(name, bool)
+	if ranks[name] then
+		ranks[name].superadmin = bool
+	end
+end
 
 
 function maestro.sendranks(ply)
 	net.Start("maestro_ranks")
 		net.WriteTable(ranks)
 	net.Send(ply)
+end
+function maestro.broadcastranks()
+	for _, v in pairs(player.GetAll()) do
+		maestro.sendranks(v)
+	end
 end
