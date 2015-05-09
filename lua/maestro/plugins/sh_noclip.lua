@@ -1,11 +1,11 @@
 maestro.command("noclip", {"player:target", "boolean:toggle"}, function(caller, targets, state)
 	if targets then
 		if state ~= nil then
-			for ply in pairs(targets) do
+			for _, ply in pairs(targets) do
 				ply:SetMoveType(state and MOVETYPE_NOCLIP or MOVETYPE_WALK)
 			end
 		else
-			for ply in pairs(targets) do
+			for _, ply in pairs(targets) do
 				ply:SetMoveType((ply:GetMoveType() == MOVETYPE_NOCLIP) and MOVETYPE_WALK or MOVETYPE_NOCLIP)
 			end
 		end

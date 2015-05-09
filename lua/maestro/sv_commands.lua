@@ -20,6 +20,8 @@ local function convertTo(val, t, ply)
 		return maestro.target(val, ply)
 	elseif t == "number" then
 		return tonumber(val)
+	elseif t == "boolean" then
+		return val == "true"
 	end
 	return val
 end
