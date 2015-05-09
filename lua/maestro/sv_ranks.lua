@@ -22,7 +22,7 @@ end
 
 function maestro.rankadd(name, inherits, perms)
 	perms = perms or {}
-	local r = {perms = perms, inherits = inherits}
+	local r = {perms = perms, inherits = inherits, cantarget = "<#" .. name}
 	ranks[name] = r
 	maestro.ranksetinherits(name, inherits)
 end
@@ -106,7 +106,7 @@ function maestro.ranksetcantarget(name, str)
 	maestro.saveranks()
 end
 function maestro.rankresetcantarget(name)
-	ranks[name].cantarget = nil
+	ranks[name].cantarget = "<#" .. name
 	maestro.saveranks()
 end
 function maestro.rankgetpermcantarget(name, perm)
