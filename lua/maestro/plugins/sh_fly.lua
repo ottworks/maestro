@@ -13,6 +13,6 @@
 	 	end
 	else
 	 	caller:SetMoveType((caller:GetMoveType() == MOVETYPE_FLY) and MOVETYPE_WALK or MOVETYPE_FLY)
-	 	return false, "toggled fly mode on theirself"
+	 	return false, "toggled fly mode on themselves"
 	end
  end)
