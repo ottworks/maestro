@@ -1,8 +1,8 @@
 maestro.command("goto", {"player:target"}, function(caller, targets)
 	if #targets > 1 then
-		return "Query matched more than 1 player."
+		return true, "Query matched more than 1 player."
 	elseif #targets == 0 then
-		return "Query matched no players."
+		return true, "Query matched no players."
 	end
 	local ply = targets[1]
 	local a = ply:EyeAngles()
@@ -36,4 +36,5 @@ maestro.command("goto", {"player:target"}, function(caller, targets)
 		caller:SetPos(ply:GetPos() - f * 150)
 		caller:SetEyeAngles(a)
 	end
+	return false, "teleported to %%"
 end)

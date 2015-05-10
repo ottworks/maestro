@@ -30,11 +30,43 @@ local function runcmd(cmd, args, ply)
 	for i = 1, #args do
 		args[i] = convertTo(args[i], string.match(maestro.commands[cmd].args[i] or "", "[^:]+"), ply, cmd)
 	end
-	local ret = maestro.commands[cmd].callback(ply, unpack(args))
-	if ret and IsValid(ply) then
-		ply:ChatPrint(cmd .. ": " .. ret)
-	elseif ret then
-		print(cmd .. ": " .. ret)
+	local err, msg = maestro.commands[cmd].callback(ply, unpack(args))
+	if err and IsValid(ply) then
+		maestro.chat(ply, Color(253, 73, 8),  cmd .. ": " .. msg)
+	elseif err then
+		MsgC(Color(253, 73, 8), cmd .. ": " .. msg .. "\n")
+	elseif msg then
+		local t = string.Explode("%%", msg .. " ")
+		local ret = {ply, " "}
+		for i = 1, #t do
+			if i ~= 1 then
+				local a = args[i - 1]
+				if a then
+					if type(a) == "table" then
+						table.insert(ret, a[1])
+						for i = 2, #a do
+							table.insert(ret, ", ")
+							table.insert(ret, a[i])
+						end
+					else
+						table.insert(ret, Color(78, 196, 255))
+						table.insert(ret, tostring(a))
+					end
+				end
+			end
+			table.insert(ret, Color(255, 255, 255))
+			table.insert(ret, t[i])
+		end
+		if #args > #t - 1 then
+			table.remove(ret, #ret)
+			for i = #t, #args do
+				table.insert(ret, Color(255, 255, 255))
+				table.insert(ret, ", ")
+				table.insert(ret, Color(78, 196, 255))
+				table.insert(ret, args[i])
+			end
+		end
+		maestro.chat(ply, unpack(ret))
 	end
 end
 

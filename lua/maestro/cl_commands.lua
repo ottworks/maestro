@@ -14,7 +14,6 @@ end
 local function autocomplete(_, str)
 	str = string.sub(str, 2, -1)
 	local args = maestro.split(str)
-	--PrintTable(args)
 	local t = {}
 	if #args == 0 then
 		for k, v in pairs(maestro.commands) do
@@ -81,3 +80,11 @@ end)
 function maestro.command(cmd, args)
 	maestro.commands[cmd] = args
 end
+
+hook.Add("OnChatTab", function(txt)
+	if txt:sub(1, 1) == "!" then
+		local a = autocomplete(nil, txt)
+		print(a)
+		return a and a[1]
+	end
+end)

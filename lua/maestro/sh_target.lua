@@ -44,6 +44,7 @@ local function escape(str)
 end
 
 function maestro.target(val, ply, cmd)
+	if not val then return {} end
 	local magic = "!*^$#<>"
 	local cursor = 1
 	local s = string.sub(val, 1, 1)
