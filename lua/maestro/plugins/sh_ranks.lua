@@ -1,4 +1,4 @@
-maestro.command("rankadd", {"string:name", "rank:inherits", "string:permissions(multiple)"}, function(caller, name, inherits, ...)
+maestro.command("rankadd", {"string:name", "rank:inherits", "command:multiple"}, function(caller, name, inherits, ...)
 	local args = {...}
 	local perms = {}
 	for i = 1, #args do
@@ -12,7 +12,7 @@ maestro.command("rankremove", {"rank"}, function(caller, rank)
 	end
 	maestro.rankremove(rank)
 end)
-maestro.command("rankperms", {"rank", "string:permissions(multiple)"}, function(caller, rank, ...)
+maestro.command("rankperms", {"rank", "command:multiple"}, function(caller, rank, ...)
 	if not rank or not maestro.rankget(rank) then
 		return "Invalid rank!"
 	end
@@ -23,7 +23,7 @@ maestro.command("rankperms", {"rank", "string:permissions(multiple)"}, function(
 	end
 	maestro.ranksetperms(rank, perms)
 end)
-maestro.command("rankaddperms", {"rank", "string:permissions(multiple)"}, function(caller, rank, ...)
+maestro.command("rankaddperms", {"rank", "command:multiple"}, function(caller, rank, ...)
 	if not rank or not maestro.rankget(rank) then
 		return "Invalid rank!"
 	end
@@ -34,7 +34,7 @@ maestro.command("rankaddperms", {"rank", "string:permissions(multiple)"}, functi
 	end
 	maestro.rankaddperms(rank, perms)
 end)
-maestro.command("rankremoveperms", {"rank", "string:permissions(multiple)"}, function(caller, rank, ...)
+maestro.command("rankremoveperms", {"rank", "command:multiple"}, function(caller, rank, ...)
 	if not rank or not maestro.rankget(rank) then
 		return "Invalid rank!"
 	end

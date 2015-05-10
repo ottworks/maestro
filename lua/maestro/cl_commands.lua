@@ -59,6 +59,12 @@ local function autocomplete(_, str)
 						table.insert(t, "ms " .. cmd .. cnct .. rank)
 					end
 				end
+			elseif typ == "command" then
+				for cmd2 in pairs(maestro.commands) do
+					if string.sub(cmd2, 1, #args[#args]):lower() == args[#args]:lower() then
+						table.insert(t, "ms " .. cmd .. cnct .. cmd2)
+					end
+				end
 			elseif types[#params] then
 				table.insert(t, "ms " .. cmd .. cnct .. "<" .. types[#params] .. ">")
 			end
