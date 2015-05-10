@@ -100,3 +100,21 @@ concommand.Add("ms", function(ply, cmd, args, str)
 	table.remove(args, 1)
 	runcmd(cmd, args)
 end)
+
+hook.Add("PlayerSay", "maestro_command", function(ply, txt)
+	if txt:sub(1, 1) == "!" then
+		txt = txt:sub(2)
+		local args = maestro.split(txt)
+		local cmd = args[1]
+		table.remove(args, 1)
+		if maestro.commands[cmd] then
+			if maestro.rankget(maestro.userrank(ply)).perms[cmd] then
+				runcmd(cmd, args, ply)
+			else
+				ply:ChatPrint(cmd .. ": Insufficient permissions!")
+			end
+		else
+			ply:ChatPrint("Unrecognized command: " .. cmd)
+		end
+	end
+end)
