@@ -13,7 +13,7 @@ maestro.command("noclip", {"player:target", "boolean:toggle"}, function(caller, 
 		return false, "toggled noclip mode on %%"
 	else
 		caller:SetMoveType((caller:GetMoveType() == MOVETYPE_NOCLIP) and MOVETYPE_WALK or MOVETYPE_NOCLIP)
-		return false, "toggled noclip mode on themself"
+		return false, "toggled noclip mode on theirself"
 	end
 end)
 
