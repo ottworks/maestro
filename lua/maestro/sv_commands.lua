@@ -32,12 +32,12 @@ local function runcmd(cmd, args, ply)
 	end
 	local err, msg = maestro.commands[cmd].callback(ply, unpack(args))
 	if err and IsValid(ply) then
-		maestro.chat(ply, Color(253, 73, 8),  cmd .. ": " .. msg)
+		maestro.chat(ply, Color(255, 154, 27),  cmd .. ": " .. msg)
 	elseif err then
-		MsgC(Color(253, 73, 8), cmd .. ": " .. msg .. "\n")
+		MsgC(Color(255, 154, 27), cmd .. ": " .. msg .. "\n")
 	elseif msg then
 		local t = string.Explode("%%", msg .. " ")
-		local ret = {ply, " "}
+		local ret = {ply or "(Console)", " "}
 		for i = 1, #t do
 			if i ~= 1 then
 				local a = args[i - 1]
@@ -81,10 +81,10 @@ net.Receive("maestro_cmd", function(len, ply)
 			end
 			runcmd(cmd, args, ply)
 		else
-			ply:ChatPrint(cmd .. ": Insufficient permissions!")
+			maestro.chat(ply, Color(255, 154, 27),  cmd .. ": Insufficient permissions!")
 		end
 	else
-		ply:ChatPrint("Unrecognized command: " .. cmd)
+		maestro.chat(ply, Color(255, 154, 27), "Unrecognized command: " .. cmd)
 	end
 end)
 
