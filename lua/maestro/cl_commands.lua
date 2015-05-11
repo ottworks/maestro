@@ -69,6 +69,7 @@ local function autocomplete(_, str)
 			end
 		end
 	end
+	table.sort(t)
 	return t
 end
 concommand.Add("ms", command, autocomplete, nil, FCVAR_USERINFO)

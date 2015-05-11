@@ -24,7 +24,7 @@ end
 
 function maestro.rankadd(name, inherits, perms)
 	perms = perms or {}
-	local r = {perms = perms, inherits = inherits, cantarget = "<#" .. name}
+	local r = {perms = perms, inherits = inherits, cantarget = "<#" .. name, flags = {}}
 	ranks[name] = r
 	if inherits then 
 		maestro.ranksetinherits(name, inherits)
@@ -96,15 +96,11 @@ function maestro.ranksetinherits(name, inherits, all)
 		maestro.saveranks()
 	end
 end
-function maestro.rankadmin(name, bool)
-	if ranks[name] then
-		ranks[name].admin = bool
+function maestro.rankflag(rank, name, bool)
+	if ranks[rank] then
+		ranks[rank].flags[name] = bool
 	end
-end
-function maestro.ranksuperadmin(name, bool)
-	if ranks[name] then
-		ranks[name].superadmin = bool
-	end
+	maestro.saveranks()
 end
 function maestro.rankgetcantarget(name, str)
 	return ranks[name].cantarget

@@ -2,11 +2,11 @@ local meta = FindMetaTable("Player")
 if not meta then return end
 
 function meta:IsAdmin()
-	return maestro.rankget(self:GetUserGroup()).admin
+	return maestro.rankget(self:GetUserGroup()).flags.admin
 end
 
 function meta:IsSuperAdmin()
-	return maestro.rankget(self:GetUserGroup()).superadmin
+	return maestro.rankget(self:GetUserGroup()).flags.superadmin
 end
 
 function meta:IsUserGroup(name)
@@ -26,7 +26,7 @@ end
 
 hook.Add("PlayerAuthed", "maestro_PlayerAuthed", function(ply, steam, uid)
 	local name = maestro.userrank(steam)
-	if not maestro.rankget(name).undercover then
+	if not maestro.rankget(name).flags.undercover then
 		ply:SetNWString("rank", name)
 	end
 	maestro.sendranks(ply)

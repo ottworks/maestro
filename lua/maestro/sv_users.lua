@@ -27,6 +27,8 @@ function maestro.userrank(id, rank)
 		if IsValid(ply) then
 			if not maestro.rankget(rank).undercover then
 				ply:SetNWString("rank", rank)
+			else
+				ply:SetNWString("rank", "user")
 			end
 		end
 		maestro.users[id] = maestro.users[id] or {}

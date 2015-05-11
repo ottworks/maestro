@@ -64,19 +64,12 @@ maestro.command("ranksetinherits", {"rank", "rank:inherits"}, function(caller, r
 	maestro.ranksetinherits(rank, inherits)
 	return false, "set the inheritance of rank %% to %%"
 end)
-maestro.command("rankadmin", {"rank", "boolean:admin"}, function(caller, rank, bool)
+maestro.command("rankflag", {"rank", "flag", "boolean:admin"}, function(caller, rank, flag, bool)
 	if not rank or not maestro.rankget(rank) then
 		return true, "Invalid rank!"
 	end
-	maestro.rankadmin(rank, bool)
-	return false, "set the admin status of rank %% to %%"
-end)
-maestro.command("ranksuperadmin", {"rank", "boolean:superadmin"}, function(caller, rank, bool)
-	if not rank or not maestro.rankget(rank) then
-		return true, "Invalid rank!"
-	end
-	maestro.ranksuperadmin(rank, bool)
-	return false, "set the superadmin status of rank %% to %%"
+	maestro.rankflag(rank, flag, bool)
+	return false, "set rank %% flag %% to %%"
 end)
 maestro.command("ranksetcantarget", {"rank", "targetstring"}, function(caller, rank, str)
 	if not rank or not maestro.rankget(rank) then
