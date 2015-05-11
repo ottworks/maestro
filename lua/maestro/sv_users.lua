@@ -31,10 +31,16 @@ function maestro.userrank(id, rank)
 		end
 		maestro.users[id] = maestro.users[id] or {}
 		maestro.users[id].rank = rank
+		if rank == "user" then
+			maestro.users[id] = nil
+		end
 		maestro.saveusers()
 	else
 		if type(id) == "Player" then
 			id = id:SteamID()
+		end
+		if not maestro.users[id] then
+			return "user"
 		end
 		return maestro.users[id].rank or "user"
 	end

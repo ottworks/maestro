@@ -4,8 +4,10 @@ util.AddNetworkString("maestro_ranks")
 if not file.Exists("maestro", "DATA") then
 	file.CreateDir("maestro")
 end
+local newfile = false
 if not file.Exists("maestro/ranks.txt", "DATA") then
 	file.Write("maestro/ranks.txt", "")
+	newfile = true
 end
 ranks = util.JSONToTable(file.Read("maestro/ranks.txt")) or {}
 for rank, tab in pairs(ranks) do
@@ -24,7 +26,11 @@ function maestro.rankadd(name, inherits, perms)
 	perms = perms or {}
 	local r = {perms = perms, inherits = inherits, cantarget = "<#" .. name}
 	ranks[name] = r
-	maestro.ranksetinherits(name, inherits)
+	if inherits then 
+		maestro.ranksetinherits(name, inherits)
+	else
+		maestro.saveranks()
+	end
 end
 function maestro.rankremove(name)
 	for _, v in pairs(player.GetAll()) do
@@ -80,7 +86,9 @@ end
 function maestro.ranksetinherits(name, inherits, all)
 	local r = ranks[name]
 	r.inherits = inherits
-	setmetatable(r.perms, {__index = ranks[inherits].perms})
+	if name ~= inherits then
+		setmetatable(r.perms, {__index = ranks[inherits].perms})
+	end
 	if not all then
 		for rank, tab in pairs(ranks) do
 			maestro.ranksetinherits(rank, tab.inherits, true)
@@ -129,4 +137,8 @@ function maestro.broadcastranks()
 	for _, v in pairs(player.GetAll()) do
 		maestro.sendranks(v)
 	end
+end
+
+if newfile then
+	maestro.rankadd("user", "user", {help = true, who = true})
 end

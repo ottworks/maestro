@@ -5,7 +5,7 @@ maestro.command("rankadd", {"string:name", "rank:inherits", "command:multiple"},
 		perms[args[i]] = true
 	end
 	maestro.rankadd(name, inherits, perms)
-	return false, "added rank %% (inheriting from %%) with access to commands %%"
+	return false, "added rank %% (inheriting from %%) with access to command(s) %%"
 end)
 maestro.command("rankremove", {"rank"}, function(caller, rank)
 	if not rank or not maestro.rankget(rank) then

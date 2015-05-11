@@ -27,6 +27,10 @@ local function convertTo(val, t, ply, cmd)
 end
 
 local function runcmd(cmd, args, ply)
+	if not maestro.commands[cmd] then
+		print("Invalid command!")
+		return		
+	end
 	for i = 1, #args do
 		args[i] = convertTo(args[i], string.match(maestro.commands[cmd].args[i] or "", "[^:]+"), ply, cmd)
 	end

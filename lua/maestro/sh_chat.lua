@@ -1,6 +1,8 @@
 if SERVER then
 	util.AddNetworkString("maestro_chat")
 	function maestro.chat(ply, ...)
+		MsgC(...)
+		MsgC("\n")
 		net.Start("maestro_chat")
 			net.WriteTable({...})
 		if ply then
