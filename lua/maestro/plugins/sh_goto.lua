@@ -14,7 +14,7 @@ maestro.command("goto", {"player:target"}, function(caller, targets)
 		endpos = ply:GetPos() - f * 150,
 		mins = Vector(-16, -16, 0),
 		maxs = Vector(16, 16, 72),
-		filter = ply,
+		filter = {ply, caller},
 	}
 	if tr.Hit then
 		local tr2 = util.TraceHull{
@@ -22,6 +22,7 @@ maestro.command("goto", {"player:target"}, function(caller, targets)
 			endpos = tr.HitPos + Vector(0, 0, 1),
 			mins = Vector(-16, -16, 0),
 			maxs = Vector(16, 16, 72),
+			filter = caller,
 		}
 		if not tr2.Hit then
 			caller:SetPos(tr.HitPos + Vector(0, 0, 1))
@@ -30,7 +31,7 @@ maestro.command("goto", {"player:target"}, function(caller, targets)
 			caller:SetPos(ply:GetPos())
 			caller:SetEyeAngles(a)
 		else
-			return "No room to teleport! Enter noclip to override."
+			return true, "No room to teleport! Enter noclip to override."
 		end
 	else
 		caller:SetPos(ply:GetPos() - f * 150)
