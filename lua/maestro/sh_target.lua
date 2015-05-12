@@ -84,12 +84,6 @@ function maestro.target(val, ply, cmd)
 		end
 	elseif id then
 		ret[player.GetBySteamID(name) or player.GetBySteamID64(name) or player.GetByID(name)] = true
-	elseif group then
-		for _, ply in pairs(player.GetAll()) do
-			if maestro.userrank(ply) == name then
-				ret[ply] = true
-			end
-		end
 	elseif greater then
 		local ranks = {}
 		for rank, tab in pairs(maestro.ranks or maestro.getranktable()) do
@@ -111,6 +105,12 @@ function maestro.target(val, ply, cmd)
 		end
 		for _, ply in pairs(player.GetAll()) do
 			if ranks[maestro.userrank(ply)] then
+				ret[ply] = true
+			end
+		end
+	elseif group then
+		for _, ply in pairs(player.GetAll()) do
+			if maestro.userrank(ply) == name then
 				ret[ply] = true
 			end
 		end
