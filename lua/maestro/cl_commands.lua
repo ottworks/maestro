@@ -53,7 +53,12 @@ local function autocomplete(_, str)
 				table.insert(t, "ms " .. cmd .. cnct .. "true")
 				table.insert(t, "ms " .. cmd .. cnct .. "false")
 			elseif typ == "rank" then
-				for rank in pairs(maestro.ranks) do
+				local ranks = {}
+				local cr = maestro.rankget(maestro.userrank(LocalPlayer())).canrank
+				if cr then
+					ranks = maestro.targetrank(cr, ply)
+				end
+				for rank in pairs(ranks) do
 					if string.sub(rank, 1, #args[#args]):lower() == args[#args]:lower() then
 						table.insert(t, "ms " .. cmd .. cnct .. rank)
 					end

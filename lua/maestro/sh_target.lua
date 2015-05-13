@@ -76,6 +76,7 @@ function maestro.target(val, ply, cmd)
 	end
 	local name = string.sub(val, cursor)
 	local ret = {}
+	if ply then ret[ply] = true end
 	if all then
 		ret = toLookup(player.GetAll())
 	elseif self then
@@ -136,6 +137,69 @@ function maestro.target(val, ply, cmd)
 		end
 	end
 	return toSequence(ret)
+end
+
+
+function maestro.targetrank(val, ply)
+	if not val then return false end
+	local magic = "!*^$#<>"
+	local cursor = 1
+	local s = string.sub(val, 1, 1)
+	local cnot = false
+	local all = false
+	local self = false
+	local id = false
+	local group = false
+	local greater = false
+	local less = false
+	while magic:find(escape(s)) and #s > 0 do
+		if s == "!" then
+			cnot = not cnot
+		elseif s == "*" then
+			all = true
+		elseif s == "^" then
+			self = true
+		elseif s == "$" then
+			id = true
+		elseif s == "#" then
+			group = true
+		elseif s == "<" then
+			less = true
+		elseif s == ">" then
+			greater = true
+		end
+		cursor = cursor + 1
+		s = string.sub(val, cursor, cursor)
+	end
+	local name = string.sub(val, cursor)
+	local ret = {}
+	if all then
+		ret = maestro.ranks or maestro.getranktable()
+	elseif self then
+		if IsValid(ply) then
+			ret[maestro.userrank(ply)] = true
+		end
+	elseif greater then
+		for rank, tab in pairs(maestro.ranks or maestro.getranktable()) do
+			if traversedown(rank, name) and rank ~= name then
+				ret[rank] = true
+			end
+		end
+	elseif less then
+		for rank, tab in pairs(maestro.ranks or maestro.ranks or maestro.getranktable()) do
+			if not traversedown(rank, name) then
+				ret[rank] = true
+			end
+		end
+	elseif group then
+		ret[name] = true
+	else
+		ret[name] = true
+	end
+	if cnot then
+		ret = inverse(ret, maestro.ranks or maestro.getranktable())
+	end
+	return ret
 end
 
 

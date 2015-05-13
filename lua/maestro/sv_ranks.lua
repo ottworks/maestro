@@ -23,8 +23,9 @@ end
 
 
 function maestro.rankadd(name, inherits, perms)
+	print(52, name, inherits, perms)
 	perms = perms or {}
-	local r = {perms = perms, inherits = inherits, cantarget = "<#" .. name, flags = {}}
+	local r = {perms = perms, inherits = inherits, cantarget = "<#" .. name, canrank = "!>#" .. name, flags = {}}
 	ranks[name] = r
 	if inherits then 
 		maestro.ranksetinherits(name, inherits)
@@ -85,6 +86,7 @@ function maestro.getranktable()
 end
 function maestro.ranksetinherits(name, inherits, all)
 	local r = ranks[name]
+	print(42, name, inherits, all)
 	r.inherits = inherits
 	if name ~= inherits then
 		setmetatable(r.perms, {__index = ranks[inherits].perms})
@@ -121,6 +123,17 @@ function maestro.ranksetpermcantarget(name, perm, str)
 end
 function maestro.rankresetpermcantarget(name, perm)
 	ranks[name].perms[perm] = true
+end
+function maestro.rankgetcanrank(name, str)
+	return ranks[name].canrank
+end
+function maestro.ranksetcanrank(name, str)
+	ranks[name].canrank = str
+	maestro.saveranks()
+end
+function maestro.rankresetcanrank(name)
+	ranks[name].canrank = "!>#" .. name
+	maestro.saveranks()
 end
 
 

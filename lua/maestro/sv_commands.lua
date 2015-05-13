@@ -18,6 +18,18 @@ end
 local function convertTo(val, t, ply, cmd)
 	if t == "player" then
 		return maestro.target(val, ply, cmd)
+	elseif t == "rank" then
+		if not ply then return val end
+		local cr = maestro.rankget(maestro.userrank(ply)).canrank
+		if cr then
+			local ranks = maestro.targetrank(cr, ply)
+			if ranks[val] then
+				return val
+			end
+			return false, true
+		else
+			return val
+		end
 	elseif t == "number" then
 		return tonumber(val)
 	elseif t == "boolean" then
@@ -26,19 +38,30 @@ local function convertTo(val, t, ply, cmd)
 	return val
 end
 
+local function handleError(ply, cmd, msg)
+	if IsValid(ply) then
+		maestro.chat(ply, Color(255, 154, 27),  cmd .. ": " .. msg)
+	else
+		MsgC(Color(255, 154, 27), cmd .. ": " .. msg .. "\n")
+	end
+end
+
 local function runcmd(cmd, args, ply)
 	if not maestro.commands[cmd] then
 		print("Invalid command!")
-		return		
+		return
 	end
 	for i = 1, #args do
-		args[i] = convertTo(args[i], string.match(maestro.commands[cmd].args[i] or "", "[^:]+"), ply, cmd)
+		local err
+		args[i], err = convertTo(args[i], string.match(maestro.commands[cmd].args[i] or "", "[^:]+"), ply, cmd)
+		if err then
+			handleError(ply, cmd, "You can't target this rank!")
+			return
+		end
 	end
 	local err, msg = maestro.commands[cmd].callback(ply, unpack(args))
-	if err and IsValid(ply) then
-		maestro.chat(ply, Color(255, 154, 27),  cmd .. ": " .. msg)
-	elseif err then
-		MsgC(Color(255, 154, 27), cmd .. ": " .. msg .. "\n")
+	if err then
+		
 	elseif msg then
 		local t = string.Explode("%%", msg .. " ")
 		local ret = {ply or "(Console)", " "}
