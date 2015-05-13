@@ -23,7 +23,6 @@ end
 
 
 function maestro.rankadd(name, inherits, perms)
-	print(52, name, inherits, perms)
 	perms = perms or {}
 	local r = {perms = perms, inherits = inherits, cantarget = "<#" .. name, canrank = "!>#" .. name, flags = {}}
 	ranks[name] = r
@@ -86,7 +85,6 @@ function maestro.getranktable()
 end
 function maestro.ranksetinherits(name, inherits, all)
 	local r = ranks[name]
-	print(42, name, inherits, all)
 	r.inherits = inherits
 	if name ~= inherits then
 		setmetatable(r.perms, {__index = ranks[inherits].perms})
