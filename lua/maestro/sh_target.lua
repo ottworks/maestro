@@ -76,7 +76,6 @@ function maestro.target(val, ply, cmd)
 	end
 	local name = string.sub(val, cursor)
 	local ret = {}
-	if ply then ret[ply] = true end
 	if all then
 		ret = toLookup(player.GetAll())
 	elseif self then
@@ -135,6 +134,7 @@ function maestro.target(val, ply, cmd)
 			local tab2 = toLookup(maestro.target(ct, ply))
 			ret = intersect(ret, tab2)
 		end
+		if self then ret[ply] = true end
 	end
 	return toSequence(ret)
 end
