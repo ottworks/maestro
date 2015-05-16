@@ -29,7 +29,8 @@ maestro.command("bring", {"player:target(s)"}, function(caller, targets)
 	local deg = 0
 	local pos = {}
 	local tries = -1
-	for i = 1, #targets do
+	for _, ply in pairs(targets) do
+		if ply == caller then continue end
 		while true do
 			tries = tries + 1
 			if tries % 2 == 0 then
@@ -37,17 +38,17 @@ maestro.command("bring", {"player:target(s)"}, function(caller, targets)
 			else
 				deg = deg + tries * 18
 			end
-			local room = isroom(caller:GetPos(), Angle(0, a + deg, 0):Forward(), targets[i], caller, targets)
+			local room = isroom(caller:GetPos(), Angle(0, a + deg, 0):Forward(), ply, caller, targets)
 			if room then
-				targets[i]:SetPos(room)
-				local ang = (caller:GetPos() - targets[i]:GetPos()):Angle()
+				ply:SetPos(room)
+				local ang = (caller:GetPos() - ply:GetPos()):Angle()
 				ang.p = 0
 				ang.r = 0
-				targets[i]:SetEyeAngles(ang)
+				ply:SetEyeAngles(ang)
 				break
 			end
 			if tries > 50 then
-				targets[i]:SetPos(caller:GetPos())
+				ply:SetPos(caller:GetPos())
 				break
 			end
 		end

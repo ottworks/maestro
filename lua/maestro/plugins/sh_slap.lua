@@ -16,7 +16,7 @@ maestro.command("slap", {"player:target", "number:damage(optional)"}, function(c
 		info:SetDamageType(DMG_CLUB)
 		ply:TakeDamageInfo(info)
 		ply:SetVelocity(Vector(math.random(-100, 100), math.random(-100, 100), math.random(250, 300)))
-		ply:EmitSound("player/pl_pain7.wav", 60, math.random(90, 110))
+		ply:EmitSound("physics/body/body_medium_impact_hard6.wav", 60, math.random(90, 110))
 	end
 	if dmg == 0 then
 		return false, "slapped %%"
