@@ -1,16 +1,5 @@
 maestro.users = {}
-
-if not file.Exists("maestro", "DATA") then
-	file.CreateDir("maestro")
-end
-if not file.Exists("maestro/users.txt", "DATA") then
-	file.Write("maestro/users.txt", "")
-end
-maestro.users = util.JSONToTable(file.Read("maestro/users.txt")) or {}
-
-function maestro.saveusers()
-	file.Write("maestro/users.txt", util.TableToJSON(maestro.users))
-end
+maestro.users = maestro.load("users")
 
 function maestro.userrank(id, rank)
 	if rank then
@@ -36,7 +25,7 @@ function maestro.userrank(id, rank)
 		if rank == "user" then
 			maestro.users[id] = nil
 		end
-		maestro.saveusers()
+		maestro.save("users", maestro.users)
 	else
 		if type(id) == "Player" then
 			id = id:SteamID()

@@ -1,22 +1,15 @@
 local ranks = {}
+local newfile
 util.AddNetworkString("maestro_ranks")
 
-if not file.Exists("maestro", "DATA") then
-	file.CreateDir("maestro")
-end
-local newfile = false
-if not file.Exists("maestro/ranks.txt", "DATA") then
-	file.Write("maestro/ranks.txt", "")
-	newfile = true
-end
-ranks = util.JSONToTable(file.Read("maestro/ranks.txt")) or {}
+ranks, newfile = maestro.load("ranks")
 for rank, tab in pairs(ranks) do
 	if tab.inherits and tab.inherits ~= rank then
 		setmetatable(tab.perms, {__index = ranks[tab.inherits].perms})
 	end
 end
 function maestro.saveranks()
-	file.Write("maestro/ranks.txt", util.TableToJSON(ranks))
+	maestro.save("ranks", ranks)
 	maestro.broadcastranks()
 end
 
