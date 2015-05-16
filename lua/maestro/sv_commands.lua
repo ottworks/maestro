@@ -34,6 +34,8 @@ local function convertTo(val, t, ply, cmd)
 		return tonumber(val)
 	elseif t == "boolean" then
 		return val == "true"
+	elseif t == "time" then
+		return maestro.toseconds(val)
 	end
 	return val
 end
@@ -79,6 +81,9 @@ local function runcmd(cmd, args, ply)
 							end
 							table.insert(ret, a[i])
 						end
+					elseif maestro.commands[cmd].args[i - 1] == "time" then
+						table.insert(ret, Color(78, 196, 255))
+						table.insert(ret, maestro.time(a))
 					else
 						table.insert(ret, Color(78, 196, 255))
 						table.insert(ret, tostring(a))

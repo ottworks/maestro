@@ -33,8 +33,8 @@ function maestro.toseconds(str)
 			num = str:sub(s1, s2)
 			cursor = s2
 		elseif u1 and ((s1 and u1 < s1) or not s1) then
-			if u1 ~= u2 or not num then
-				return "invalid string"
+			if u1 ~= u2 and not num then
+				error("invalid string")
 			end
 			local u = string.lower(str:sub(u1, u2))
 			if u == "s" then

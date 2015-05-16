@@ -86,11 +86,3 @@ end)
 function maestro.command(cmd, args)
 	maestro.commands[cmd] = args
 end
-
-hook.Add("OnChatTab", function(txt)
-	if txt:sub(1, 1) == "!" then
-		local a = autocomplete(nil, txt)
-		print(a)
-		return a and a[1]
-	end
-end)
