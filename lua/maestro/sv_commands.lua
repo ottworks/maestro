@@ -68,7 +68,7 @@ local function runcmd(cmd, args, ply)
 		for i = 1, #t do
 			if i ~= 1 then
 				local a = args[i - 1]
-				if a then
+				if a ~= nil then
 					if type(a) == "table" then
 						table.insert(ret, a[1])
 						for i = 2, #a do
