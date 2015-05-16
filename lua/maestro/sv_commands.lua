@@ -61,7 +61,7 @@ local function runcmd(cmd, args, ply)
 	end
 	local err, msg = maestro.commands[cmd].callback(ply, unpack(args))
 	if err then
-		
+		handleError(ply, cmd, msg)
 	elseif msg then
 		local t = string.Explode("%%", msg .. " ")
 		local ret = {ply or "(Console)", " "}
