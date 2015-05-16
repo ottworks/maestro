@@ -72,7 +72,11 @@ local function runcmd(cmd, args, ply)
 					if type(a) == "table" then
 						table.insert(ret, a[1])
 						for i = 2, #a do
-							table.insert(ret, ", ")
+							if i == #a then
+								table.insert(ret, ", and ")
+							else
+								table.insert(ret, ", ")
+							end
 							table.insert(ret, a[i])
 						end
 					else
@@ -88,7 +92,11 @@ local function runcmd(cmd, args, ply)
 			table.remove(ret, #ret)
 			for i = #t, #args do
 				table.insert(ret, Color(255, 255, 255))
-				table.insert(ret, ", ")
+				if i == #args then
+					table.insert(ret, ", and ")
+				else
+					table.insert(ret, ", ")
+				end
 				table.insert(ret, Color(78, 196, 255))
 				table.insert(ret, args[i])
 			end

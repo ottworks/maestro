@@ -134,7 +134,7 @@ function maestro.target(val, ply, cmd)
 			local tab2 = toLookup(maestro.target(ct, ply))
 			ret = intersect(ret, tab2)
 		end
-		if self then ret[ply] = true end
+		if self or all then ret[ply] = true end
 	end
 	return toSequence(ret)
 end
