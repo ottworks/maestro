@@ -93,7 +93,7 @@ local function runcmd(cmd, args, ply)
 				table.insert(ret, args[i])
 			end
 		end
-		maestro.chat(ply, unpack(ret))
+		maestro.chat(nil, unpack(ret))
 	end
 end
 
