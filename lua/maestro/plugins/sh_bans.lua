@@ -8,3 +8,7 @@ maestro.command("ban", {"player:target", "time", "reason"}, function(caller, tar
 	maestro.ban(ply, time, reason)
 	return false, "banned %% for %% (%%)"
 end)
+maestro.command("unban", {"id", "reason"}, function(caller, id, reason)
+	maestro.unban(id)
+	return false, "unbanned %% (%%)"
+end)

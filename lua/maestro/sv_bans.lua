@@ -25,6 +25,13 @@ function maestro.ban(id, time, reason)
 	maestro.bans[id] = {unban = os.time() + time, reason = reason, prevbans = prevbans, perma = (time == 0)}
 	maestro.save("bans", maestro.bans)
 end
+function maestro.unban(id)
+	local ban = maestro.bans[id]
+	if ban then
+		maestro.bans[id] = {unban = os.time(), reason = ban.reason, prevbans = ban.prevbans, perma = false}
+		maestro.save("bans", maestro.bans)
+	end
+end
 
 hook.Add("CheckPassword", "maestro_bans", function(id64)
 	local id = util.SteamIDFrom64(id64)
