@@ -3,8 +3,8 @@ TIME_MINUTE = TIME_SECOND * 60
 TIME_HOUR = TIME_MINUTE * 60
 TIME_DAY = TIME_HOUR * 24
 TIME_WEEK = TIME_DAY * 7
-TIME_MONTH = TIME_DAY * (365.25/12)
-TIME_YEAR = TIME_DAY * 365.25
+TIME_MONTH = TIME_DAY * (365.2425/12)
+TIME_YEAR = TIME_DAY * 365.2425
 TIME_DECADE = TIME_YEAR * 10
 TIME_CENTURY = TIME_DECADE * 10
 TIME_MILLENNIUM = TIME_CENTURY * 10
@@ -66,13 +66,13 @@ function maestro.toseconds(str)
 	return total
 end
 
-function maestro.time(num)
+function maestro.time(num, limit)
 	if not tonumber(num) then error("invalid time") end
 	if num == 0 then
 		return "all of time"
 	end
 	local ret = {}
-	while num > 0 do
+	while not limit or limit > 0 do
 		if num >= TIME_MILLENNIUM then
 			local c = math.floor(num / TIME_MILLENNIUM)
 			ret[#ret + 1] = c .. " " .. plural("millennium", c)
@@ -115,6 +115,9 @@ function maestro.time(num)
 			num = num - TIME_SECOND * c
 		else
 			break
+		end
+		if limit then
+			limit = limit - 1
 		end
 	end
 	local str = ""
