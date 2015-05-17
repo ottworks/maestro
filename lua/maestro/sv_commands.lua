@@ -147,14 +147,14 @@ hook.Add("PlayerSay", "maestro_command", function(ply, txt)
 		local args = maestro.split(txt)
 		local cmd = args[1]
 		table.remove(args, 1)
+		cmd = string.lower(cmd)
 		if maestro.commands[cmd] then
 			if maestro.rankget(maestro.userrank(ply)).perms[cmd] then
 				runcmd(cmd, args, ply)
 			else
 				ply:ChatPrint(cmd .. ": Insufficient permissions!")
 			end
-		else
-			ply:ChatPrint("Unrecognized command: " .. cmd)
+			return false
 		end
 	end
 end)

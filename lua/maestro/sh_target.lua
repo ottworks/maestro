@@ -129,12 +129,13 @@ function maestro.target(val, ply, cmd)
 		local ct = maestro.rankgetcantarget(maestro.userrank(ply))
 		if perm ~= true then
 			local tab2 = toLookup(maestro.target(perm, ply))
+			tab2[ply] = true
 			ret = intersect(ret, tab2)
 		elseif ct then
 			local tab2 = toLookup(maestro.target(ct, ply))
+			tab2[ply] = true
 			ret = intersect(ret, tab2)
 		end
-		if self or all then ret[ply] = true end
 	end
 	return toSequence(ret)
 end
