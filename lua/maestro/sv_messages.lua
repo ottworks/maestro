@@ -1,0 +1,6 @@
+hook.Add("PlayerInitialSpawn", "maestro_messages", function(ply)
+	maestro.chat(nil, Color(78, 196, 255), "Player \"", Color(255, 255, 255), ply:Nick(), Color(78, 196, 255), "\" (", Color(255, 255, 255), ply:SteamID(), Color(78, 196, 255), ") has joined the server.")
+end)
+hook.Add("PlayerDisconnected", "maestro_messages", function(ply)
+	maestro.chat(nil, Color(78, 196, 255), "Player \"", Color(255, 255, 255), ply:Nick(), Color(78, 196, 255), "\" (", Color(255, 255, 255), ply:SteamID(), Color(78, 196, 255), ") has left the server.")
+end)
