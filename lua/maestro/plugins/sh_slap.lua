@@ -19,7 +19,7 @@ maestro.command("slap", {"player:target", "number:damage(optional)"}, function(c
 		ply:EmitSound("physics/body/body_medium_impact_hard6.wav", 60, math.random(90, 110))
 	end
 	if dmg == 0 then
-		return false, "slapped %%"
+		return false, "slapped %1"
 	end
-	return false, "slapped %% for %% damage"
+	return false, "slapped %1 for %2 damage"
 end)

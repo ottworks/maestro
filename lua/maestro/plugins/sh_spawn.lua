@@ -5,5 +5,5 @@ maestro.command("spawn", {"player:target"}, function(caller, targets)
 	for _, ply in pairs(targets) do
 		ply:Spawn()
 	end
-	return false, "spawned %%"
+	return false, "spawned %1"
 end) 

@@ -5,5 +5,5 @@ maestro.command("hp", {"player:target", "number"}, function(caller, targets, num
 	for _, ply in pairs(targets) do
 		ply:SetHealth(num)
 	end
-	return false, "set the hp of %% to %%"
+	return false, "set the hp of %1 to %2"
 end)

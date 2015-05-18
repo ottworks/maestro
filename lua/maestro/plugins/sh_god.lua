@@ -24,7 +24,10 @@ maestro.command("god", {"player:target(optional)", "boolean:state(optional)"}, f
 		end
 	end
 	if state == nil then
-		return false, "toggled god mode on %%"
+		return false, "toggled god mode on %1"
 	end
-	return false, "set god mode on %% to %%"
+	if state then
+		return false, "enabled god mode on %1"
+	end
+	return false, "disabled god mode on %1"
 end)

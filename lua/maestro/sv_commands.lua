@@ -105,7 +105,7 @@ local function runcmd(cmd, args, ply)
 				local a = args[num]				
 				handleMultiple(a, ret, cmd, num)
 			else --it's a vararg
-				table.insert(ret, Color(78, 196, 255))
+				table.insert(ret, Color(255, 154, 27))
 				table.insert(ret, "[")
 				for i = max, #args do
 					local a = args[i]
@@ -121,7 +121,7 @@ local function runcmd(cmd, args, ply)
 					end
 					handleMultiple(a, ret, cmd, num)
 				end
-				table.insert(ret, Color(78, 196, 255))
+				table.insert(ret, Color(255, 154, 27))
 				table.insert(ret, "]")
 			end
 			i = i + 1

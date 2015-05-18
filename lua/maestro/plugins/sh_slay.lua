@@ -1,4 +1,4 @@
-maestro.command("slay", {"player:target"}, function(caller, targets)
+maestro.command("slay", {"player:target", "boolean:silent"}, function(caller, targets, silent)
 	if #targets == 0 then
 		return true, "Query matched no players."
 	end
@@ -10,7 +10,14 @@ maestro.command("slay", {"player:target"}, function(caller, targets)
 			end
 			continue
 		end
-		ply:Kill()
+		if silent then
+			ply:KillSilent()
+		else
+			ply:Kill()
+		end
 	end
-	return false, "slayed %%"
+	if silent then
+		return false, "slayed %1 silently"
+	end
+	return false, "slayed %1"
 end)

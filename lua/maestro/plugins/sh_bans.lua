@@ -6,15 +6,15 @@ maestro.command("ban", {"player:target", "time", "reason"}, function(caller, tar
 	end
 	local ply = targets[1]
 	maestro.ban(ply, time, reason)
-	return false, "banned %% for %% (%%)"
+	return false, "banned %1 for %2 (%3)"
 end)
 maestro.command("banid", {"id", "time", "reason"}, function(caller, id, time, reason)
 	maestro.ban(id, time, reason)
-	return false, "banned %% for %% (%%)"
+	return false, "banned %1 for %2 (%3)"
 end)
 maestro.command("unban", {"id", "reason"}, function(caller, id, reason)
 	maestro.unban(id, reason)
-	return false, "unbanned %% (%%)"
+	return false, "unbanned %1 (%2)"
 end)
 
 if SERVER then

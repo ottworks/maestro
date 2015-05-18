@@ -11,5 +11,5 @@ maestro.command("cvar", {"string:variable", "value"}, function(caller, var, val)
 	else
 		return true, "Invalid cvar!"
 	end
-	return false, "set cvar %% to %%"
+	return false, "set cvar %1 to %2"
 end)

@@ -4,5 +4,5 @@ maestro.command("lua", {"string:lua"}, function(caller, ...)
 	if err then
 		return true, err .. "\nCode interpreted as:\n" .. code
 	end
-	return false, "ran code \"" .. code .. "\" on the server %%"
+	return false, "ran code %% on the server"
 end)

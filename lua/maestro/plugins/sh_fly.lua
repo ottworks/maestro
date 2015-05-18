@@ -4,12 +4,15 @@
 	 		for _, ply in pairs(targets) do
 	 			ply:SetMoveType(state and MOVETYPE_FLY or MOVETYPE_WALK)
 	 		end
-	 		return false, "set fly mode on %% to %%"
+	 		if state then
+	 			return false, "enabled fly mode on %1"
+	 		end
+	 		return false, "disabled fly mode on %1"
 	 	else
 	 		for _, ply in pairs(targets) do
 	 			ply:SetMoveType((ply:GetMoveType() == MOVETYPE_FLY) and MOVETYPE_WALK or MOVETYPE_FLY)
 	 		end
-	 		return false, "toggled fly mode on %%"
+	 		return false, "toggled fly mode on %1"
 	 	end
 	else
 	 	caller:SetMoveType((caller:GetMoveType() == MOVETYPE_FLY) and MOVETYPE_WALK or MOVETYPE_FLY)

@@ -5,5 +5,5 @@ maestro.command("armor", {"player:target", "number"}, function(caller, targets, 
 	for _, ply in pairs(targets) do
 		ply:SetArmor(num)
 	end
-	return false, "set the armor of %% to %%"
+	return false, "set the armor of %1 to %2"
 end)

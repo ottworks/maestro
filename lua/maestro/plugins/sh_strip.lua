@@ -40,11 +40,11 @@ maestro.command("strip", {"player:target", "boolean:state(optional)"}, function(
 		end
 	end
 	if state == nil then
-		return false, "toggled weapon strip on %%"
+		return false, "toggled weapon strip on %1"
 	elseif state then
-		return false, "stripped weapons from %% (%%)"
+		return false, "stripped weapons from %1"
 	else
-		return false, "gave weapons back to %% (%%)"
+		return false, "gave weapons back to %2"
 	end
 end)
 

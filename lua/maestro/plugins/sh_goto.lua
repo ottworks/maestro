@@ -37,5 +37,5 @@ maestro.command("goto", {"player:target"}, function(caller, targets)
 		caller:SetPos(ply:GetPos() - f * 150)
 		caller:SetEyeAngles(a)
 	end
-	return false, "teleported to %%"
+	return false, "teleported to %1"
 end)

@@ -53,7 +53,7 @@ maestro.command("bring", {"player:target(s)"}, function(caller, targets)
 			end
 		end
 	end
-	return false, "brought %%"
+	return false, "brought %1"
 end)
 
 --Algorithm: Rotate around the player from a set distance until a spot is clear. Start in front and fan outwards.

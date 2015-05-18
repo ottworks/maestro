@@ -22,9 +22,12 @@ maestro.command("rapidfire", {"player:target", "boolean:toggle(optional)"}, func
 			end
 		end
 		if state == nil then
-			return false, "toggled rapidfire on %%"
+			return false, "toggled rapidfire on %1"
 		end
-		return false, "set rapidfire on %% to %%"
+		if state then
+			return false, "enabled rapidfire on %1"
+		end
+		return false, "disabled rapidfire on %1"
 	else
 		rapidfires[caller] = not caller.maestro_rapidfire
 		caller.maestro_rapidfire = not caller.maestro_rapidfire
