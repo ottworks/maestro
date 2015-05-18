@@ -48,6 +48,33 @@ local function handleError(ply, cmd, msg)
 	end
 end
 
+local function handleMultiple(a, ret, cmd, num)
+	local arg = maestro.commands[cmd].args[num] or maestro.commands[cmd].args[#maestro.commands[cmd].args]
+	if type(a) == "table" then
+		for j = 1, #a do
+			if j == 1 then
+				table.insert(ret, a[j])
+			elseif j == #a then
+				if #a > 2 then
+					table.insert(ret, ", and ")
+				else
+					table.insert(ret, " and ")
+				end
+				table.insert(ret, a[j])
+			else
+				table.insert(ret, ", ")
+				table.insert(ret, a[j])
+			end
+		end
+	elseif string.gmatch(arg, "[^:]+") == "time" then
+		table.insert(ret, Color(78, 196, 255))
+		table.insert(ret, maestro.time(a))
+	else
+		table.insert(ret, Color(78, 196, 255))
+		table.insert(ret, tostring(a))
+	end
+end
+
 local function runcmd(cmd, args, ply)
 	if not maestro.commands[cmd] then
 		print("Invalid command!")
@@ -65,47 +92,45 @@ local function runcmd(cmd, args, ply)
 	if err then
 		handleError(ply, cmd, msg)
 	elseif msg then
-		local t = string.Explode("%%", msg .. " ")
+		local t = string.Explode("%%[%d%%]", msg, true)
 		local ret = {ply or "(Console)", " "}
-		for i = 1, #t do
-			if i ~= 1 then
-				local a = args[i - 1]
-				if a ~= nil then
-					if type(a) == "table" then
-						table.insert(ret, a[1])
-						for i = 2, #a do
-							if i == #a then
-								table.insert(ret, ", and ")
-							else
-								table.insert(ret, ", ")
-							end
-							table.insert(ret, a[i])
-						end
-					elseif maestro.commands[cmd].args[i - 1] == "time" then
-						table.insert(ret, Color(78, 196, 255))
-						table.insert(ret, maestro.time(a))
-					else
-						table.insert(ret, Color(78, 196, 255))
-						table.insert(ret, tostring(a))
-					end
-				end
-			end
+		local i = 1
+		local max = 1
+		for m in string.gmatch(msg, "%%[%d%%]") do
+			local num = tonumber(m:sub(2, 2))
 			table.insert(ret, Color(255, 255, 255))
 			table.insert(ret, t[i])
-		end
-		if #args > #t - 1 then
-			table.remove(ret, #ret)
-			for i = #t, #args do
-				table.insert(ret, Color(255, 255, 255))
-				if i == #args then
-					table.insert(ret, ", and ")
-				else
-					table.insert(ret, ", ")
+			if num then --normal argument
+				max = math.max(max, num)
+				local a = args[num]				
+				handleMultiple(a, ret, cmd, num)
+			else --it's a vararg
+				table.insert(ret, Color(78, 196, 255))
+				table.insert(ret, "[")
+				for i = max, #args do
+					local a = args[i]
+					table.insert(ret, Color(255, 255, 255))
+					if i ~= max and i == #args then
+						if i - max > 2 then
+							table.insert(ret, ", and ")
+						else
+							table.insert(ret, " and ")
+						end
+					elseif i ~= max then
+						table.insert(ret, ", ")
+					end
+					handleMultiple(a, ret, cmd, num)
 				end
 				table.insert(ret, Color(78, 196, 255))
-				table.insert(ret, args[i])
+				table.insert(ret, "]")
 			end
+			i = i + 1
 		end
+		if #t[#t] ~= 0 then
+			table.insert(ret, Color(255, 255, 255))
+			table.insert(ret, t[#t])
+		end
+		
 		maestro.chat(nil, unpack(ret))
 	end
 end
