@@ -141,6 +141,10 @@ function maestro.rankrename(name, to)
 	ranks[name] = nil
 	maestro.saveranks()
 end
+function maestro.RESETRANKS()
+	ranks = {}
+	maestro.rankadd("user", "user", {help = true, who = true})
+end
 
 
 function maestro.sendranks(ply)

@@ -36,3 +36,11 @@ function maestro.userrank(id, rank)
 		return maestro.users[id].rank or "user"
 	end
 end
+
+function maestro.RESETUSERS()
+	for _, ply in pairs(player.GetAll()) do
+		maestro.userrank(ply, "user")
+	end
+	maestro.users = {}
+	maestro.save("users", maestro.users)
+end

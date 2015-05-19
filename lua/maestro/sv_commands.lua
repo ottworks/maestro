@@ -96,12 +96,16 @@ local function runcmd(cmd, args, ply)
 		local ret = {ply or "(Console)", " "}
 		local i = 1
 		local max = 1
+		for m in string.gmatch(msg, "%%%d") do --tally up
+			local num = tonumber(m:sub(2, 2))
+			max = math.max(max, num)
+		end
+		max = max + 1
 		for m in string.gmatch(msg, "%%[%d%%]") do
 			local num = tonumber(m:sub(2, 2))
 			table.insert(ret, Color(255, 255, 255))
 			table.insert(ret, t[i])
 			if num then --normal argument
-				max = math.max(max, num)
 				local a = args[num]				
 				handleMultiple(a, ret, cmd, num)
 			else --it's a vararg
