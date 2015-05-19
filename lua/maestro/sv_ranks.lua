@@ -126,6 +126,21 @@ function maestro.rankresetcanrank(name)
 	ranks[name].canrank = "!>#" .. name
 	maestro.saveranks()
 end
+function maestro.rankrename(name, to)
+	ranks[to] = ranks[name]
+	for _, v in pairs(player.GetAll()) do
+		if maestro.userrank(v) == name then
+			maestro.userrank(v, to)
+		end
+	end
+	for rank, tab in pairs(ranks) do
+		if tab.inherits == name then
+			maestro.ranksetinherits(rank, to)
+		end
+	end
+	ranks[name] = nil
+	maestro.saveranks()
+end
 
 
 function maestro.sendranks(ply)

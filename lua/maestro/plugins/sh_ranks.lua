@@ -99,6 +99,13 @@ maestro.command("rankresetpermcantarget", {"rank", "command"}, function(caller, 
 	maestro.rankresetpermcantarget(rank, cmd)
 	return false, "reset the players rank %1 can target with %2"
 end)
+maestro.command("rankrename", {"rank:from", "to"}, function(caller, from, to)
+	if not from or not maestro.rankget(from) then
+		return true, "Invalid rank!"
+	end
+	maestro.rankrename(from, to)
+	return false, "renamed rank %1 to %2"
+end)
 
 maestro.command("userrank", {"player:target", "rank"}, function(caller, targets, rank)
 	if #targets > 1 then
