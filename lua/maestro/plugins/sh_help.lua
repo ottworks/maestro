@@ -10,7 +10,7 @@ maestro.command("help", {"command:optional"}, function(caller, cmd)
 		return true, "Invalid command!"
 	end
 	if caller then
-		caller:SendLua("maestro.help(\"" .. cmd .. "\")")
+		caller:SendLua("maestro.help(" .. (cmd and "\"" .. cmd .. "\"" or "") .. ")")
 	else
 		return maestro.help(cmd)
 	end

@@ -141,7 +141,7 @@ maestro.command("userrank", {"player:target", "rank"}, function(caller, targets,
 	return false, "set the rank of %1 to %2"
 end)
 
-maestro.command("reseteverythingtodefaultyeseverything", {"boolean:areyousure?", "boolean:areyousureyouresure?"}, function(caller, sure1, sure2)
+maestro.command("reseteverythingtodefault", {"boolean:areyousure?", "boolean:areyousureyou'resure?"}, function(caller, sure1, sure2)
 	if sure1 and sure2 then
 		maestro.RESETRANKS()
 		maestro.RESETUSERS()
@@ -153,4 +153,12 @@ maestro.command("reseteverythingtodefaultyeseverything", {"boolean:areyousure?",
 		return true, "Are you sure you're sure?"
 	end
 	return true, "You made the right choice."
-end)
+end, [[Don't press the red button.
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Don't.]])
