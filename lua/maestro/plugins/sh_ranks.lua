@@ -1,8 +1,14 @@
 maestro.command("rankadd", {"string:name", "rank:inherits", "command:multiple"}, function(caller, name, inherits, ...)
 	local args = {...}
 	local perms = {}
-	for i = 1, #args do
-		perms[args[i]] = true
+	if #args == 1 and args[1] == "*" then
+		for cmd in pairs(maestro.commands) do
+			perms[cmd] = true
+		end
+	else
+		for i = 1, #args do
+			perms[args[i]] = true
+		end
 	end
 	maestro.rankadd(name, inherits, perms)
 	return false, "added rank %1 (inheriting from %2) with access to command(s) %%"
@@ -106,12 +112,29 @@ maestro.command("rankrename", {"rank:from", "to"}, function(caller, from, to)
 	maestro.rankrename(from, to)
 	return false, "renamed rank %1 to %2"
 end)
+maestro.command("listranks", {}, function(caller)
+	if caller then
+		maestro.chat(caller, "Available ranks:")
+	else
+		print("Available ranks:")
+	end
+	for rank in pairs(maestro.getranktable()) do
+		if caller then
+			maestro.chat(caller, "\t", rank)
+		else
+			print(" ", rank)
+		end
+	end
+end)
 
 maestro.command("userrank", {"player:target", "rank"}, function(caller, targets, rank)
 	if #targets > 1 then
 		return true, "Query matched more than 1 player."
 	elseif #targets == 0 then
 		return true, "Query matched no players."
+	end
+	if not maestro.rankget(rank) then
+		return true, "Invalid rank!"
 	end
 	local ply = targets[1]
 	maestro.userrank(ply, rank)

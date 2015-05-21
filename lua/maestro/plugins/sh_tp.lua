@@ -19,4 +19,4 @@ maestro.command("tp", {"player:target(optional)"}, function(caller, targets)
 	end
 	caller:SetPos(tr.HitPos)
 	return false, "teleported themselves"
-end)
+end, [[Teleports a player, or yourself if none is specified.]])
