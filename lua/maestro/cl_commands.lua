@@ -34,7 +34,7 @@ local function autocomplete(_, str)
 		for k, v in pairs(maestro.commands) do
 			if k:lower() == args[1]:lower() then
 				cmd = k
-				types = v
+				types = v.args
 			end
 		end
 		local params = table.Copy(args)
@@ -83,6 +83,6 @@ net.Receive("maestro_commands", function()
 end)
 
 
-function maestro.command(cmd, args)
-	maestro.commands[cmd] = args
+function maestro.command(cmd, args, func, help)
+	maestro.commands[cmd] = {args = args, help = help}
 end
