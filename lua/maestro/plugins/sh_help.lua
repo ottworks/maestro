@@ -14,7 +14,8 @@ maestro.command("help", {"command:optional"}, function(caller, cmd)
 	else
 		return maestro.help(cmd)
 	end
-end)
+end, [[
+Displays this menu.]])
 --Orange Color(255, 154, 27)
 --Blue Color(78, 196, 255)
 function maestro.help(cmd)

@@ -6,4 +6,5 @@ maestro.command("hp", {"player:target", "number"}, function(caller, targets, num
 		ply:SetHealth(num)
 	end
 	return false, "set the hp of %1 to %2"
-end)
+end, [[
+Sets the health of the targeted player(s).]])

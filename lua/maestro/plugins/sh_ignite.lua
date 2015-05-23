@@ -9,4 +9,5 @@ maestro.command("ignite", {"player:target", "number:time"}, function(caller, tar
 		return false, "ignited %1 for %2 seconds"
 	end
 	return false, "ignited %1"
-end)
+end, [[
+Lights the targeted players on fire.]])

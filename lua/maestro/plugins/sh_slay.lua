@@ -20,4 +20,5 @@ maestro.command("slay", {"player:target", "boolean:silent"}, function(caller, ta
 		return false, "slayed %1 silently"
 	end
 	return false, "slayed %1"
-end)
+end, [[
+Slays a player.]])

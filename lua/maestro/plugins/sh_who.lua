@@ -7,7 +7,8 @@ maestro.command("who", {}, function(caller)
 			print(v:Nick() .. string.rep(" ", 40 - #v:Nick()) .. maestro.userrank(v))
 		end
 	end
-end)
+end, [[
+Lists the players on the server and their ranks.]])
 if SERVER then
 	util.AddNetworkString("maestro_printranks")
 end

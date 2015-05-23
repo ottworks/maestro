@@ -7,4 +7,5 @@ maestro.command("kick", {"player:target", "reason"}, function(caller, targets, r
 	end
 	targets[1]:Kick(reason)
 	return false, "kicked %1 (%2)"
-end)
+end, [[
+Kicks the targeted player.]])

@@ -30,4 +30,8 @@ maestro.command("god", {"player:target(optional)", "boolean:state(optional)"}, f
 		return false, "enabled god mode on %1"
 	end
 	return false, "disabled god mode on %1"
-end)
+end, [[
+Makes a player invincible.
+If no player(s) are specified, it will toggle god mode on you.
+If player(s) are specified but no boolean is specified, it will toggle god mode on the players.
+If both player(s) and boolean are specified, it will set god mode on the players to the boolean's value.]])

@@ -46,7 +46,11 @@ maestro.command("strip", {"player:target", "boolean:state(optional)"}, function(
 	else
 		return false, "gave weapons back to %2"
 	end
-end)
+end, [[
+Strips a player of their weapons. No weapons can be picked up while a player is stripped.
+If no player(s) are specified, it will toggle strip mode on you.
+If player(s) are specified but no boolean is specified, it will toggle strip mode on the players.
+If both player(s) and boolean are specified, it will set strip mode on the players to the boolean's value.]])
 
 hook.Add("PlayerDeath", "maestro_strip", function(v)
 	if v.maestro_strip then

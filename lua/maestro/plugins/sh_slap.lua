@@ -22,4 +22,5 @@ maestro.command("slap", {"player:target", "number:damage(optional)"}, function(c
 		return false, "slapped %1"
 	end
 	return false, "slapped %1 for %2 damage"
-end)
+end, [[
+Slaps a player.]])

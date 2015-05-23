@@ -7,11 +7,14 @@ maestro.command("ban", {"player:target", "time", "reason"}, function(caller, tar
 	local ply = targets[1]
 	maestro.ban(ply, time, reason)
 	return false, "banned %1 for %2 (%3)"
-end)
+end, [[
+Bans the player for the specified time and reason.]])
 maestro.command("banid", {"id", "time", "reason"}, function(caller, id, time, reason)
 	maestro.ban(id, time, reason)
 	return false, "banned %1 for %2 (%3)"
-end)
+end, [[
+Bans the SteamID for the specified time and reason.
+Any currently connected players with this SteamID will be kicked.]])
 maestro.command("unban", {"id", "reason"}, function(caller, id, reason)
 	maestro.unban(id, reason)
 	return false, "unbanned %1 (%2)"
@@ -44,7 +47,8 @@ maestro.command("banlog", {"player:target"}, function(caller, targets)
 			end
 		end
 	net.Send(caller)
-end)
+end, [[
+Displays a history of bans and unbans for the specified player.]])
 maestro.command("banlogid", {"id"}, function(caller, id)
 	net.Start("maestro_banlog")
 		net.WriteEntity()
@@ -64,7 +68,8 @@ maestro.command("banlogid", {"id"}, function(caller, id)
 			end
 		end
 	net.Send(caller)
-end)
+end, [[
+Displays a history of bans and unbans for the specified SteamID.]])
 if CLIENT then
 	net.Receive("maestro_banlog", function()
 		local ply = net.ReadEntity()

@@ -6,4 +6,5 @@ maestro.command("armor", {"player:target", "number"}, function(caller, targets, 
 		ply:SetArmor(num)
 	end
 	return false, "set the armor of %1 to %2"
-end)
+end, [[
+Sets the armor of the targeted player(s).]])

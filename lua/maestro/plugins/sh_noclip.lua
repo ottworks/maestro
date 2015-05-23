@@ -18,7 +18,11 @@ maestro.command("noclip", {"player:target", "boolean:toggle"}, function(caller, 
 		caller:SetMoveType((caller:GetMoveType() == MOVETYPE_NOCLIP) and MOVETYPE_WALK or MOVETYPE_NOCLIP)
 		return false, "toggled noclip mode on themselves"
 	end
-end)
+end, [[
+Makes a player noclip.
+If no player(s) are specified, it will toggle noclip mode on you.
+If player(s) are specified but no boolean is specified, it will toggle noclip mode on the players.
+If both player(s) and boolean are specified, it will set noclip mode on the players to the boolean's value.]])
 
 hook.Add("PlayerNoClip", "maestro_noclip", function(ply, state)
 	if ply:GetMoveType() == MOVETYPE_NOCLIP then 

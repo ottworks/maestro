@@ -5,4 +5,6 @@ maestro.command("lua", {"string:lua"}, function(caller, ...)
 		return true, err .. "\nCode interpreted as:\n" .. code
 	end
 	return false, "ran code %% on the server"
-end)
+end, [[
+Runs Lua on the server.
+Include your code in double quotes to prevent malformation.]])

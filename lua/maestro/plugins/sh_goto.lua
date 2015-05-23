@@ -38,4 +38,5 @@ maestro.command("goto", {"player:target"}, function(caller, targets)
 		caller:SetEyeAngles(a)
 	end
 	return false, "teleported to %1"
-end)
+end, [[
+Teleports you behind the specified player.]])

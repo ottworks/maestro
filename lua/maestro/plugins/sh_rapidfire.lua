@@ -33,7 +33,11 @@ maestro.command("rapidfire", {"player:target", "boolean:toggle(optional)"}, func
 		caller.maestro_rapidfire = not caller.maestro_rapidfire
 		return false, "toggled rapidfire on themselves"
 	end
-end)
+end, [[
+Makes a player rapidfire.
+If no player(s) are specified, it will toggle rapidfire mode on you.
+If player(s) are specified but no boolean is specified, it will toggle rapidfire mode on the players.
+If both player(s) and boolean are specified, it will set rapidfire mode on the players to the boolean's value.]])
 
 if SERVER then
 	hook.Add("Think", "maestro_rapidfire", function()
