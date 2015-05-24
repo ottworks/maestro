@@ -1,11 +1,9 @@
 maestro = {}
-maestro.protocol = "plaintext" --Set the database protocol here. Availible options: plaintext, tmysql4
+
 print("\201\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\187")
 print("\186 Maestro v0.01                    \186")
 print("\186     (it's pronounced \"my strow\") \186")
 print("\186 (c) 2015 Ott(STEAM_0:0:36527860) \186")
-print("\186                                  \186")
-print("\186 Database protocol: " .. maestro.protocol .. string.rep(" ", 13 - #maestro.protocol) .. " \186")
 print("\199\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\182")
 local files, folders = file.Find("maestro/*", "LUA")
 table.sort(files, function(a, b)
