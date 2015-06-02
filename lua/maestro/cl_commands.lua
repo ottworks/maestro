@@ -50,8 +50,14 @@ local function autocomplete(_, str)
 					table.insert(t, "ms " .. cmd .. cnct .. "\"" .. plys[i]:Nick() .. "\"")
 				end
 			elseif typ == "boolean" then
-				table.insert(t, "ms " .. cmd .. cnct .. "true")
-				table.insert(t, "ms " .. cmd .. cnct .. "false")
+				if string.sub("true", 1, #args[#args]):lower() == args[#args]:lower() and #args[#args] ~= 0 then
+					table.insert(t, "ms " .. cmd .. cnct .. "true")
+				elseif #args[#args] ~= 0 then
+					table.insert(t, "ms " .. cmd .. cnct .. "false")
+				else
+					table.insert(t, "ms " .. cmd .. cnct .. "true")
+					table.insert(t, "ms " .. cmd .. cnct .. "false")
+				end
 			elseif typ == "rank" then
 				local ranks = {}
 				local cr = maestro.rankget(maestro.userrank(LocalPlayer())).canrank
