@@ -59,4 +59,5 @@ maestro.command("send", {"player:target", "player:to"}, function(caller, t1, t2)
 		end
 	end
 	return false, "sent %1 to %2"
-end)
+end, [[
+Sends the first group of players to the second player.]])

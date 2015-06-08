@@ -51,6 +51,12 @@ end
 local function handleMultiple(a, ret, cmd, num)
 	local arg = maestro.commands[cmd].args[num] or maestro.commands[cmd].args[#maestro.commands[cmd].args]
 	if type(a) == "table" then
+		table.sort(a, function(a, b)
+			if type(a) == "Player" then
+				return a:Nick() < b:Nick()
+			end
+			return a < b
+		end)
 		for j = 1, #a do
 			if j == 1 then
 				table.insert(ret, a[j])
