@@ -72,8 +72,9 @@ local function handleMultiple(a, ret, cmd, num)
 				table.insert(ret, a[j])
 			end
 		end
-	elseif string.gmatch(arg, "[^:]+") == "time" then
+	elseif string.match(arg, "[^:]+") == "time" then
 		table.insert(ret, Color(78, 196, 255))
+		print(maestro.time(a))
 		table.insert(ret, maestro.time(a))
 	else
 		table.insert(ret, Color(78, 196, 255))
@@ -181,6 +182,9 @@ hook.Add("PlayerSay", "maestro_command", function(ply, txt)
 		txt = txt:sub(2)
 		local args = maestro.split(txt)
 		local cmd = args[1]
+		if not cmd then
+			return true
+		end
 		table.remove(args, 1)
 		cmd = string.lower(cmd)
 		if maestro.commands[cmd] then
