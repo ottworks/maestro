@@ -34,4 +34,5 @@ maestro.command("msg", {"player:target", "message"}, function(caller, targets, m
 	table.insert(ret, ": ")
 	table.insert(ret, msg)
 	maestro.chat(targets, unpack(ret))
-end)
+end, [[
+Sends a message to the targetted players.]])
