@@ -19,7 +19,7 @@ local function populatecommands()
 		local cmd = cmds[i]
 		if maestro.rankget(maestro.userrank(LocalPlayer())).perms[cmd] then
 			ret = ret .. [[
-<li><a onclick="resetPills(); this.parentNode.className = 'active'; toTop(); console.log('RUNLUA: maestromenuupdate(\']] .. cmd .. [[\')');">]]..cmd..'</a></li>\n'
+<li><a onclick="resetPills(); this.parentNode.className = 'active'; console.log('RUNLUA: maestromenuupdate(\']] .. cmd .. [[\')');">]]..cmd..'</a></li>\n'
 		else
 			ret = ret .. [[
 <li class="disabled"><a>]]..cmd..'</a></li>\n'
@@ -169,6 +169,9 @@ net.Receive("maestro_menu", function()
 		    width: auto;
 		    display: inline;
 		}
+		.affix {
+			width: 809px;
+		}
 	</style>
 </head>
 
@@ -198,17 +201,19 @@ net.Receive("maestro_menu", function()
 			</ul>
 		</div>
 		<div class="col-xs-10 column">
-			<div class="highlight">
-				<pre><code class="language-html" data-lang="html" id="commandsyntax"> </code></pre>
-			</div>
-			<dl>
-				<span id="commandhelp">
-				
-				</span>
-			</dl>
-			<div class="well noselect">
-				<div class="controls" id="commandform">
+			<div data-spy="affix" id="affix">
+				<div class="highlight">
+					<pre><code class="language-html" data-lang="html" id="commandsyntax"> </code></pre>
+				</div>
+				<dl>
+					<span id="commandhelp">
 					
+					</span>
+				</dl>
+				<div class="well noselect">
+					<div class="controls" id="commandform">
+						
+					</div>
 				</div>
 			</div>
 		</div>
