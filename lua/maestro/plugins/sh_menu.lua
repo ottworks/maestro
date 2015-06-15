@@ -79,13 +79,10 @@ function maestromenustart()
 	submitargs = {}
 end
 function maestromenuadd(a)
-	print(a)
 	if a == "MAESTRO_NOVALUE" then
 		a = nil
 	end
-	print(a)
 	submitargs[#submitargs + 1] = a
-	print("")
 end
 function maestromenuend()
 	RunConsoleCommand("ms", curcmd, unpack(submitargs))
