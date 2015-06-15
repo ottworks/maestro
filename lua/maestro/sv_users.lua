@@ -14,7 +14,7 @@ function maestro.userrank(id, rank)
 			return
 		end
 		if IsValid(ply) then
-			if not maestro.rankget(rank).undercover then
+			if maestro.rankget(rank) and not maestro.rankget(rank).undercover then
 				ply:SetNWString("rank", rank)
 			else
 				ply:SetNWString("rank", "user")
@@ -33,7 +33,7 @@ function maestro.userrank(id, rank)
 		if not maestro.users[id] then
 			return "user"
 		end
-		return maestro.users[id].rank or "user"
+		return maestro.users[id].rank
 	end
 end
 
