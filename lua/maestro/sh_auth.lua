@@ -28,7 +28,7 @@ hook.Add("PlayerAuthed", "maestro_PlayerAuthed", function(ply, steam, uid)
 	local name = maestro.userrank(steam)
 	if not name then
 		maestro.userrank(steam, "user")
-	elseif not maestro.rankget(name).flags.undercover then
+	elseif not maestro.rankget(name).flags.anonymous then
 		ply:SetNWString("rank", name)
 	end
 	maestro.sendranks(ply)
