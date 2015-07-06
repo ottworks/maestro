@@ -34,6 +34,8 @@ local curcmd = ""
 function maestromenuupdate(cmd)
 	curcmd = cmd
 	maestro_menu:Call([[
+document.getElementById("commandname").innerHTML = "]] .. cmd .. [[";]])
+	maestro_menu:Call([[
 document.getElementById("commandhelp").innerHTML = "]] .. maestro.commands[cmd].help:gsub("\n", "<br>") .. [[";]])
 	local function args(t)
 		local ret = ""
@@ -95,6 +97,8 @@ net.Receive("maestro_menu", function()
 	maestro_menu:Center()
 	maestro_menu:MakePopup()
 	maestro_menu:SetAllowLua(true)
+	maestro_menu:SetScrollbars(false)
+	maestro_menu:SetVerticalScrollbarEnabled(false)
 	maestro_menu:SetHTML([[
 <!DOCTYPE html>
 <html lang="en">
@@ -162,12 +166,15 @@ net.Receive("maestro_menu", function()
 			cursor:default;
 		}
 		.form-control-inline {
-		    min-width: 0;
-		    width: auto;
-		    display: inline;
+				min-width: 0;
+				width: auto;
+				display: inline;
 		}
 		.affix {
 			width: 809px;
+		}
+		::-webkit-scrollbar { 
+			display: none; 
 		}
 	</style>
 </head>
@@ -199,19 +206,26 @@ net.Receive("maestro_menu", function()
 		</div>
 		<div class="col-xs-10 column">
 			<div data-spy="affix" id="affix">
-				<div class="highlight">
-					<pre><code class="language-html" data-lang="html" id="commandsyntax"> </code></pre>
-				</div>
-				<dl>
-					<span id="commandhelp">
-					
-					</span>
-				</dl>
-				<div class="well noselect">
-					<div class="controls" id="commandform">
-						
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title" id="commandname">&nbsp;</h3>
 					</div>
-				</div>
+					<div class="panel-body">
+						<div class="highlight">
+							<pre><code class="language-html" data-lang="html" id="commandsyntax"> </code></pre>
+						</div>
+						<dl>
+							<span id="commandhelp">
+							
+							</span>
+						</dl>
+						<div class="well noselect">
+							<div class="controls" id="commandform">
+								
+							</div>
+						</div>
+					</div>
+				</div>	
 			</div>
 		</div>
 	</div>
