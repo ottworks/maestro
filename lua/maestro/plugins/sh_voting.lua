@@ -80,6 +80,8 @@ if maestro_votepanel then
 	maestro_votepanel:Remove()
 end
 local function escape(str)
+	str = str:gsub("<", "&lt;")
+	str = str:gsub(">", "&gt;")
 	return str:gsub("(['\"])", "\\%1")
 end
 local function nextvote()
@@ -111,7 +113,7 @@ $("#voterow").append('\
 <div class="col-xs-3 column">\
 	<div class="panel panel-primary" id="panel_]] .. id .. [[">\
 		<div class="panel-heading">\
-			<h3 class="panel-title">]] .. title .. [[</h3>\
+			<h3 class="panel-title">]] .. escape(title) .. [[</h3>\
 		</div>\
 		<div class="panel-body nopad">\
 			<ul class="list-group">\
