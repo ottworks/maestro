@@ -1,0 +1,279 @@
+local votes = {}
+local voteid = 0
+maestro.command("vote", {"title", "option1", "option2", "option3", "option4", "option5", "option6", "option7", "option8", "option9"}, function(caller, title, ...)
+	local args = {...}
+	voteid = voteid + 1
+	local id = voteid
+	net.Start("maestro_votenew")
+		net.WriteString(title)
+		net.WriteUInt(math.min(#args, 9), 4)
+		for i = 1, math.min(#args, 9) do
+			net.WriteString(args[i])
+		end
+	net.Broadcast()
+	for _, ply in pairs(player.GetAll()) do
+		votes[ply] = votes[ply] or {}
+		table.insert(votes[ply], id)
+		timer.Simple(60, function()
+			if votes[ply][1] == id then
+				table.remove(votes[ply], 1)
+			end
+		end)
+	end
+	votes[id] = {unpack(args)}
+	votes[id].title = title
+	votes[id].results = {}
+	for i = 1, #args do
+		votes[id].results[i] = 0
+	end
+	timer.Simple(60, function()
+		if votes[id] then
+			local plys = #player.GetAll()
+			local max = 0
+			local winner
+			for i = 1, #votes[id].results do
+				if votes[id].results[i] > max then
+					max = votes[id].results[i]
+					winner = i
+				end
+			end
+			if winner then
+				local option = votes[id][winner]
+				maestro.chat(nil, Color(255, 255, 255), "Option \"", option, "\" has won. (", max, "/", plys, ")")
+				net.Start("maestro_voteover")
+					net.WriteUInt(id, 16)
+					net.WriteUInt(winner, 4)
+				net.Broadcast()
+			else
+				maestro.chat(nil, Color(255, 255, 255), "No options have won.")
+			end
+		end
+	end)
+	return false, "started a vote \"%1\""
+end, [[
+Starts a vote with the given options.]])
+if SERVER then
+	util.AddNetworkString("maestro_votenew")
+	util.AddNetworkString("maestro_votecast")
+	util.AddNetworkString("maestro_voteover")
+	net.Receive("maestro_votecast", function(len, ply)
+		local num = net.ReadUInt(4)
+		if votes[ply][1] then
+			local id = votes[ply][1]
+			if num == 0 or not votes[id][num] then
+				table.remove(votes[ply], 1)
+			elseif not votes[id][ply] then
+				votes[id].results[num] = votes[id].results[num] + 1
+				votes[id][ply] = true
+				net.Start("maestro_votecast")
+					net.WriteUInt(id, 16)
+					net.WriteUInt(num, 4)
+				net.Broadcast()
+				table.remove(votes[ply], 1)
+			end
+		end
+	end)
+end
+
+if not CLIENT then return end
+if maestro_votepanel then
+	maestro_votepanel:Remove()
+end
+local function escape(str)
+	return str:gsub("(['\"])", "\\%1")
+end
+local function nextvote()
+	for i = 1, #votes do
+		if not votes[i].done then
+			return votes[i], i
+		end
+	end
+end
+local function addvote(title, ...)
+	voteid = voteid + 1
+	local id = voteid
+	table.insert(votes, {id = id, done = false})
+	local args = {...}
+	local function options()
+		local ret = ""
+		for i = 1, #args do
+			ret = ret .. [[
+			<li class="list-group-item" id="listitem_]] .. id .. [[_]] .. i .. [[">\
+				<span class="badge" id="badge_]] .. id .. [[_]] .. i .. [[">0</span>\
+				]] .. i .. ". " .. escape(args[i]) .. [[\
+			</li>\
+			]]
+		end
+		return ret
+	end
+	maestro_votepanel:Call([[
+$("#voterow").append('\
+<div class="col-xs-3 column">\
+	<div class="panel panel-primary" id="panel_]] .. id .. [[">\
+		<div class="panel-heading">\
+			<h3 class="panel-title">]] .. title .. [[</h3>\
+		</div>\
+		<div class="panel-body nopad">\
+			<ul class="list-group">\
+				]] .. options() .. [[
+				<li class="list-group-item">\
+					0. Dismiss\
+				</li>\
+			</ul>\
+			<div class="progress">\
+				<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="progressbar_]] .. id .. [[">\
+				</div>\
+			</div>\
+		</div>\
+	</div>\
+</div>');
+setInterval(function() {
+	var bar = document.getElementById("progressbar_]] .. id .. [[");
+	if (bar) {
+		bar.style.width = (Number(bar.style.width.substring(0, bar.style.width.length - 1)) + (1 / (20 * 58)) * 100) + "%";
+	}
+}, 50);
+]])
+	timer.Simple(63, function()
+		if votes[1] and votes[1].id == id then
+			maestro_votepanel:Call([[
+var a = document.getElementById("voterow");
+a.removeChild(a.childNodes[1]);
+]])
+			table.remove(votes, 1)
+		end
+	end)
+end
+hook.Add("PlayerBindPress", "maestro_voting", function(plu, bind, pressed)
+	if not pressed then return end
+	if bind:sub(1, 4) == "slot" then
+		local num = tonumber(bind:sub(5))
+		if num and nextvote() then
+			net.Start("maestro_votecast")
+				net.WriteUInt(num, 4)
+			net.SendToServer()
+			if num ~= 0 then
+				maestro_votepanel:Call([[
+var a = document.getElementById("listitem_]] .. nextvote().id .. [[_]] .. num .. [[");
+a.className = "list-group-item list-group-item-warning";
+]])
+				nextvote().done = true
+			else
+				local vote, i = nextvote()
+				table.remove(votes, i)
+				maestro_votepanel:Call([[
+var a = document.getElementById("voterow");
+a.removeChild(a.childNodes[]] .. i .. [[]);
+]])
+			end
+			return true
+		end
+	end
+end)
+net.Receive("maestro_votenew", function()
+	local title = net.ReadString()
+	local count = net.ReadUInt(4)
+	local args = {}
+	for i = 1, count do
+		args[i] = net.ReadString()
+	end
+	addvote(title, unpack(args))
+end)
+net.Receive("maestro_votecast", function()
+	local id = net.ReadUInt(16)
+	local num = net.ReadUInt(4)
+	maestro_votepanel:Call([[
+var badge = document.getElementById("badge_]] .. id .. [[_]] .. num .. [[");
+badge.innerHTML = Number(badge.innerHTML) + 1;
+]])
+end)
+net.Receive("maestro_voteover", function()
+	local id = net.ReadUInt(16)
+	local num = net.ReadUInt(4)
+	maestro_votepanel:Call([[
+var voted = document.getElementsByClassName("list-group-item-warning")[0]
+if (voted && voted.id != "listitem_]] .. id .. [[_]] .. num .. [[")
+{
+	voted.className = "list-group-item list-group-item-danger";
+}
+var win = document.getElementById("listitem_]] .. id .. [[_]] .. num .. [[");
+win.className = "list-group-item list-group-item-success";
+]])
+end)
+timer.Create("maestro_voting", 1, 0, function()
+	maestro_votepanel = vgui.Create("DHTML")
+	if not maestro_votepanel then
+		return
+	else
+		timer.Remove("maestro_voting")
+	end
+	maestro_votepanel:SetSize(1280, 720)
+	maestro_votepanel:SetPos(0, ScrH() * 0.3)
+	maestro_votepanel:SetAllowLua(true)
+	maestro_votepanel:SetHTML([[
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Bootstrap 3</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<!--link rel="stylesheet/less" href="less/bootstrap.less" type="text/css" /-->
+	<!--link rel="stylesheet/less" href="less/responsive.less" type="text/css" /-->
+	<!--script src="js/less-1.3.3.min.js"></script-->
+	<!--append ‘#!watch’ to the browser URL, then refresh the page. -->
+	
+	<link rel="stylesheet" href=" https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+	
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src=" https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src=" https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script>
+		function toTop() {
+			$("html, body").animate({
+				scrollTop: 0
+			}, 600);
+		}
+		function caret() {
+			return '<span class="caret"></span>'
+		}
+	</script>
+	
+	<style>
+		.noselect {
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			cursor:default;
+		}
+		.form-control-inline {
+			min-width: 0;
+			width: auto;
+			display: inline;
+		}
+		.affix {
+			width: 809px;
+		}
+		body {
+			background-color: transparent;
+		}
+		.nopad {
+			padding-bottom: 0px;
+		}
+	</style>
+</head>
+<body class="noselect">
+	<div class="container">
+		<div class="row clearfix" id="voterow">
+		</div>
+	</div>
+</body>
+]])
+end)
