@@ -12,6 +12,33 @@ maestro.command("vote", {"title", "option1", "option2", "option3", "option4", "o
 	return false, "started a vote \"%1\""
 end, [[
 Starts a vote with the given options.]])
+maestro.command("votekick", {"player:target", "reason"}, function(caller, targets, reason)
+	if #targets < 1 then
+		return true, "Query matched no players."
+	elseif #targets > 1 then
+		return true, "Query matched multiple players."
+	end
+	if reason then
+		reason = "\"" .. reason .. "\""
+	end
+	maestro.vote("Kick " .. targets[1]:Nick() .. " for " .. (reason or "no reason") .. "?", {"Yes, kick this player.", "No, do not kick this player."}, function(option, voted, total)
+		if option then
+			maestro.chat(nil, Color(255, 255, 255), "Option \"", option, "\" has won. (", voted, "/", total, ")")
+			if option == "Yes, kick this player." then
+				maestro.chat(nil, Color(255, 255, 255), "Player ", targets[1], " will be kicked.")
+				targets[1]:Kick("You have been voted off")
+			else
+				maestro.chat(nil, Color(255, 255, 255), "No action will be taken.")
+			end
+		else
+			maestro.chat(nil, Color(255, 255, 255), "No options have won.")
+		end
+	end)
+	if reason then
+		return false, "started a votekick against %1 for \"%2\""
+	end
+	return false, "started a votekick against %1"
+end)
 if SERVER then
 	function maestro.vote(title, args, callback)
 		voteid = voteid + 1
@@ -46,7 +73,9 @@ if SERVER then
 				for i = 1, #votes[id].results do
 					if votes[id].results[i] > max then
 						max = votes[id].results[i]
-						winner = i
+						if max / plys > 0.5 then
+							winner = i
+						end
 					end
 				end
 				if winner then
