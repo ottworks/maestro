@@ -28,6 +28,8 @@ local function populatecommands()
 	return ret
 end
 local function escape(str)
+	str = str:gsub("<", "&lt;")
+	str = str:gsub(">", "&gt;")
 	return str:gsub("(['\"])", "\\%1")
 end
 local curcmd = ""
