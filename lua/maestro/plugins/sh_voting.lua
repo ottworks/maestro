@@ -2,57 +2,66 @@ local votes = {}
 local voteid = 0
 maestro.command("vote", {"title", "option1", "option2", "option3", "option4", "option5", "option6", "option7", "option8", "option9"}, function(caller, title, ...)
 	local args = {...}
-	voteid = voteid + 1
-	local id = voteid
-	net.Start("maestro_votenew")
-		net.WriteString(title)
-		net.WriteUInt(math.min(#args, 9), 4)
-		for i = 1, math.min(#args, 9) do
-			net.WriteString(args[i])
-		end
-	net.Broadcast()
-	for _, ply in pairs(player.GetAll()) do
-		votes[ply] = votes[ply] or {}
-		table.insert(votes[ply], id)
-		timer.Simple(60, function()
-			if votes[ply][1] == id then
-				table.remove(votes[ply], 1)
-			end
-		end)
-	end
-	votes[id] = {unpack(args)}
-	votes[id].title = title
-	votes[id].results = {}
-	for i = 1, #args do
-		votes[id].results[i] = 0
-	end
-	timer.Simple(60, function()
-		if votes[id] then
-			local plys = #player.GetAll()
-			local max = 0
-			local winner
-			for i = 1, #votes[id].results do
-				if votes[id].results[i] > max then
-					max = votes[id].results[i]
-					winner = i
-				end
-			end
-			if winner then
-				local option = votes[id][winner]
-				maestro.chat(nil, Color(255, 255, 255), "Option \"", option, "\" has won. (", max, "/", plys, ")")
-				net.Start("maestro_voteover")
-					net.WriteUInt(id, 16)
-					net.WriteUInt(winner, 4)
-				net.Broadcast()
-			else
-				maestro.chat(nil, Color(255, 255, 255), "No options have won.")
-			end
+	maestro.vote(title, args, function(option, voted, total)
+		if option then
+			maestro.chat(nil, Color(255, 255, 255), "Option \"", option, "\" has won. (", voted, "/", total, ")")
+		else
+			maestro.chat(nil, Color(255, 255, 255), "No options have won.")
 		end
 	end)
 	return false, "started a vote \"%1\""
 end, [[
 Starts a vote with the given options.]])
 if SERVER then
+	function maestro.vote(title, args, callback)
+		voteid = voteid + 1
+		local id = voteid
+		net.Start("maestro_votenew")
+			net.WriteString(title)
+			net.WriteUInt(math.min(#args, 9), 4)
+			for i = 1, math.min(#args, 9) do
+				net.WriteString(args[i])
+			end
+		net.Broadcast()
+		for _, ply in pairs(player.GetAll()) do
+			votes[ply] = votes[ply] or {}
+			table.insert(votes[ply], id)
+			timer.Simple(60, function()
+				if votes[ply][1] == id then
+					table.remove(votes[ply], 1)
+				end
+			end)
+		end
+		votes[id] = {unpack(args)}
+		votes[id].title = title
+		votes[id].results = {}
+		for i = 1, #args do
+			votes[id].results[i] = 0
+		end
+		timer.Simple(60, function()
+			if votes[id] then
+				local plys = #player.GetAll()
+				local max = 0
+				local winner
+				for i = 1, #votes[id].results do
+					if votes[id].results[i] > max then
+						max = votes[id].results[i]
+						winner = i
+					end
+				end
+				if winner then
+					local option = votes[id][winner]
+					callback(option, max, plys)
+					net.Start("maestro_voteover")
+						net.WriteUInt(id, 16)
+						net.WriteUInt(winner, 4)
+					net.Broadcast()
+				else
+					callback()
+				end
+			end
+		end)
+	end
 	util.AddNetworkString("maestro_votenew")
 	util.AddNetworkString("maestro_votecast")
 	util.AddNetworkString("maestro_voteover")
