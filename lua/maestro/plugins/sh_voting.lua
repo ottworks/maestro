@@ -38,7 +38,40 @@ maestro.command("votekick", {"player:target", "reason"}, function(caller, target
 		return false, "started a votekick against %1 for \"%2\""
 	end
 	return false, "started a votekick against %1"
-end)
+end, [[
+Starts a vote to kick the target for an optional reason.]])
+maestro.command("voteban", {"player:target", "time", "reason"}, function(caller, targets, time, reason)
+	if #targets < 1 then
+		return true, "Query matched no players."
+	elseif #targets > 1 then
+		return true, "Query matched multiple players."
+	end
+	if reason then
+		reason = "\"" .. reason .. "\""
+	end
+	maestro.vote("Ban " .. targets[1]:Nick() .. " for " .. maestro.time(time) .. "? (" .. (reason or "no reason") .. ")", {"Yes, ban this player.", "No, do not ban this player."}, function(option, voted, total)
+		if option then
+			maestro.chat(nil, Color(255, 255, 255), "Option \"", option, "\" has won. (", voted, "/", total, ")")
+			if option == "Yes, ban this player." then
+				maestro.chat(nil, Color(255, 255, 255), "Player ", targets[1], " will be banned.")
+				maestro.ban(targets[1], time, "Voted: " .. (reason or "no reason"))
+			else
+				maestro.chat(nil, Color(255, 255, 255), "No action will be taken.")
+			end
+		else
+			maestro.chat(nil, Color(255, 255, 255), "No options have won.")
+		end
+	end)
+	if reason then
+		return false, "started a voteban against %1 for %2 (\"%3\")"
+	end
+	return false, "started a voteban against %1 for %2"
+end, [[
+Starts a vote to ban the target for the specified time and an optional reason.]])
+
+
+
+
 if SERVER then
 	function maestro.vote(title, args, callback)
 		voteid = voteid + 1
