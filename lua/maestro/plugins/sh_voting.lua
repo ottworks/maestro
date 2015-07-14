@@ -68,6 +68,25 @@ maestro.command("voteban", {"player:target", "time", "reason"}, function(caller,
 	return false, "started a voteban against %1 for %2"
 end, [[
 Starts a vote to ban the target for the specified time and an optional reason.]])
+maestro.command("veto", {}, function(caller)
+	if not votes[caller] or not votes[caller][1] then 
+		return true, "You have no active vote!" 
+	end
+	local id = votes[caller][1]
+	for _, ply in pairs(player.GetAll()) do
+		if votes[ply][1] == id then
+			table.remove(votes[ply], 1)
+		end
+	end
+	net.Start("maestro_voteover")
+		net.WriteUInt(id, 16)
+		net.WriteUInt(0, 4)
+	net.Broadcast()
+	votes[id].callback()
+	timer.Remove("maestro_vote_" .. id)
+	return false, "vetoed the vote \"" .. votes[id].title .. "\""
+end, [[
+Stops the current vote.]])
 
 
 
@@ -95,10 +114,11 @@ if SERVER then
 		votes[id] = {unpack(args)}
 		votes[id].title = title
 		votes[id].results = {}
+		votes[id].callback = callback
 		for i = 1, #args do
 			votes[id].results[i] = 0
 		end
-		timer.Simple(60, function()
+		timer.Create("maestro_vote_" .. id, 60, 1, function()
 			if votes[id] then
 				local plys = #player.GetAll()
 				local max = 0
@@ -181,7 +201,7 @@ local function addvote(title, ...)
 	end
 	maestro_votepanel:Call([[
 $("#voterow").append('\
-<div class="col-xs-3 column">\
+<div class="col-xs-3 column id="column_]] .. id .. [[">\
 	<div class="panel panel-primary" id="panel_]] .. id .. [[">\
 		<div class="panel-heading">\
 			<h3 class="panel-title">]] .. escape(title) .. [[</h3>\
@@ -263,7 +283,8 @@ end)
 net.Receive("maestro_voteover", function()
 	local id = net.ReadUInt(16)
 	local num = net.ReadUInt(4)
-	maestro_votepanel:Call([[
+	if num ~= 0 then
+		maestro_votepanel:Call([[
 var voted = document.getElementsByClassName("list-group-item-warning")[0]
 if (voted && voted.id != "listitem_]] .. id .. [[_]] .. num .. [[")
 {
@@ -272,6 +293,22 @@ if (voted && voted.id != "listitem_]] .. id .. [[_]] .. num .. [[")
 var win = document.getElementById("listitem_]] .. id .. [[_]] .. num .. [[");
 win.className = "list-group-item list-group-item-success";
 ]])
+	else
+		local pos
+		for i = 1, #votes do
+			if votes[i].id == id then
+				pos = i
+				table.remove(votes, i)
+				break
+			end
+		end
+		if pos then
+			maestro_votepanel:Call([[
+var a = document.getElementById("voterow");
+a.removeChild(a.childNodes[]] .. pos .. [[]);
+]])
+		end
+	end
 end)
 timer.Create("maestro_voting", 1, 0, function()
 	maestro_votepanel = vgui.Create("DHTML")
