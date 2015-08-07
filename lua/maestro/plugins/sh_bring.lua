@@ -22,7 +22,7 @@ local function isroom(start, f, ply, caller, targets)
 	end
 end
 maestro.command("bring", {"player:target(s)"}, function(caller, targets)
-	if #targets == 0 then
+	if not targets or #targets == 0 then
 		return true, "Query matched no players."
 	end
 	local a = caller:EyeAngles().y

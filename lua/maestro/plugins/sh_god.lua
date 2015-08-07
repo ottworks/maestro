@@ -7,7 +7,7 @@ maestro.command("god", {"player:target(optional)", "boolean:state(optional)"}, f
 		end
 		return false, "toggled god mode on themselves"
 	end
-	if #targets == 0 then
+	if not targets or #targets == 0 then
 		return true, "Query matched no players."
 	end
 	for _, ply in pairs(targets) do

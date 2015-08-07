@@ -145,7 +145,7 @@ Lists all the ranks in the server.]])
 maestro.command("userrank", {"player:target", "rank"}, function(caller, targets, rank)
 	if #targets > 1 then
 		return true, "Query matched more than 1 player."
-	elseif #targets == 0 then
+	elseif not targets or #targets == 0 then
 		return true, "Query matched no players."
 	end
 	if not maestro.rankget(rank) then

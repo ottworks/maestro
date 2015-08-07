@@ -1,5 +1,5 @@
 maestro.command("ignite", {"player:target", "number:time"}, function(caller, targets, time)
-	if #targets == 0 then
+	if not targets or #targets == 0 then
 		return true, "Query matched no players."
 	end
 	for _, ply in pairs(targets) do

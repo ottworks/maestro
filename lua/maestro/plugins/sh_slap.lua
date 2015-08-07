@@ -1,5 +1,5 @@
 maestro.command("slap", {"player:target", "number:damage(optional)"}, function(caller, targets, dmg)
-	if #targets == 0 then
+	if not targets or #targets == 0 then
 		return true, "Query matched no players."
 	end
 	for i = 1, #targets do

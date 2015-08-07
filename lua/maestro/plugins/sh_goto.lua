@@ -1,7 +1,7 @@
 maestro.command("goto", {"player:target"}, function(caller, targets)
 	if #targets > 1 then
 		return true, "Query matched more than 1 player."
-	elseif #targets == 0 then
+	elseif not targets or #targets == 0 then
 		return true, "Query matched no players."
 	end
 	local ply = targets[1]
