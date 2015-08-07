@@ -6,8 +6,8 @@ local function command(ply, cmd, args, str)
 		for i = 1, #args do
 			net.WriteString(args[i])
 		end
+		net.WriteBool(false)
 	net.SendToServer()
-	net.WriteBool(false)
 end
 local function command2(ply, cmd, args, str)
 	net.Start("maestro_cmd")

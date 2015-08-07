@@ -82,7 +82,7 @@ local function handleMultiple(a, ret, cmd, num)
 	end
 end
 
-local function runcmd(cmd, args, ply)
+local function runcmd(team, cmd, args, ply)
 	if not maestro.commands[cmd] then
 		print("Invalid command!")
 		return
@@ -142,7 +142,25 @@ local function runcmd(cmd, args, ply)
 			table.insert(ret, t[#t])
 		end
 
-		maestro.chat(nil, unpack(ret))
+		if team then
+			local ranks = {}
+			for name, tab in pairs(maestro.rankgettable()) do
+				local cr = tab.canrank
+				local rs = maestro.targetrank(cr, ply)
+				if rs[maestro.userrank(ply)] then
+					ranks[name] = true
+				end
+			end
+			local plys = {}
+			for _, ply in pairs(player.GetAll()) do
+				if ranks[maestro.userrank(ply)] then
+					plys[#plys + 1] = ply
+				end
+			end
+			maestro.chat(plys, Color(64, 64, 64), "silent ", Color(255, 255, 255), unpack(ret))
+		else
+			maestro.chat(nil, unpack(ret))
+		end
 	end
 end
 
@@ -155,7 +173,8 @@ net.Receive("maestro_cmd", function(len, ply)
 			for i = 1, num - 1 do
 				args[i] = net.ReadString()
 			end
-			runcmd(cmd, args, ply)
+			local team = net.ReadBool()
+			runcmd(team, cmd, args, ply)
 		else
 			maestro.chat(ply, Color(255, 154, 27),  cmd .. ": Insufficient permissions!")
 		end
@@ -174,10 +193,15 @@ end
 concommand.Add("ms", function(ply, cmd, args, str)
 	local cmd = args[1]
 	table.remove(args, 1)
-	runcmd(cmd, args)
+	runcmd(false, cmd, args)
+end)
+concommand.Add("mss", function(ply, cmd, args, str)
+	local cmd = args[1]
+	table.remove(args, 1)
+	runcmd(true, cmd, args)
 end)
 
-hook.Add("PlayerSay", "maestro_command", function(ply, txt)
+hook.Add("PlayerSay", "maestro_command", function(ply, txt, team)
 	if txt:sub(1, 1) == "!" then
 		txt = txt:sub(2)
 		local args = maestro.split(txt)
@@ -189,7 +213,7 @@ hook.Add("PlayerSay", "maestro_command", function(ply, txt)
 		cmd = string.lower(cmd)
 		if maestro.commands[cmd] then
 			if maestro.rankget(maestro.userrank(ply)).perms[cmd] then
-				runcmd(cmd, args, ply)
+				runcmd(team, cmd, args, ply)
 			else
 				ply:ChatPrint(cmd .. ": Insufficient permissions!")
 			end
