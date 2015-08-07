@@ -55,3 +55,23 @@ Creates an entity and sets properties on it.
 Keyvalues are formatted as such:
 key:value
 Flags are numbers.]])
+maestro.command("fire", {"input", "param", "number:delay"}, function(caller, input, param, delay)
+	if not caller then
+		return true, "You cannot fire an ent from the console!"
+	end
+	local ent = caller:GetEyeTrace().Entity
+	if not IsValid(ent) or ent == Entity(0) then
+		return true, "You need to be looking at an entity!"
+	end
+	if not input then
+		return true, "You must specify an input!"
+	end
+	ent:Fire(input, param, delay)
+	if delay then
+		return false, "fired input %1 on " .. tostring(ent) .. " with param %2 and delay %3"
+	elseif param then
+		return false, "fired input %1 on " .. tostring(ent) .. " with param %2"
+	end
+	return false, "fired input %1 on " .. tostring(ent)
+end, [[
+Fires an input on an entity. Can be used to do virtually anything.]])
