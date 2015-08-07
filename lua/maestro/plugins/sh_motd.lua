@@ -22,7 +22,7 @@ maestro.command("motdset", {"url"}, function(caller, ...)
         RunConsoleCommand("maestro_motd", "")
         return false, "reset the MOTD"
     end
-    local inv = url:match("[^ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-%._~:/%?#%[%]@%!%$&'%(%)%*%+=%%]")
+    local inv = url:match("[^%w%-%._~:/%?#%[%]@%!%$&'%(%)%*%+=%%]")
     if inv then
         return true, "Invalid URL! (illegal character: " .. inv .. ")"
     end
