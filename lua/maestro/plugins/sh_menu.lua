@@ -76,7 +76,7 @@ document.getElementById("commandform").innerHTML = "";]])
 	maestro_menu:Call([[
 $("#commandform").append('<button type="submit" class="btn btn-default form-control-inline" onclick="runCommand(]] .. #maestro.commands[cmd].args .. [[);">\
 	Submit\
-</button>');]])	
+</button>');]])
 end
 local submitargs = {}
 function maestromenustart()
@@ -115,10 +115,10 @@ net.Receive("maestro_menu", function()
 	<!--link rel="stylesheet/less" href="less/responsive.less" type="text/css" /-->
 	<!--script src="js/less-1.3.3.min.js"></script-->
 	<!--append ‘#!watch’ to the browser URL, then refresh the page. -->
-	
+
 	<link rel="stylesheet" href=" https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
-	
+
 
 	<!-- Latest compiled and minified JavaScript -->
 	<script src=" https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -147,7 +147,7 @@ net.Receive("maestro_menu", function()
 				var val = document.getElementById("cmdarg_" + i).value
 				if (argval) {
 					console.log("RUNLUA: maestromenuadd('" + argval + "')");
-				} else if (val) {	
+				} else if (val) {
 					console.log("RUNLUA: maestromenuadd('" + val + "')");
 				} else {
 					console.log("RUNLUA: maestromenuadd('MAESTRO_NOVALUE')");
@@ -156,7 +156,7 @@ net.Receive("maestro_menu", function()
 			console.log("RUNLUA: maestromenuend()");
 		}
 	</script>
-	
+
 	<style>
 		.noselect {
 			-webkit-touch-callout: none;
@@ -175,8 +175,8 @@ net.Receive("maestro_menu", function()
 		.affix {
 			width: 809px;
 		}
-		::-webkit-scrollbar { 
-			display: none; 
+		::-webkit-scrollbar {
+			display: none;
 		}
 	</style>
 </head>
@@ -218,16 +218,16 @@ net.Receive("maestro_menu", function()
 						</div>
 						<dl>
 							<span id="commandhelp">
-							
+
 							</span>
 						</dl>
 						<div class="well noselect">
 							<div class="controls" id="commandform">
-								
+
 							</div>
 						</div>
 					</div>
-				</div>	
+				</div>
 			</div>
 		</div>
 	</div>

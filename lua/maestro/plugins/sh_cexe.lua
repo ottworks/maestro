@@ -1,5 +1,5 @@
 maestro.command("cexe", {"player:target", "string:command"}, function(caller, targets, ...)
-	if #targets > 1 then 
+	if #targets > 1 then
 		return true, "Query matched more than 1 player."
 	elseif #targets < 1 then
 		return true, "Query matched no players."

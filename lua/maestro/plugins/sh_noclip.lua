@@ -25,8 +25,8 @@ If player(s) are specified but no boolean is specified, it will toggle noclip mo
 If both player(s) and boolean are specified, it will set noclip mode on the players to the boolean's value.]])
 
 hook.Add("PlayerNoClip", "maestro_noclip", function(ply, state)
-	if ply:GetMoveType() == MOVETYPE_NOCLIP then 
-		return true 
+	if ply:GetMoveType() == MOVETYPE_NOCLIP then
+		return true
 	elseif ply:GetMoveType() == MOVETYPE_FLY then
 		ply:SetMoveType(MOVETYPE_WALK)
 		return false

@@ -17,14 +17,14 @@ function maestro.ban(id, time, reason)
 			ply:Kick("Banned: " .. string.sub(reason, 1, 255 - 8 - #unban) .. unban)
 		end
 	end
-	
+
 	local prevbans = 0
 	if maestro.bans[id] then
 		prevbans = maestro.bans[id].prevbans + 1
 	end
 	maestro.bans[id] = {unban = os.time() + time, reason = reason, prevbans = prevbans, perma = (time == 0)}
 	maestro.save("bans", maestro.bans)
-	
+
 	maestro.log("banlog", {type = "ban", id = id, date = os.time(), length = time, reason = reason, prevbans = prevbans, perma = (time == 0)})
 end
 function maestro.unban(id, reason)

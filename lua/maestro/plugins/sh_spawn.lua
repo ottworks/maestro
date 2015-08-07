@@ -7,4 +7,4 @@ maestro.command("spawn", {"player:target"}, function(caller, targets)
 	end
 	return false, "spawned %1"
 end, [[
-Forces a player to respawn.]]) 
+Forces a player to respawn.]])

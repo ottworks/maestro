@@ -28,7 +28,7 @@ function maestro.read(name, iterator)
 	if iterator then
 		return string.gmatch(file.Read("maestro/" .. name .. ".txt"), "[^\n]+")
 	end
-	
+
 	for w in string.gmatch(file.Read("maestro/" .. name .. ".txt"), "[^\n]+") do
 		ret[#ret + 1] = w
 	end

@@ -22,7 +22,7 @@ function maestro.help(cmd)
 	if cmd then
 		local col = Color(78, 196, 255)
 		if LocalPlayer and not maestro.rankget(maestro.userrank(LocalPlayer())).perms[cmd] then
-			col = Color(255, 154, 27) 
+			col = Color(255, 154, 27)
 		end
 		local args = maestro.commands[cmd].args
 		local ret = {Color(255, 255, 255)}
@@ -43,7 +43,7 @@ function maestro.help(cmd)
 		if maestro.commands[cmd].help then
 			for w in string.gmatch(maestro.commands[cmd].help, "[^\n]+") do
 				MsgC("\t", Color(255, 255, 255), w, "\n")
-			end 
+			end
 		end
 	else
 		MsgC(Color(255, 255, 255), "Available commands:\n")
@@ -52,7 +52,7 @@ function maestro.help(cmd)
 		for i = 1, #names do
 			local col = Color(78, 196, 255)
 			if LocalPlayer and not maestro.rankget(maestro.userrank(LocalPlayer())).perms[names[i]] then
-				col = Color(255, 154, 27) 
+				col = Color(255, 154, 27)
 			end
 			local args = maestro.commands[names[i]].args
 			local ret = {Color(255, 255, 255)}

@@ -13,7 +13,7 @@ table.sort(files, function(a, b)
 		return string.sub(a, 4) < string.sub(b, 4)
 	end
 	return a < b
-end) 
+end)
 for k, v in pairs(files) do
 	print("\199\196" .. v .. string.rep(" ", 33 - #v) .. "\186")
 	if string.sub(v, 1, 3) == "cl_" then

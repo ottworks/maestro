@@ -1,5 +1,5 @@
 maestro.command("ban", {"player:target", "time", "reason"}, function(caller, targets, time, reason)
-	if #targets == 0 then 
+	if #targets == 0 then
 		return true, "Query matched no players."
 	elseif #targets > 1 then
 		return true, "Query matched more than 1 player."
@@ -24,7 +24,7 @@ if SERVER then
 	util.AddNetworkString("maestro_banlog")
 end
 maestro.command("banlog", {"player:target"}, function(caller, targets)
-	if #targets == 0 then 
+	if #targets == 0 then
 		return true, "Query matched no players."
 	elseif #targets > 1 then
 		return true, "Query matched more than 1 player."

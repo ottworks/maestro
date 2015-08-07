@@ -69,8 +69,8 @@ maestro.command("voteban", {"player:target", "time", "reason"}, function(caller,
 end, [[
 Starts a vote to ban the target for the specified time and an optional reason.]])
 maestro.command("veto", {}, function(caller)
-	if not votes[caller] or not votes[caller][1] then 
-		return true, "You have no active vote!" 
+	if not votes[caller] or not votes[caller][1] then
+		return true, "You have no active vote!"
 	end
 	local id = votes[caller][1]
 	for _, ply in pairs(player.GetAll()) do
@@ -334,10 +334,10 @@ timer.Create("maestro_voting", 1, 0, function()
 	<!--link rel="stylesheet/less" href="less/responsive.less" type="text/css" /-->
 	<!--script src="js/less-1.3.3.min.js"></script-->
 	<!--append ‘#!watch’ to the browser URL, then refresh the page. -->
-	
+
 	<link rel="stylesheet" href=" https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
-	
+
 
 	<!-- Latest compiled and minified JavaScript -->
 	<script src=" https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -352,7 +352,7 @@ timer.Create("maestro_voting", 1, 0, function()
 			return '<span class="caret"></span>'
 		}
 	</script>
-	
+
 	<style>
 		.noselect {
 			-webkit-touch-callout: none;

@@ -19,7 +19,7 @@ function maestro.rankadd(name, inherits, perms)
 	perms = perms or {}
 	local r = {perms = perms, inherits = inherits, cantarget = "<#" .. name, canrank = "!>#" .. name, flags = {}}
 	ranks[name] = r
-	if inherits then 
+	if inherits then
 		maestro.ranksetinherits(name, inherits)
 	else
 		maestro.saveranks()
@@ -143,7 +143,7 @@ function maestro.rankrename(name, to)
 end
 function maestro.RESETRANKS()
 	ranks = {}
-	maestro.rankadd("user", "user", {help = true, who = true})
+	maestro.rankadd("user", "user", {help = true, who = true, msg = true, menu = true, motd = true})
 end
 
 
@@ -159,5 +159,5 @@ function maestro.broadcastranks()
 end
 
 if newfile then
-	maestro.rankadd("user", "user", {help = true, who = true, msg = true, menu = true})
+	maestro.rankadd("user", "user", {help = true, who = true, msg = true, menu = true, motd = true})
 end

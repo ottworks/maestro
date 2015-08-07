@@ -170,11 +170,11 @@ maestro.command("reseteverythingtodefault", {"boolean:areyousure?", "boolean:are
 	end
 	return true, "You made the right choice."
 end, [[Don't press the red button.
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
 Don't.]])

@@ -113,7 +113,7 @@ local function runcmd(cmd, args, ply)
 			table.insert(ret, Color(255, 255, 255))
 			table.insert(ret, t[i])
 			if num then --normal argument
-				local a = args[num]				
+				local a = args[num]
 				handleMultiple(a, ret, cmd, num)
 			else --it's a vararg
 				table.insert(ret, Color(255, 154, 27))
@@ -141,7 +141,7 @@ local function runcmd(cmd, args, ply)
 			table.insert(ret, Color(255, 255, 255))
 			table.insert(ret, t[#t])
 		end
-		
+
 		maestro.chat(nil, unpack(ret))
 	end
 end
