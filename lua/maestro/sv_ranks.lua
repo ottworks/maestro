@@ -73,7 +73,7 @@ function maestro.rankresetperms(name)
 	ranks[name].perms = {}
 	maestro.ranksetinherits(name, ranks[name].inherits)
 end
-function maestro.getranktable()
+function maestro.rankgettable()
 	return ranks
 end
 function maestro.ranksetinherits(name, inherits, all)

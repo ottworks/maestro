@@ -7,6 +7,16 @@ local function command(ply, cmd, args, str)
 			net.WriteString(args[i])
 		end
 	net.SendToServer()
+	net.WriteBool(false)
+end
+local function command2(ply, cmd, args, str)
+	net.Start("maestro_cmd")
+		net.WriteUInt(#args, 8)
+		for i = 1, #args do
+			net.WriteString(args[i])
+		end
+		net.WriteBool(true)
+	net.SendToServer()
 end
 local function escape(str)
 	return string.gsub(str, "([%(%)%.%%%+%-%*%?%[%^%$])", "%%%1")
@@ -84,6 +94,7 @@ local function autocomplete(_, str)
 	return t
 end
 concommand.Add("ms", command, autocomplete, nil, FCVAR_USERINFO)
+concommand.Add("mss", command, autocomplete, nil, FCVAR_USERINFO)
 net.Receive("maestro_commands", function()
 	maestro.commands = net.ReadTable()
 end)
