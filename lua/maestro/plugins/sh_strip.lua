@@ -31,7 +31,7 @@ maestro.command("strip", {"player:target", "boolean:state(optional)"}, function(
 		else
 			if ply.maestro_strip then
 				ply:StripWeapons()
-				local tab = ply.maesto_strip
+				local tab = ply.maestro_strip
 				ply.maestro_strip = false
 				for i = 1, #tab do
 					ply:Give(tab[i])
