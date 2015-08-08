@@ -85,6 +85,24 @@ local function autocomplete(_, str)
 						table.insert(t, "ms " .. cmd .. cnct .. cmd2)
 					end
 				end
+			elseif typ == "sound" then
+				local input = tostring(args[#args])
+				input = input:gsub("\\", "/")
+				input = input:gsub("%.%.", "")
+				local path, name = input:match("(.*/)([^/]*)$")
+				path = path or ""
+				name = name or input
+				local files, folders = file.Find("sound/" .. input .. "*", "GAME")
+				if files and folders then
+					for i = 1, #files do
+						table.insert(t, "ms " .. cmd .. cnct .. path .. files[i])
+					end
+					for i = 1, #folders do
+						if folders[i]:sub(1, #name) == name then
+							table.insert(t, "ms " .. cmd .. cnct .. path .. folders[i])
+						end
+					end
+				end
 			elseif types[#params] then
 				table.insert(t, "ms " .. cmd .. cnct .. "<" .. types[#params] .. ">")
 			end
