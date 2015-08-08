@@ -23,3 +23,5 @@ if CLIENT then
 		chat.AddText(unpack(args))
 	end)
 end
+maestro.orange = Color(255, 154, 27)
+maestro.blue = Color(78, 196, 255)

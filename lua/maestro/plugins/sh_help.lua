@@ -16,20 +16,18 @@ maestro.command("help", {"command:optional"}, function(caller, cmd)
 	end
 end, [[
 Displays this menu.]])
---Orange Color(255, 154, 27)
---Blue Color(78, 196, 255)
 function maestro.help(cmd)
 	if cmd then
-		local col = Color(78, 196, 255)
+		local col = maestro.blue
 		if LocalPlayer and not maestro.rankget(maestro.userrank(LocalPlayer())).perms[cmd] then
-			col = Color(255, 154, 27)
+			col = maestro.orange
 		end
 		local args = maestro.commands[cmd].args
 		local ret = {Color(255, 255, 255)}
 		for j = 1, #args do
 			table.insert(ret, Color(255, 255, 255))
 			table.insert(ret, " <")
-			table.insert(ret, Color(78, 196, 255))
+			table.insert(ret, maestro.blue)
 			local t = args[j]:match("%w+")
 			table.insert(ret, t)
 			table.insert(ret, Color(255, 255, 255))
@@ -50,16 +48,16 @@ function maestro.help(cmd)
 		local names = toSequence(maestro.commands)
 		table.sort(names)
 		for i = 1, #names do
-			local col = Color(78, 196, 255)
+			local col = maestro.blue
 			if LocalPlayer and not maestro.rankget(maestro.userrank(LocalPlayer())).perms[names[i]] then
-				col = Color(255, 154, 27)
+				col = maestro.orange
 			end
 			local args = maestro.commands[names[i]].args
 			local ret = {Color(255, 255, 255)}
 			for j = 1, #args do
 				table.insert(ret, Color(255, 255, 255))
 				table.insert(ret, " <")
-				table.insert(ret, Color(78, 196, 255))
+				table.insert(ret, maestro.blue)
 				local t = args[j]:match("%w+")
 				table.insert(ret, t)
 				table.insert(ret, Color(255, 255, 255))

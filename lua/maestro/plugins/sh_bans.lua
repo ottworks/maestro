@@ -89,9 +89,9 @@ if CLIENT then
 				local length = net.ReadUInt(32)
 				local num = net.ReadUInt(16)
 				local perma = net.ReadBool()
-				MsgC(Color(255, 154, 27), "\t", os.date("%x - ", date), "Ban #", num, ": ", Color(255, 255, 255), reason, Color(255, 154, 27), " Length: ", Color(255, 255, 255), perma and "permenant" or maestro.time(length), "\n")
+				MsgC(maestro.orange, "\t", os.date("%x - ", date), "Ban #", num, ": ", Color(255, 255, 255), reason, maestro.orange, " Length: ", Color(255, 255, 255), perma and "permenant" or maestro.time(length), "\n")
 			else
-				MsgC(Color(78, 196, 255), "\t", os.date("%x - ", date), "Unban: ", Color(255, 255, 255), reason, "\n")
+				MsgC(maestro.blue, "\t", os.date("%x - ", date), "Unban: ", Color(255, 255, 255), reason, "\n")
 			end
 		end
 	end)
