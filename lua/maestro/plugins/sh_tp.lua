@@ -14,9 +14,11 @@ maestro.command("tp", {"player:target(optional)"}, function(caller, targets)
 		return true, "No room!"
 	end
 	if #targets == 1 then
+		targets[1].maestro_return = targets[1]:GetPos()
 		targets[1]:SetPos(tr.HitPos)
 		return false, "teleported %1"
 	end
+	caller.maestro_return = caller:GetPos()
 	caller:SetPos(tr.HitPos)
 	return false, "teleported themselves"
 end, [[
@@ -48,15 +50,18 @@ maestro.command("goto", {"player:target"}, function(caller, targets)
 			filter = caller,
 		}
 		if not tr2.Hit then
+			caller.maestro_return = caller:GetPos()
 			caller:SetPos(tr.HitPos + Vector(0, 0, 1))
 			caller:SetEyeAngles(a)
 		elseif caller:GetMoveType() == MOVETYPE_NOCLIP then
+			caller.maestro_return = caller:GetPos()
 			caller:SetPos(ply:GetPos())
 			caller:SetEyeAngles(a)
 		else
 			return true, "No room to teleport! Enter noclip to override."
 		end
 	else
+		caller.maestro_return = caller:GetPos()
 		caller:SetPos(ply:GetPos() - f * 150)
 		caller:SetEyeAngles(a)
 	end
@@ -105,6 +110,7 @@ maestro.command("bring", {"player:target(s)"}, function(caller, targets)
 			end
 			local room = isroom(caller:GetPos(), Angle(0, a + deg, 0):Forward(), ply, caller, targets)
 			if room then
+				ply.maestro_return = ply:GetPos()
 				ply:SetPos(room)
 				local ang = (caller:GetPos() - ply:GetPos()):Angle()
 				ang.p = 0
@@ -113,6 +119,7 @@ maestro.command("bring", {"player:target(s)"}, function(caller, targets)
 				break
 			end
 			if tries > 50 then
+				ply.maestro_return = ply:GetPos()
 				ply:SetPos(caller:GetPos())
 				break
 			end
@@ -170,6 +177,7 @@ maestro.command("send", {"player:target", "player:to"}, function(caller, t1, t2)
 			end
 			local room = isroom(tgt:GetPos(), Angle(0, a + deg, 0):Forward(), ply, tgt, t1)
 			if room then
+				ply.maestro_return = ply:GetPos()
 				ply:SetPos(room)
 				local ang = (tgt:GetPos() - ply:GetPos()):Angle()
 				ang.p = 0
@@ -178,6 +186,7 @@ maestro.command("send", {"player:target", "player:to"}, function(caller, t1, t2)
 				break
 			end
 			if tries > 50 then
+				ply.maestro_return = ply:GetPos()
 				ply:SetPos(tgt:GetPos())
 				break
 			end
@@ -186,3 +195,29 @@ maestro.command("send", {"player:target", "player:to"}, function(caller, t1, t2)
 	return false, "sent %1 to %2"
 end, [[
 Sends the first group of players to the second player.]])
+maestro.command("return", {"player:target(optional)"}, function(caller, targets)
+	if targets and #targets > 0 then
+		local done = false
+		for i = 1, #targets do
+			if targets[i].maestro_return then
+				targets[i]:SetPos(targets[i].maestro_return)
+				targets[i].maestro_return = nil
+				done = true
+			end
+		end
+		if not done then
+			return true, "No return points found!"
+		elseif #targets > 1 then
+			return false, "returned %1 to their previous positions"
+		else
+			return false, "returned %1 to their previous position"
+		end
+	elseif caller.maestro_return then
+		caller:SetPos(caller.maestro_return)
+		caller.maestro_return = nil
+		return false, "returned themselves to their previous position"
+	else
+		return true, "No return points found!"
+	end
+end, [[
+Returns the targets to their positions before any teleport commands.]])
