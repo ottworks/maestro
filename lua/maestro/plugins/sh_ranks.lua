@@ -126,9 +126,9 @@ maestro.command("rankrename", {"rank:from", "to"}, function(caller, from, to)
 	return false, "renamed rank %1 to %2"
 end, [[
 Renames a rank.]])
-maestro.command("listranks", {}, function(caller)
+maestro.command("ranks", {}, function(caller)
 	if caller then
-		maestro.chat(caller, "Available ranks:")
+		maestro.chat(caller, Color(255, 255, 255), "Available ranks:")
 	else
 		print("Available ranks:")
 	end
