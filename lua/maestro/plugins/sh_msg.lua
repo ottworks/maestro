@@ -42,4 +42,16 @@ maestro.command("chatprint", {"text"}, function(caller, text)
 	end
 	maestro.chat(nil, text)
 	return false, "chatprinted %1"
-end)
+end, [[
+Prints a message to everyone's chat.]])
+maestro.command("admin", {"text"}, function(caller, text)
+	local plys = {caller}
+	for _, ply in pairs(player.GetAll()) do
+		local flags = maestro.rankget(maestro.userrank(ply)).flags
+		if flags.admin or flags.superadmin then
+			plys[#plys + 1] = ply
+		end
+	end
+	maestro.chat(plys, caller, Color(255, 255, 255), " to ", Color(0, 255, 0), "admins", Color(255, 255, 255), ": ", text)
+end, [[
+Sends a message to any people in ranks flagged as admin.]])
