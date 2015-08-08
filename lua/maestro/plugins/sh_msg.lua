@@ -36,3 +36,10 @@ maestro.command("msg", {"player:target", "message"}, function(caller, targets, m
 	maestro.chat(targets, unpack(ret))
 end, [[
 Sends a message to the targetted players.]])
+maestro.command("chatprint", {"text"}, function(caller, text)
+	if not text then
+		return true, "Invalid text."
+	end
+	maestro.chat(nil, text)
+	return false, "chatprinted %1"
+end)
