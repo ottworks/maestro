@@ -21,21 +21,30 @@ maestro.command("alias", {"player:target", "name"}, function(caller, targets, na
 end, [[
 Sets a player's name]])
 local PLAYER = FindMetaTable("Player")
-PLAYER.NameOld = PLAYER.NameOld or PLAYER.Nick
+PLAYER.NickOld = PLAYER.NickOld or PLAYER.Nick
 function PLAYER:Nick()
-    return self:GetNWBool("maestro_alias_enabled") == true and self:GetNWString("maestro_alias") or self:NameOld()
+    return self:GetNWBool("maestro_alias_enabled") == true and self:GetNWString("maestro_alias") or self:NickOld()
 end
 PLAYER.Name = PLAYER.Nick
 PLAYER.GetName = PLAYER.Nick
-PLAYER.SteamName = PLAYER.Nick
-chat.AddTextOld = chat.AddTextOld or chat.AddText
-function chat.AddText(...)
-    local args = {...}
-    for k, v in ipairs(args) do
-        if type(v) == "Player" then
-            args[k] = v:Nick()
-            table.insert(args, k, team.GetColor(v:Team()))
-        end
+hook.Add("DarkRPFinishedLoading", "maestro_alias", function()
+    PLAYER.NickOld2 = PLAYER.Nick
+    function PLAYER:Nick()
+        return self:GetNWBool("maestro_alias_enabled") == true and self:GetNWString("maestro_alias") or self:NickOld2()
     end
-    chat.AddTextOld(unpack(args))
+    PLAYER.Name = PLAYER.Nick
+    PLAYER.GetName = PLAYER.Nick
+end)
+if CLIENT then
+    chat.AddTextOld = chat.AddTextOld or chat.AddText
+    function chat.AddText(...)
+        local args = {...}
+        for k, v in ipairs(args) do
+            if type(v) == "Player" then
+                args[k] = v:Nick()
+                table.insert(args, k, team.GetColor(v:Team()))
+            end
+        end
+        chat.AddTextOld(unpack(args))
+    end
 end
