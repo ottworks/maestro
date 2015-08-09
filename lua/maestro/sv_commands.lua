@@ -207,7 +207,7 @@ hook.Add("PlayerSay", "maestro_command", function(ply, txt, team)
 		local args = maestro.split(txt)
 		local cmd = args[1]
 		if not cmd then
-			return true
+			return
 		end
 		table.remove(args, 1)
 		cmd = string.lower(cmd)
@@ -217,7 +217,7 @@ hook.Add("PlayerSay", "maestro_command", function(ply, txt, team)
 			else
 				ply:ChatPrint(cmd .. ": Insufficient permissions!")
 			end
-			return false
+			return ""
 		end
 	end
 end)
