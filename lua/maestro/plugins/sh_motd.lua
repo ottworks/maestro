@@ -80,6 +80,7 @@ if CLIENT then
 </head>
 
 <body>
+<button onclick="console.log('RUNLUA: maestro_motd:Remove()')">Close MOTD</button>
 <div class="container-fluid">
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
