@@ -22,9 +22,9 @@ maestro.command("gimp", {"player:target", "boolean:state(optional)"}, function(c
     end
 end)
 maestro.command("gimps", {}, function(caller)
-    maestro.chat(caller, "Gimps:")
+    maestro.chat(caller, Color(255, 255, 255), "Gimps:")
     for i = 1, #gimps do
-        maestro.chat(caller, i, ". ", gimps[i])
+        maestro.chat(caller, Color(255, 255, 255), i, ". ", gimps[i])
     end
 end)
 maestro.command("gimpadd", {"line"}, function(caller, line)
@@ -65,8 +65,11 @@ if newfile then
     }
     maestro.save("gimps", gimps)
 end
+local cur = 1
 maestro.hook("PlayerSay", "gimp", function(ply)
     if gimped[ply] then
-        return table.Random(gimps) or "It's pronounced \"my strow\"."
+        local msg = gimps[cur]
+        cur = (cur + 1) % (#gimps - 1)
+        return msg or "It's pronounced \"my strow\"."
     end
 end)
