@@ -20,19 +20,22 @@ maestro.command("gimp", {"player:target", "boolean:state(optional)"}, function(c
         end
         return false, "ungimped %1"
     end
-end)
+end, [[
+Gimps a player so that anything they say is replaced by a gimp line.]])
 maestro.command("gimps", {}, function(caller)
     maestro.chat(caller, Color(255, 255, 255), "Gimps:")
     for i = 1, #gimps do
         maestro.chat(caller, Color(255, 255, 255), i, ". ", gimps[i])
     end
-end)
+end, [[
+Lists available gimp lines.]])
 maestro.command("gimpadd", {"line"}, function(caller, line)
     if not line then return true, "Specify a line first!" end
     table.insert(gimps, line)
     maestro.save("gimps", gimps)
     return false, "added gimp line \"" .. line .. "\""
-end)
+end, [[
+Adds a gimp line.]])
 maestro.command("gimpremove", {"number:line"}, function(caller, line)
     if gimps[line] then
         local l = gimps[line]
@@ -40,7 +43,8 @@ maestro.command("gimpremove", {"number:line"}, function(caller, line)
         maestro.save("gimps", gimps)
         return false, "removed gimp line \"" .. l .. "\""
     end
-end)
+end, [[
+Removes a gimp line.]])
 if not SERVER then return end
 gimps, newfile = maestro.load("gimps")
 if newfile then
