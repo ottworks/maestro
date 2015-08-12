@@ -9,7 +9,7 @@ function maestro.hook(name, id, func)
                 local ret = {xpcall(maestro.hooks[name][i].func, ErrorNoHalt, ...)}
                 if ret[1] then
                     table.remove(ret, 1)
-                    if ret[1] then
+                    if ret[1] ~= nil then
                         return unpack(ret)
                     end
                 end
