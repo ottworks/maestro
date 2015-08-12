@@ -16,13 +16,14 @@ function maestro.hook(name, id, func)
             end
         end)
     end
+    maestro.hookremove(name, id)
     table.insert(maestro.hooks[name], {id = id, func = func})
 end
 function maestro.hookremove(name, id)
     if not maestro.hooks[name] then return end
     for i = 1, #maestro.hooks[name] do
         local h = maestro.hooks[name][i]
-        if i.id == id then
+        if h.id == id then
             table.remove(maestro.hooks[name], i)
             return
         end
