@@ -69,7 +69,7 @@ local cur = 1
 maestro.hook("PlayerSay", "gimp", function(ply)
     if gimped[ply] then
         local msg = gimps[cur]
-        cur = (cur + 1) % (#gimps - 1)
+        cur = (cur % #gimps) + 1
         return msg or "It's pronounced \"my strow\"."
     end
 end)
