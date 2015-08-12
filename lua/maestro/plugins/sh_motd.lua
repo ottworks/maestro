@@ -80,7 +80,7 @@ if CLIENT then
 </head>
 
 <body>
-<button onclick="console.log('RUNLUA: maestro_motd:Remove()')">Close MOTD</button>
+<button onclick="console.log('maestro_close')">Close MOTD</button>
 <div class="container-fluid">
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -93,7 +93,7 @@ if CLIENT then
               <iframe src="]] .. url .. [[" frameborder="0" allowtransparency="true" width="100%" height="100%" ></iframe>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="console.log('RUNLUA: maestro_motd:Remove()')">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="console.log('maestro_close')">Close</button>
           </div>
         </div>
         <!-- /.modal-content -->
@@ -108,5 +108,10 @@ if CLIENT then
 </body>
 </html>
 ]])
+        function maestro_motd:ConsoleMessage(msg)
+            if msg == "maestro_close" then
+                self:Remove()
+            end
+        end
     end)
 end
