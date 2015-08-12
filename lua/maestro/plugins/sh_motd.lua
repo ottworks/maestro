@@ -1,7 +1,7 @@
 if SERVER then
     CreateConVar("maestro_motd", "", FCVAR_SERVER_CAN_EXECUTE + FCVAR_ARCHIVE, "MOTD URL.")
     util.AddNetworkString("maestro_motd")
-    hook.Add("PlayerInitialSpawn", "maestro_motd", function(ply)
+    maestro.hook("PlayerInitialSpawn", "maestro_motd", function(ply)
         ply:ConCommand("ms motd")
     end)
 end

@@ -24,7 +24,7 @@ function meta:SetUserGroup(name)
 	maestro.userrank(self, name)
 end
 
-hook.Add("PlayerAuthed", "maestro_PlayerAuthed", function(ply, steam, uid)
+maestro.hook("PlayerAuthed", "maestro_PlayerAuthed", function(ply, steam, uid)
 	local name = maestro.userrank(steam)
 	if not name then
 		maestro.userrank(steam, "user")

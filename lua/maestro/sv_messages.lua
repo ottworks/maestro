@@ -1,4 +1,4 @@
-hook.Add("CheckPassword", "maestro_messages", function(id64, ip, sv, cl, name)
+maestro.hook("CheckPassword", "maestro_messages", function(id64, ip, sv, cl, name)
 	local id = util.SteamIDFrom64(id64)
 	local ban = maestro.bans[id]
 	if ban and ban.unban > os.time() then
@@ -10,9 +10,9 @@ hook.Add("CheckPassword", "maestro_messages", function(id64, ip, sv, cl, name)
 		maestro.chat(nil, Color(255, 255, 255), "Player ", Color(78, 196, 255), name, Color(255, 255, 255), " (", Color(78, 196, 255), util.SteamIDFrom64(id64), Color(255, 255, 255), ") has connected to the server.")
 	end
 end)
-hook.Add("PlayerInitialSpawn", "maestro_messages", function(ply)
+maestro.hook("PlayerInitialSpawn", "maestro_messages", function(ply)
 	maestro.chat(nil, Color(255, 255, 255), "Player ", Color(78, 196, 255), ply:Nick(), Color(255, 255, 255), " (", Color(78, 196, 255), ply:SteamID(), Color(255, 255, 255), ") has joined the game.")
 end)
-hook.Add("PlayerDisconnected", "maestro_messages", function(ply)
+maestro.hook("PlayerDisconnected", "maestro_messages", function(ply)
 	maestro.chat(nil, Color(255, 255, 255), "Player ", Color(78, 196, 255), ply:Nick(), Color(255, 255, 255), " (", Color(78, 196, 255), ply:SteamID(), Color(255, 255, 255), ") has left the game.")
 end)

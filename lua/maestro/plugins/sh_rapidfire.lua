@@ -40,7 +40,7 @@ If player(s) are specified but no boolean is specified, it will toggle rapidfire
 If both player(s) and boolean are specified, it will set rapidfire mode on the players to the boolean's value.]])
 
 if SERVER then
-	hook.Add("Think", "maestro_rapidfire", function()
+	maestro.hook("Think", "maestro_rapidfire", function()
 		for ply in pairs(rapidfires) do
 			if not IsValid(ply) then
 				rapidfires[ply] = nil

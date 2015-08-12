@@ -1,6 +1,6 @@
 local gagged = {}
 if SERVER then
-	hook.Add("PlayerCanHearPlayersVoice", "maestro_gag", function(listener, talker)
+	maestro.hook("PlayerCanHearPlayersVoice", "maestro_gag", function(listener, talker)
 		return gagged[talker] and false
 	end)
 end

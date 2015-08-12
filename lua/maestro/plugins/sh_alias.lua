@@ -27,7 +27,7 @@ function PLAYER:Nick()
 end
 PLAYER.Name = PLAYER.Nick
 PLAYER.GetName = PLAYER.Nick
-hook.Add("DarkRPFinishedLoading", "maestro_alias", function()
+maestro.hook("DarkRPFinishedLoading", "maestro_alias", function()
     PLAYER.NickOld2 = PLAYER.Nick
     function PLAYER:Nick()
         return self:GetNWBool("maestro_alias_enabled") == true and self:GetNWString("maestro_alias") or self:NickOld2()

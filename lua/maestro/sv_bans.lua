@@ -36,7 +36,7 @@ function maestro.unban(id, reason)
 	end
 end
 
-hook.Add("CheckPassword", "maestro_bans", function(id64)
+maestro.hook("CheckPassword", "maestro_bans", function(id64)
 	local id = util.SteamIDFrom64(id64)
 	local ban = maestro.bans[id]
 	if ban then

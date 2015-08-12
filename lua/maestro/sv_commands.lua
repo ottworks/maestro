@@ -201,7 +201,7 @@ concommand.Add("mss", function(ply, cmd, args, str)
 	runcmd(true, cmd, args)
 end)
 
-hook.Add("PlayerSay", "maestro_command", function(ply, txt, team)
+maestro.hook("PlayerSay", "maestro_command", function(ply, txt, team)
 	if txt:sub(1, 1) == "!" then
 		txt = txt:sub(2)
 		local args = maestro.split(txt)

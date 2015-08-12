@@ -237,7 +237,7 @@ a.removeChild(a.childNodes[1]);
 		end
 	end)
 end
-hook.Add("PlayerBindPress", "maestro_voting", function(plu, bind, pressed)
+maestro.hook("PlayerBindPress", "maestro_voting", function(plu, bind, pressed)
 	if not pressed then return end
 	if bind:sub(1, 4) == "slot" then
 		local num = tonumber(bind:sub(5))

@@ -52,13 +52,13 @@ If no player(s) are specified, it will toggle strip mode on you.
 If player(s) are specified but no boolean is specified, it will toggle strip mode on the players.
 If both player(s) and boolean are specified, it will set strip mode on the players to the boolean's value.]])
 
-hook.Add("PlayerDeath", "maestro_strip", function(v)
+maestro.hook("PlayerDeath", "maestro_strip", function(v)
 	if v.maestro_strip then
 		v.maestro_strip = false
 	end
 end)
 
-hook.Add("PlayerCanPickupWeapon", "maestro_strip", function(v)
+maestro.hook("PlayerCanPickupWeapon", "maestro_strip", function(v)
 	if v.maestro_strip then
 		return false
 	end
