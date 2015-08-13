@@ -5,7 +5,7 @@ scaledata.crouchspeed = {}
 scaledata.walkspeed = {}
 scaledata.scaled = {}
 local function doscale(ply, scale)
-    scaledata.scaled[ply] = true
+    scaledata.scaled[ply] = scale
     ply:SetModelScale(scale)
     ply:SetHull(Vector(-16, -16, 0) * scale, Vector(16, 16, 72) * scale)
     ply:SetHullDuck(Vector(-16, -16, 0) * scale, Vector(16, 16, 36) * scale)
@@ -106,5 +106,10 @@ maestro.hook("PlayerSpawn", "scale", function(ply)
             net.WriteEntity(ply)
             net.WriteFloat(0)
         net.Broadcast()
+    end
+end)
+maestro.hook("EntityTakeDamage", "scale", function(ply, info)
+    if ply:IsPlayer() and scaledata.scaled[ply] then
+        info:ScaleDamage(1/scaledata.scaled[ply]^(1/3))
     end
 end)

@@ -33,7 +33,10 @@ function maestro.userrank(id, rank)
 		if not maestro.users[id] then
 			return "user"
 		end
-		return maestro.users[id].rank
+		if maestro.rankget(maestro.users[id].rank) then
+			return maestro.users[id].rank
+		end
+		return "user"
 	end
 end
 
