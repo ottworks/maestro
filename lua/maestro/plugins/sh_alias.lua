@@ -41,7 +41,8 @@ if CLIENT then
         local args = {...}
         for k, v in ipairs(args) do
             if type(v) == "Player" then
-                args[k] = v:Nick()
+                args[k] = Color(255, 255, 255)
+                table.insert(args, k, v:Nick())
                 table.insert(args, k, team.GetColor(v:Team()))
             end
         end
