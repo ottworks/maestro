@@ -110,6 +110,6 @@ maestro.hook("PlayerSpawn", "scale", function(ply)
 end)
 maestro.hook("EntityTakeDamage", "scale", function(ply, info)
     if ply:IsPlayer() and scaledata.scaled[ply] then
-        info:ScaleDamage(1/scaledata.scaled[ply]^(1/3))
+        info:ScaleDamage(1/scaledata.scaled[ply])
     end
 end)
