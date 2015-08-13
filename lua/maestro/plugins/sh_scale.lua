@@ -98,7 +98,7 @@ net.Receive("maestro_scale", function()
         end
     end
 end)
-maestro.hook("DoPlayerDeath", "scale", function(ply)
+maestro.hook("PlayerSpawn", "scale", function(ply)
     if scaledata.scaled[ply] then
         unscale(ply)
         net.Start("maestro_scale")
