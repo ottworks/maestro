@@ -143,7 +143,7 @@ function maestro.rankrename(name, to)
 end
 function maestro.RESETRANKS()
 	ranks = {}
-	maestro.rankadd("user", "user", {help = true, who = true, msg = true, menu = true, motd = true, admin = true})
+	maestro.rankadd("user", "user", {help = true, who = true, msg = true, menu = true, motd = true, admin = true, tutorial = true, ranks = true})
 end
 
 
@@ -159,5 +159,5 @@ function maestro.broadcastranks()
 end
 
 if newfile then
-	maestro.rankadd("user", "user", {help = true, who = true, msg = true, menu = true, motd = true, admin = true})
+	maestro.rankadd("user", "user", {help = true, who = true, msg = true, menu = true, motd = true, admin = true, tutorial = true, ranks = true})
 end
