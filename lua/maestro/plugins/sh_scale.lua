@@ -113,3 +113,12 @@ maestro.hook("EntityTakeDamage", "scale", function(ply, info)
         info:ScaleDamage(1/scaledata.scaled[ply])
     end
 end)
+maestro.hook("EntityEmitSound", "scale", function(info)
+    local ply = info.Entity
+    if IsValid(ply) and ply:IsPlayer() then
+        if scaledata.scaled[ply] then
+            info.Pitch = math.Clamp(info.Pitch / scaledata.scaled[ply]^(1/3), 0, 255)
+            return true
+        end
+    end
+end)
