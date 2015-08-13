@@ -5,6 +5,7 @@ function maestro.hook(name, id, func)
     if not n or not n.maestro_hook then
         maestro.hooks[name] = {}
         hook.Add(name, "maestro_hook", function(...)
+            if not maestro.hooks[name] then return end
             for i = 1, #maestro.hooks[name] do
                 local ret = {xpcall(maestro.hooks[name][i].func, ErrorNoHalt, ...)}
                 if ret[1] then
