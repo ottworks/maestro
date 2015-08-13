@@ -3,7 +3,9 @@ scaledata.jump = {}
 scaledata.runspeed = {}
 scaledata.crouchspeed = {}
 scaledata.walkspeed = {}
+scaledata.scaled = {}
 local function doscale(ply, scale)
+    scaledata.scaled[ply] = true
     ply:SetModelScale(scale)
     ply:SetHull(Vector(-16, -16, 0) * scale, Vector(16, 16, 72) * scale)
     ply:SetHullDuck(Vector(-16, -16, 0) * scale, Vector(16, 16, 36) * scale)
@@ -26,6 +28,7 @@ local function doscale(ply, scale)
     ply:SetPlaybackRate(1 / scale)
 end
 local function unscale(ply)
+    scaledata.scaled[ply] = false
     ply:SetModelScale(1)
     ply:SetHull(Vector(-16, -16, 0), Vector(16, 16, 72))
     ply:SetHullDuck(Vector(-16, -16, 0), Vector(16, 16, 36))
@@ -74,7 +77,7 @@ maestro.command("scale", {"player:target", "number:scale"}, function(caller, tar
             for i = 1, #targets do
                 net.WriteEntity(targets[i])
             end
-            net.WriteFloat(0, 4)
+            net.WriteFloat(0)
         net.Broadcast()
         return false, "reset the scale of %1"
     end
@@ -96,5 +99,15 @@ net.Receive("maestro_scale", function()
             unscale(plys[i])
             doscale(plys[i], scale)
         end
+    end
+end)
+maestro.hook("DoPlayerDeath", "scale", function(ply)
+    if scaledata.scaled[ply] then
+        unscale(ply)
+        net.Start("maestro_scale")
+            net.WriteUInt(1, 8)
+            net.WriteEntity(ply)
+            net.WriteFloat(0)
+        net.Broadcast()
     end
 end)
