@@ -20,7 +20,8 @@ maestro.command("spectate", {"player:target"}, function(caller, targets)
         specs[caller] = nil
         return false, "stopped spectating"
     end
-end)
+end, [[
+Spectates a player.]])
 maestro.hook("SetupPlayerVisibility", "spectate", function(ply)
     if specs[ply] then
         AddOriginToPVS(specs[ply]:EyePos())
