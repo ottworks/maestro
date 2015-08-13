@@ -18,8 +18,6 @@ local function doscale(ply, scale)
     ply:SetRunSpeed(ply:GetRunSpeed() * scale)
     scaledata.walkspeed[ply] = ply:GetWalkSpeed()
     ply:SetWalkSpeed(ply:GetWalkSpeed() * scale)
-    scaledata.crouchspeed[ply] = ply:GetCrouchedWalkSpeed()
-    ply:SetCrouchedWalkSpeed(ply:GetCrouchedWalkSpeed() * scale)
 
     local hat = ply:LookupBone("ValveBiped.Bip01_Head1")
     if hat then
@@ -37,7 +35,6 @@ local function unscale(ply)
     ply:SetStepSize(18)
     if scaledata.jump[ply] then ply:SetJumpPower(scaledata.jump[ply]) end
     if scaledata.runspeed[ply] then ply:SetRunSpeed(scaledata.runspeed[ply]) end
-    if scaledata.crouchspeed[ply] then ply:SetCrouchedWalkSpeed(scaledata.crouchspeed[ply]) end
     if scaledata.walkspeed[ply] then ply:SetWalkSpeed(scaledata.walkspeed[ply]) end
 
     local hat = ply:LookupBone("ValveBiped.Bip01_Head1")
