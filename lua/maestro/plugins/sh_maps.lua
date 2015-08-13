@@ -4,6 +4,7 @@ end
 local nominated = {}
 local rtv = {}
 maestro.command("map", {"map"}, function(caller, map)
+	if not map then return true, "Specify a map first!" end
 	map = map:gsub(";", "")
 	if not file.Exists("maps/" .. map .. ".bsp", "GAME") then
 		return true, "Map not found: " .. map .. ".bsp"
