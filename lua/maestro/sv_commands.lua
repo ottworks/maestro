@@ -82,10 +82,24 @@ local function handleMultiple(a, ret, cmd, num)
 	end
 end
 
-local function runcmd(team, cmd, args, ply)
+function maestro.runcmd(silent, cmd, args, ply)
 	if not maestro.commands[cmd] then
 		print("Invalid command!")
 		return
+	end
+	local endarg
+	for i = 1, #args do
+		local arg = maestro.commands[cmd].args[i]
+		if not arg then
+			if not endarg then
+				endarg = i - 1
+			end
+			local desc = string.match(maestro.commands[cmd].args[endarg], "[^:]+$")
+			if not string.find(desc, "multiple") then
+				args[endarg] = args[endarg] .. " " .. args[i]
+				args[i] = nil
+			end
+		end
 	end
 	for i = 1, #args do
 		local err
@@ -150,7 +164,7 @@ local function runcmd(team, cmd, args, ply)
 			table.insert(ret, t[#t])
 		end
 
-		if team then
+		if silent then
 			local ranks = {}
 			for name, tab in pairs(maestro.rankgettable()) do
 				local cr = tab.canrank
@@ -181,8 +195,8 @@ net.Receive("maestro_cmd", function(len, ply)
 			for i = 1, num - 1 do
 				args[i] = net.ReadString()
 			end
-			local team = net.ReadBool()
-			runcmd(team, cmd, args, ply)
+			local silent = net.ReadBool()
+			maestro.runcmd(silent, cmd, args, ply)
 		else
 			maestro.chat(ply, Color(255, 154, 27),  cmd .. ": Insufficient permissions!")
 		end
@@ -201,12 +215,12 @@ end
 concommand.Add("ms", function(ply, cmd, args, str)
 	local cmd = args[1]
 	table.remove(args, 1)
-	runcmd(false, cmd, args)
+	maestro.runcmd(false, cmd, args)
 end)
 concommand.Add("mss", function(ply, cmd, args, str)
 	local cmd = args[1]
 	table.remove(args, 1)
-	runcmd(true, cmd, args)
+	maestro.runcmd(true, cmd, args)
 end)
 
 maestro.hook("PlayerSay", "maestro_command", function(ply, txt, team)
@@ -221,7 +235,7 @@ maestro.hook("PlayerSay", "maestro_command", function(ply, txt, team)
 		cmd = string.lower(cmd)
 		if maestro.commands[cmd] then
 			if maestro.rankget(maestro.userrank(ply)).perms[cmd] then
-				runcmd(team, cmd, args, ply)
+				maestro.runcmd(team, cmd, args, ply)
 			else
 				ply:ChatPrint(cmd .. ": Insufficient permissions!")
 			end
