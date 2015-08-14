@@ -95,6 +95,14 @@ local function runcmd(team, cmd, args, ply)
 			return
 		end
 	end
+	for i = 1, #maestro.commands[cmd].args do
+		local arg = maestro.commands[cmd].args[i]
+		local desc = string.match(arg, "[^:]+$")
+		if not args[i] and not string.find(desc, "optional") and not string.find(desc, "multiple") then
+			handleError(ply, cmd, "Missing required argument \"" .. arg .. "\", aborting.")
+			return
+		end
+	end
 	local err, msg = maestro.commands[cmd].callback(ply, unpack(args))
 	if err then
 		handleError(ply, cmd, msg)
