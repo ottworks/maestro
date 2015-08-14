@@ -175,3 +175,12 @@ maestro.hook("UpdateAnimation", "scale", function(ply, velocity, maxseqgroundspe
         return true
     end
 end)
+maestro.hook("UpdatePlayerSpeed", "scale", function(ply)
+    if not ply:Alive() then return end
+    local scale = scaledata.scaled[ply]
+    if scale then
+        unscale(ply)
+        doscale(ply, scale)
+        return true
+    end
+end)
