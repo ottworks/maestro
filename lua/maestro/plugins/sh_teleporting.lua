@@ -1,26 +1,28 @@
 maestro.command("tp", {"player:target(optional)"}, function(caller, targets)
-	targets = targets or {}
-	if #targets > 1 then
-		return true, "Query matched more than 1 player."
-	end
 	local tr = util.TraceHull{
 		start = caller:GetShootPos(),
 		endpos = caller:GetShootPos() + caller:EyeAngles():Forward() * 16384,
 		mins = Vector(-16, -16, 0),
 		maxs = Vector(16, 16, 72),
-		filter = {caller, targets[1]},
+		filter = caller,
 	}
 	if not tr.HitPos then
 		return true, "No room!"
 	end
-	if #targets == 1 then
+	if targets then
+		if #targets > 1 then
+			return true, "Query matched more than 1 player."
+		elseif #targets < 1 then
+			return true, "Query matched no players."
+		end
 		targets[1].maestro_return = targets[1]:GetPos()
 		targets[1]:SetPos(tr.HitPos)
 		return false, "teleported %1"
+	else
+		caller.maestro_return = caller:GetPos()
+		caller:SetPos(tr.HitPos)
+		return false, "teleported themselves"
 	end
-	caller.maestro_return = caller:GetPos()
-	caller:SetPos(tr.HitPos)
-	return false, "teleported themselves"
 end, [[
 Teleports a player, or yourself if none is specified.]])
 maestro.command("goto", {"player:target"}, function(caller, targets)

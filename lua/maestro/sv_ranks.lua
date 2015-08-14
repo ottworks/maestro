@@ -159,5 +159,5 @@ function maestro.broadcastranks()
 end
 
 if newfile then
-	maestro.rankadd("user", "user", {help = true, who = true, msg = true, menu = true, motd = true, admin = true, tutorial = true, ranks = true})
+	maestro.RESETRANKS()
 end
