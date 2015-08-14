@@ -55,3 +55,9 @@ maestro.command("admin", {"text"}, function(caller, text)
 	maestro.chat(plys, caller, Color(255, 255, 255), " to ", Color(0, 255, 0), "admins", Color(255, 255, 255), ": ", text)
 end, [[
 Sends a message to any people in ranks flagged as admin.]])
+maestro.hook("PlayerSay", "admin", function(ply, text)
+	if string.sub(text, 1, 1) == "@" then
+		maestro.runcmd(false, "admin", {string.sub(text, 2)}, ply)
+		return ""
+	end
+end)
