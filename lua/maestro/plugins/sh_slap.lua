@@ -40,7 +40,7 @@ maestro.command("slap", {"player:target", "number:damage(optional)", "number:tim
 		return false, "slapped %1"
 	end
 	if times then
-		return false, "slapped %1 %3 times for %2 damage"
+		return false, "slapped %1 %3 times for %2 damage each"
 	end
 	return false, "slapped %1 for %2 damage"
 end, [[
