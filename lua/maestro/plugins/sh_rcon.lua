@@ -1,6 +1,7 @@
-maestro.command("rcon", {"string:command"}, function(caller, ...)
-	RunConsoleCommand(...)
-	return false, "ran command %1 %% on the server"
+maestro.command("rcon", {"string:command"}, function(caller, cmd)
+	cmd = string.Explode(" ", cmd)
+	RunConsoleCommand(unpack(cmd))
+	return false, "ran command %1 on the server"
 end, [[
 Runs a console command on the server.]])
 maestro.command("lua", {"string:lua"}, function(caller, code)
