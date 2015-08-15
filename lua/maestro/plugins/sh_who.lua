@@ -14,8 +14,9 @@ if SERVER then
 end
 if CLIENT then
 	net.Receive("maestro_printranks", function()
+		chat.AddText(Color(255, 255, 255), "Current players:")
 		for _, v in pairs(player.GetAll()) do
-			print(v:Nick() .. string.rep(" ", 40 - #v:Nick()) .. v:GetUserGroup())
+			chat.AddText("\t", v, string.rep(" ", 40 - #v:Nick()), v:GetUserGroup())
 		end
 	end)
 end

@@ -10,6 +10,10 @@ maestro.command("help", {"command:optional"}, function(caller, cmd)
 		return true, "Invalid command!"
 	end
 	if caller then
+		maestro.chat(caller, Color(255, 255, 255), "Help text has been printed to your console.")
+		if not cmd then
+			maestro.chat(caller, Color(255, 255, 255), "Use \"help <command>\" for per-command help.")
+		end
 		caller:SendLua("maestro.help(" .. (cmd and "\"" .. cmd .. "\"" or "") .. ")")
 	else
 		return maestro.help(cmd)
