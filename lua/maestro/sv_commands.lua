@@ -33,7 +33,16 @@ local function convertTo(val, t, ply, cmd)
 	elseif t == "number" then
 		return tonumber(val)
 	elseif t == "boolean" then
-		return val == "true"
+		if val == "true" then
+			return true
+		elseif val == "1" then
+			return true
+		elseif val == "yes" then
+			return true
+		elseif val == "t" then
+			return true
+		end
+		return false
 	elseif t == "time" then
 		return maestro.toseconds(val)
 	end
