@@ -34,6 +34,7 @@ for k, v in pairs(files) do
 		end
 	end
 end
+hook.Call("maestro_prepluginload")
 print("\199\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\196\182")
 local files, folders = file.Find("maestro/plugins/*", "LUA")
 table.sort(files, function(a, b)
@@ -65,3 +66,4 @@ for k, v in pairs(files) do
 	end
 end
 print("\200\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\188")
+hook.Call("maestro_postpluginload")
