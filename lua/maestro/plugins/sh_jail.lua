@@ -93,6 +93,7 @@ maestro.hook("Think", "jail", function()
                 end
             end
         else
+            dojail(ply, false)
             jailed[ply] = nil
         end
     end
