@@ -1,6 +1,6 @@
 local votes = {}
 local voteid = 0
-maestro.command("vote", {"title", "option1", "option2", "option3", "option4", "option5", "option6", "option7", "option8", "option9"}, function(caller, title, ...)
+maestro.command("vote", {"title", "options:multiple"}, function(caller, title, ...)
 	local args = {...}
 	maestro.vote(title, args, function(option, voted, total)
 		if option then
