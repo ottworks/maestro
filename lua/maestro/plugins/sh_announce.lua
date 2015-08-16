@@ -16,7 +16,8 @@ maestro.command("announce", {"text", "title:optional", "style:optional"}, functi
         return false, "made an announcement with text %1 and title %2"
     end
     return false, "made an announcement with text %1"
-end)
+end, [[
+Broadcasts a message on everybody's screen.]])
 if SERVER then
     util.AddNetworkString("maestro_announce")
 end

@@ -22,7 +22,7 @@ maestro.command("rankremove", {"rank"}, function(caller, rank)
 	return false, "removed rank %1"
 end, [[
 Removes the rank from the server.]])
-maestro.command("rankperms", {"rank", "command:multiple"}, function(caller, rank, ...)
+maestro.command("ranksetperms", {"rank", "command:multiple"}, function(caller, rank, ...)
 	if not rank or not maestro.rankget(rank) then
 		return true, "Invalid rank!"
 	end
