@@ -24,4 +24,5 @@ maestro.command("gag", {"player:target", "boolean:state(optional)"}, function(ca
         end
         return false, "ungagged %1"
     end
-end)
+end, [[
+Disables voice chat for the target.]])
