@@ -32,8 +32,7 @@ basics of getting a server up and running. Please note that maestro is NOT
 compatible with FAdmin (or ULX). If you're running DarkRP, you'll need to remove
 it by browsing to darkrp/gamemode/modules and deleting the "fadmin" folder. You
 can view the availalbe commands and specific command help by using the console
-command "ms help" or the chat command "!help" at any time. View the next page
-with "ms tutorial 2".
+command "ms help" or the chat command "!help" at any time.
 ]]
 tutorial[2] = [[
     If you run "ms ranks", you'll see that there's a few ranks already: User,

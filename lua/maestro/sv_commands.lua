@@ -103,7 +103,7 @@ function maestro.runcmd(silent, cmd, args, ply)
 			if not endarg then
 				endarg = i - 1
 			end
-			local desc = string.match(maestro.commands[cmd].args[endarg], "[^:]+$")
+			local desc = string.match(maestro.commands[cmd].args[endarg] or "", "[^:]+$")
 			if not string.find(desc, "multiple") then
 				args[endarg] = args[endarg] .. " " .. args[i]
 				args[i] = nil
