@@ -161,7 +161,7 @@ end
 
 function maestro.sendranks(ply)
 	net.Start("maestro_ranks")
-		net.WriteTable(ranks)
+		net.WriteMeepTable(ranks)
 	net.Send(ply)
 end
 function maestro.broadcastranks()

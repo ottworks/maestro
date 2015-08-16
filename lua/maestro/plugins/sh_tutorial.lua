@@ -77,3 +77,10 @@ admin. Here's a list of the current valid flags:
     superadmin: Marks a rank as superadmin.
     anonymous: Hides a rank (people in this rank will appear as users).
 ]]
+
+
+
+
+tutorial[#tutorial + 1] = [[
+    there's no more tutorial dude, go away
+]]
