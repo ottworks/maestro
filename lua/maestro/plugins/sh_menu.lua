@@ -39,7 +39,7 @@ function maestromenuupdate(cmd)
 	maestro_menu:Call([[
 document.getElementById("commandname").innerHTML = "]] .. cmd .. [[";]])
 	maestro_menu:Call([[
-document.getElementById("commandhelp").innerHTML = "]] .. maestro.commands[cmd].help:gsub("\n", "<br>") .. [[";]])
+document.getElementById("commandhelp").innerHTML = "]] .. (maestro.commands[cmd].help or ""):gsub("\n", "<br>") .. [[";]])
 	local function args(t)
 		local ret = ""
 		for i = 1, #t do

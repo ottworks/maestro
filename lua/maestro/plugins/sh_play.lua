@@ -8,7 +8,8 @@ maestro.command("play", {"sound"}, function(caller, sound)
     net.Start("maestro_play")
         net.WriteString(sound)
     net.Broadcast()
-end)
+end, [[
+Plays a sound for everyone to hear.]])
 if SERVER then
     util.AddNetworkString("maestro_play")
 end
