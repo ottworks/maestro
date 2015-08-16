@@ -1,4 +1,5 @@
 --Code by Meepen (STEAM_0:0:44950009)
+--https://github.com/meepdarknessmeep/gmodutil/blob/master/lua/gmodutil/sh_nettables.lua
 --
 -- Sizes for ints to send
 --
