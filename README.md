@@ -18,4 +18,4 @@
 ![RTV](http://i.imgur.com/7AJIP4e.png)
 ![Scaling](http://i.imgur.com/P3tPcpn.jpg)
 
-To get started, just type !tutorial once ingame.
+# To get started, just type !tutorial ingame.
