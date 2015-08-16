@@ -25,6 +25,7 @@ Table of contents:
     2. Getting Started
     3. Adding a Rank/Introduction to Inheritance
     4. Flags
+Use !tutorial <page> to view a page.
 ]]
 tutorial[1] = [[
     Hi, thanks for using maesto. In this tutorial, we're going to go over the
