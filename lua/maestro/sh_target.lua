@@ -221,7 +221,7 @@ function maestro.split(input)
 			if a then
 				cursor = a
 				local t = input:sub(b, b)
-				if t == "\"" then
+				if t == "\"" or t == "”" then
 					quote = b
 				else
 					word = b
