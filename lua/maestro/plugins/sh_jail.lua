@@ -78,18 +78,22 @@ end, [[
 Jails a player for an optional amount of time.]])
 maestro.hook("Think", "jail", function()
     for ply, state in pairs(jailed) do
-        if state then
-            local base = jails[ply][1]
-            if IsValid(base) then
-                local dist = base:GetPos() - ply:GetPos()
-                local distz = base:GetPos() - ply:GetPos()
-                distz.x = 0
-                distz.y = 0
-                dist.z = 0
-                if dist:Length() > 32 or distz.z < -94 or distz.z > 5 then
-                    ply:SetPos(base:GetPos() + Vector(0, 0, 4))
+        if IsValid(ply) then
+            if state then
+                local base = jails[ply][1]
+                if IsValid(base) then
+                    local dist = base:GetPos() - ply:GetPos()
+                    local distz = base:GetPos() - ply:GetPos()
+                    distz.x = 0
+                    distz.y = 0
+                    dist.z = 0
+                    if dist:Length() > 32 or distz.z < -94 or distz.z > 5 then
+                        ply:SetPos(base:GetPos() + Vector(0, 0, 4))
+                    end
                 end
             end
+        else
+            jailed[ply] = nil
         end
     end
 end)

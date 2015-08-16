@@ -29,7 +29,7 @@ maestro.hook("PlayerAuthed", "maestro_PlayerAuthed", function(ply, steam, uid)
 	if not name then
 		maestro.userrank(steam, "user")
 	elseif not maestro.rankget(name).flags.anonymous then
-		ply:SetNWString("rank", name)
+		ply:SetNWString("rank", name or "user")
 	end
 	maestro.sendranks(ply)
 end)
