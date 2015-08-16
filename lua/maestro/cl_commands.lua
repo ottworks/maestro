@@ -21,21 +21,22 @@ end
 local function escape(str)
 	return string.gsub(str, "([%(%)%.%%%+%-%*%?%[%^%$])", "%%%1")
 end
-local function autocomplete(_, str)
+local function autocomplete(base, str)
+	base = base .. " "
 	str = string.sub(str, 2, -1)
 	local args = maestro.split(str)
 	local t = {}
 	if #args == 0 then
 		for k, v in pairs(maestro.commands) do
 			if maestro.rankget(maestro.userrank(LocalPlayer())).perms[k] then
-				table.insert(t, "ms " .. k)
+				table.insert(t, base .. k)
 			end
 		end
 	elseif #args == 1 then
 		for k, v in pairs(maestro.commands) do
 			if maestro.rankget(maestro.userrank(LocalPlayer())).perms[k] then
 				if string.sub(k, 1, #args[1]):lower() == args[1]:lower() then
-					table.insert(t, "ms " .. k)
+					table.insert(t, base .. k)
 				end
 			end
 		end
@@ -57,16 +58,14 @@ local function autocomplete(_, str)
 			if typ == "player" then
 				local plys = maestro.target(params[#params], LocalPlayer(), cmd)
 				for i = 1, #plys do
-					table.insert(t, "ms " .. cmd .. cnct .. "\"" .. plys[i]:Nick() .. "\"")
+					table.insert(t, base .. cmd .. cnct .. "\"" .. plys[i]:Nick() .. "\"")
 				end
 			elseif typ == "boolean" then
-				if string.sub("true", 1, #args[#args]):lower() == args[#args]:lower() and #args[#args] ~= 0 then
-					table.insert(t, "ms " .. cmd .. cnct .. "true")
-				elseif #args[#args] ~= 0 then
-					table.insert(t, "ms " .. cmd .. cnct .. "false")
-				else
-					table.insert(t, "ms " .. cmd .. cnct .. "true")
-					table.insert(t, "ms " .. cmd .. cnct .. "false")
+				local options = {"true", "false", "t", "f", "1", "0", "yes", "no"}
+				for i = 1, #options do
+					if string.sub(options[i], 1, #args[#args]):lower() == args[#args]:lower() then
+						table.insert(t, base .. cmd .. cnct .. options[i])
+					end
 				end
 			elseif typ == "rank" then
 				local ranks = {}
@@ -76,13 +75,13 @@ local function autocomplete(_, str)
 				end
 				for rank in pairs(ranks) do
 					if string.sub(rank, 1, #args[#args]):lower() == args[#args]:lower() then
-						table.insert(t, "ms " .. cmd .. cnct .. rank)
+						table.insert(t, base .. cmd .. cnct .. rank)
 					end
 				end
 			elseif typ == "command" then
 				for cmd2 in pairs(maestro.commands) do
 					if string.sub(cmd2, 1, #args[#args]):lower() == args[#args]:lower() then
-						table.insert(t, "ms " .. cmd .. cnct .. cmd2)
+						table.insert(t, base .. cmd .. cnct .. cmd2)
 					end
 				end
 			elseif typ == "sound" then
@@ -95,16 +94,23 @@ local function autocomplete(_, str)
 				local files, folders = file.Find("sound/" .. input .. "*", "GAME")
 				if files and folders then
 					for i = 1, #files do
-						table.insert(t, "ms " .. cmd .. cnct .. path .. files[i])
+						table.insert(t, base .. cmd .. cnct .. path .. files[i])
 					end
 					for i = 1, #folders do
 						if folders[i]:sub(1, #name) == name then
-							table.insert(t, "ms " .. cmd .. cnct .. path .. folders[i])
+							table.insert(t, base .. cmd .. cnct .. path .. folders[i])
 						end
 					end
 				end
+			elseif typ == "style" then
+				local options = {"primary", "success", "info", "warning", "danger"}
+				for i = 1, #options do
+					if string.sub(options[i], 1, #args[#args]):lower() == args[#args]:lower() then
+						table.insert(t, base .. cmd .. cnct .. options[i])
+					end
+				end
 			elseif types[#params] then
-				table.insert(t, "ms " .. cmd .. cnct .. "<" .. types[#params] .. ">")
+				table.insert(t, base .. cmd .. cnct .. "<" .. types[#params] .. ">")
 			end
 		end
 	end
