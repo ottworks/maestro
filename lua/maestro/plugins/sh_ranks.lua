@@ -160,7 +160,6 @@ maestro.command("userrankid", {"steamid", "rank"}, function(caller, id, rank)
 	if not maestro.rankget(rank) then
 		return true, "Invalid rank!"
 	end
-	--TODO: check perms
 	maestro.userrank(id, rank)
 	return false, "set the rank of %1 to %2"
 end, [[

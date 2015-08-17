@@ -213,10 +213,10 @@ net.Receive("maestro_cmd", function(len, ply)
 			local silent = net.ReadBool()
 			maestro.runcmd(silent, cmd, args, ply)
 		else
-			maestro.chat(ply, Color(255, 154, 27),  cmd .. ": Insufficient permissions!")
+			maestro.chat(ply, maestro.orange,  cmd .. ": Insufficient permissions!")
 		end
 	else
-		maestro.chat(ply, Color(255, 154, 27), "Unrecognized command: " .. cmd)
+		maestro.chat(ply, maestro.orange, "Unrecognized command: " .. cmd)
 	end
 end)
 
@@ -252,7 +252,7 @@ maestro.hook("PlayerSay", "maestro_command", function(ply, txt, team)
 			if maestro.rankget(maestro.userrank(ply)).perms[cmd] then
 				maestro.runcmd(team, cmd, args, ply)
 			else
-				ply:ChatPrint(cmd .. ": Insufficient permissions!")
+				maestro.chat(ply, maestro.orange, cmd, ": Insufficient permissions!")
 			end
 			return ""
 		end
