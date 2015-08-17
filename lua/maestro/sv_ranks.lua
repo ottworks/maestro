@@ -3,10 +3,12 @@ local newfile
 util.AddNetworkString("maestro_ranks")
 
 ranks, newfile = maestro.load("ranks")
-for rank, tab in pairs(ranks) do
-	if tab.inherits and tab.inherits ~= rank then
-		setmetatable(tab.perms, {__index = ranks[tab.inherits].perms})
-	end
+for rank, r in pairs(ranks) do
+	setmetatable(r.perms, {__index = function(tab, key)
+		if tab ~= ranks[r.inherits].perms then
+			return ranks[r.inherits].perms[key]
+		end
+	end})
 end
 function maestro.saveranks()
 	maestro.save("ranks", ranks)
@@ -76,18 +78,9 @@ end
 function maestro.rankgettable()
 	return ranks
 end
-function maestro.ranksetinherits(name, inherits, all)
+function maestro.ranksetinherits(name, inherits)
 	local r = ranks[name]
 	r.inherits = inherits
-	if name ~= inherits then
-		setmetatable(r.perms, {__index = ranks[inherits].perms})
-	end
-	if not all then
-		for rank, tab in pairs(ranks) do
-			maestro.ranksetinherits(rank, tab.inherits, true)
-		end
-		maestro.saveranks()
-	end
 end
 function maestro.rankflag(rank, name, bool)
 	if ranks[rank] then

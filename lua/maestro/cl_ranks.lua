@@ -1,10 +1,12 @@
 maestro.ranks = {}
 net.Receive("maestro_ranks", function()
 	local ranks = net.ReadMeepTable()
-	for rank, tab in pairs(ranks) do
-		if tab.inherits and tab.inherits ~= rank then
-			setmetatable(tab.perms, {__index = ranks[tab.inherits].perms})
-		end
+	for rank, r in pairs(ranks) do
+		setmetatable(r.perms, {__index = function(tab, key)
+			if tab ~= maestro.ranks[r.inherits].perms then
+				return maestro.ranks[r.inherits].perms[key]
+			end
+		end})
 	end
 	maestro.ranks = ranks
 end)
