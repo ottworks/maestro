@@ -193,7 +193,7 @@ net.Receive("maestro_menu", function()
 					</button>
 				</div>
 				<div class="navbar-header">
-					<a class="navbar-brand">maestro</a>
+					<a class="navbar-brand">Maestro</a>
 				</div>
 			</nav>
 			<h3>
