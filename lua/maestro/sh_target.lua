@@ -140,7 +140,6 @@ function maestro.target(val, ply, cmd)
 	return toSequence(ret)
 end
 
-
 function maestro.targetrank(val, ply)
 	if not val then return false end
 	local magic = "!*^$#<>"
@@ -175,7 +174,7 @@ function maestro.targetrank(val, ply)
 	local name = string.sub(val, cursor)
 	local ret = {}
 	if all then
-		ret = maestro.ranks or maestro.rankgettable()
+		ret = table.Copy(maestro.ranks or maestro.rankgettable())
 	elseif self then
 		if IsValid(ply) then
 			ret[maestro.userrank(ply)] = true
@@ -202,8 +201,6 @@ function maestro.targetrank(val, ply)
 	end
 	return ret
 end
-
-
 
 local f1 = "%s+%S"
 local f2 = "[^%s\"]%s"
