@@ -156,6 +156,15 @@ maestro.command("userrank", {"player:target", "rank"}, function(caller, targets,
 	return false, "set the rank of %1 to %2"
 end, [[
 Sets the rank of this user.]])
+maestro.command("userrankid", {"steamid", "rank"}, function(caller, id, rank)
+	if not maestro.rankget(rank) then
+		return true, "Invalid rank!"
+	end
+	--TODO: check perms
+	maestro.userrank(id, rank)
+	return false, "set the rank of %1 to %2"
+end, [[
+Sets the rank of this user.]])
 
 maestro.command("reseteverythingtodefault", {"boolean:areyousure?", "boolean:areyousureyou'resure?"}, function(caller, sure1, sure2)
 	if sure1 and sure2 then

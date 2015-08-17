@@ -22,7 +22,7 @@ local function convertTo(val, t, ply, cmd)
 		if not ply then return val end
 		local cr = maestro.rankget(maestro.userrank(ply)).canrank
 		if cr then
-			local ranks = maestro.targetrank(cr, ply)
+			local ranks = maestro.targetrank(cr, maestro.userrank(ply))
 			if ranks[val] then
 				return val
 			end
@@ -45,6 +45,12 @@ local function convertTo(val, t, ply, cmd)
 		return false
 	elseif t == "time" then
 		return maestro.toseconds(val)
+	elseif t == "steamid" then
+		local ret = maestro.cantargetid(ply:SteamID(), val, cmd)
+		if not ret then
+			return false, "You can't target this SteamID!"
+		end
+		return val
 	end
 	return val
 end
@@ -114,7 +120,7 @@ function maestro.runcmd(silent, cmd, args, ply)
 		local err
 		args[i], err = convertTo(args[i], string.match(maestro.commands[cmd].args[i] or "", "[^:]+"), ply, cmd)
 		if err then
-			handleError(ply, cmd, "You can't target this rank!")
+			handleError(ply, cmd, err)
 			return
 		end
 	end
@@ -177,7 +183,7 @@ function maestro.runcmd(silent, cmd, args, ply)
 			local ranks = {}
 			for name, tab in pairs(maestro.rankgettable()) do
 				local cr = tab.canrank
-				local rs = maestro.targetrank(cr, ply)
+				local rs = maestro.targetrank(cr, maestro.userrank(ply))
 				if rs[maestro.userrank(ply)] then
 					ranks[name] = true
 				end

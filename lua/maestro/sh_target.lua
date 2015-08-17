@@ -140,7 +140,7 @@ function maestro.target(val, ply, cmd)
 	return toSequence(ret)
 end
 
-function maestro.targetrank(val, ply)
+function maestro.targetrank(val, plyrank)
 	if not val then return false end
 	local magic = "!*^$#<>"
 	local cursor = 1
@@ -176,8 +176,8 @@ function maestro.targetrank(val, ply)
 	if all then
 		ret = table.Copy(maestro.ranks or maestro.rankgettable())
 	elseif self then
-		if IsValid(ply) then
-			ret[maestro.userrank(ply)] = true
+		if IsValid(plyrank) then
+			ret[plyrank] = true
 		end
 	elseif greater then
 		for rank, tab in pairs(maestro.ranks or maestro.rankgettable()) do
@@ -250,4 +250,14 @@ function maestro.split(input)
 		end
 	end
 	return out
+end
+
+function maestro.cantargetid(id1, id2, cmd)
+	local perm = maestro.rankgetpermcantarget(maestro.userrank(id1), cmd)
+	local ct = maestro.rankgetcantarget(maestro.userrank(id1))
+	if type(perm) == "string" then
+		ct = perm
+	end
+	local ranks = maestro.targetrank(ct, maestro.userrank(id1))
+	return ranks[maestro.userrank(id2)]
 end
