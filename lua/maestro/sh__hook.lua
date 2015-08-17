@@ -1,8 +1,8 @@
 --being ULX without actually being ULX
-maestro.hooks = maestro.hooks or {}
+maestro.hooks = {}
 function maestro.hook(name, id, func)
     local n = hook.GetTable()[name]
-    if not n or not n.maestro_hook then
+    if not n or not n.maestro_hook or not maestro.hooks[name] then
         maestro.hooks[name] = {}
         hook.Add(name, "maestro_hook", function(...)
             if not maestro.hooks[name] then return end
