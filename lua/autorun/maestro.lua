@@ -100,8 +100,8 @@ new feature or mechanismsm.
 			elseif patch > curpatch then
 				msg = [[
 A new patch is available for
-Maestro. Patches offer fixes bugs
-and errors.
+Maestro. Patches offer fixes for
+bugs and errors.
 ]]
 			end
 			if msg then
