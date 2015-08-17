@@ -11,6 +11,8 @@
  * rapidfire: Unlimited ammo, unlimited recoil, unlimited fun.
  * scale: Shrink or grow players in size! Works perfectly with all guns/tools (except camera because rubat is lazy).
  * tutorial: Help text on most aspects of the mod.
+ * team: Set a player's team (DarkRP supported)
+ * queue: Queue up commands for later.
  
 # Screenshots
 ![Menu](http://i.imgur.com/euS8waY.png)
