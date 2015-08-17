@@ -109,6 +109,12 @@ local function autocomplete(base, str)
 						table.insert(t, base .. cmd .. cnct .. options[i])
 					end
 				end
+			elseif typ == "team" then
+				for id, tab in pairs(team.GetAllTeams()) do
+					if string.sub(tab.Name or "", 1, #args[#args]):lower() == args[#args]:lower() then
+						table.insert(t, base .. cmd .. cnct .. tab.Name)
+					end
+				end
 			elseif types[#params] then
 				table.insert(t, base .. cmd .. cnct .. "<" .. types[#params] .. ">")
 			end
