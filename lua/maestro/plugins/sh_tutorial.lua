@@ -25,6 +25,7 @@ Table of contents:
     2. Getting Started
     3. Adding a Rank/Introduction to Inheritance
     4. Flags
+    5. CanTarget
 Use !tutorial <page> to view a page.
 ]]
 tutorial[1] = [[
@@ -77,7 +78,21 @@ admin. Here's a list of the current valid flags:
     superadmin: Marks a rank as superadmin.
     anonymous: Hides a rank (people in this rank will appear as users).
 ]]
+tutorial[5] = [[
+    Targetting players is governed by a special "code". You can type a partial
+name or use these tokens:
 
+* - Target all players
+^ - Target self
+$ - Target SteamID or EntIndex
+# - Target group
+< - Target players in ranks below this one
+> - Target players in ranks above this one
+! - Inverse selection
+
+The target string is used for targetting players, configuring which players
+a rank can target, and what ranks a member of a rank can set other players to.
+]]
 
 
 
