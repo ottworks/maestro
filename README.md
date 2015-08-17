@@ -18,6 +18,7 @@
 ![Menu](http://i.imgur.com/euS8waY.png)
 ![Voting](http://i.imgur.com/a6fWbNU.png)
 ![RTV](http://i.imgur.com/7AJIP4e.png)
+![Announcements](http://i.imgur.com/PnyIXvV.png)
 ![Scaling](http://i.imgur.com/P3tPcpn.jpg)
 
 # To get started, just type !tutorial ingame.
