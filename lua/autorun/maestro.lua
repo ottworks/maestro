@@ -85,6 +85,7 @@ hook.Add("InitPostEntity", "maestro_updatecheck", function()
 			curpatch = tonumber(curpatch) or 0
 			local msg
 			if major > curmajor then
+--2345678901234567890123456789012
 				msg = [[
 A new major version of Maestro is
 available. Note that new major
@@ -107,7 +108,7 @@ bugs and errors.
 			if msg then
 				print("\201\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\187")
 				for w in string.gmatch(msg, "[^\n]+") do
-					print("\186" .. w .. string.rep(" ", 34 - #w) .. "\186")
+					print("\186 " .. w .. string.rep(" ", 32 - #w) .. " \186")
 				end
 				print("\200\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\188")
 			end
