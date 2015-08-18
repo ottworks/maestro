@@ -1,4 +1,4 @@
-maestro.command("alias", {"player:target", "name"}, function(caller, targets, name)
+maestro.command("alias", {"player:target", "name:optional"}, function(caller, targets, name)
     if #targets == 0 then
         return true, "Query matched no players."
     end
@@ -19,7 +19,7 @@ maestro.command("alias", {"player:target", "name"}, function(caller, targets, na
     end
     return false, "set the alias of %1 to %2"
 end, [[
-Sets a player's name]])
+Sets a player's name. Call without a name to restore.]])
 local PLAYER = FindMetaTable("Player")
 PLAYER.NickOld = PLAYER.NickOld or PLAYER.Nick
 function PLAYER:Nick()
