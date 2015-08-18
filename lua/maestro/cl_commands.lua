@@ -71,7 +71,7 @@ local function autocomplete(base, str)
 				local ranks = {}
 				local cr = maestro.rankget(maestro.userrank(LocalPlayer())).canrank
 				if cr then
-					ranks = maestro.targetrank(cr, maestro.userrank(ply))
+					ranks = maestro.targetrank(cr, maestro.userrank(LocalPlayer()))
 				end
 				for rank in pairs(ranks) do
 					if string.sub(rank, 1, #args[#args]):lower() == args[#args]:lower() then
