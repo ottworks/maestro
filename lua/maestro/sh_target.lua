@@ -202,10 +202,7 @@ function maestro.targetrank(val, plyrank)
 	return ret
 end
 
-local f1 = "%s+%S"
-local f2 = "[^%s\"]%s"
-local f3 = "\"%s"
-function maestro.split(input)
+function maestro.split(input, keepq)
 	input = " " .. input .. " "
 	local cursor = 0
 	local quote = false
@@ -214,7 +211,7 @@ function maestro.split(input)
 	while cursor < #input do
 		local a, b
 		if not quote and not word then
-			a, b = input:find(f1, cursor)
+			a, b = input:find("%s+%S", cursor)
 			if a then
 				cursor = a
 				local t = input:sub(b, b)
@@ -225,14 +222,18 @@ function maestro.split(input)
 				end
 			end
 		elseif quote then
-			a, b = input:find(f3, cursor)
+			a, b = input:find("\"%s", cursor)
 			if a then
 				cursor = a
-				table.insert(out, input:sub(quote + 1, a - 1))
+				if keepq then
+					table.insert(out, input:sub(quote, a))
+				else
+					table.insert(out, input:sub(quote + 1, a - 1))
+				end
 				quote = false
 			end
 		else
-			a, b = input:find(f2, cursor)
+			a, b = input:find("[^%s\"]%s", cursor)
 			if a then
 				cursor = a
 				table.insert(out, input:sub(word, a))

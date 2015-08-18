@@ -24,7 +24,7 @@ end
 local function autocomplete(base, str)
 	base = base .. " "
 	str = string.sub(str, 2, -1)
-	local args = maestro.split(str)
+	local args = maestro.split(str, true)
 	local t = {}
 	if #args == 0 then
 		for k, v in pairs(maestro.commands) do
