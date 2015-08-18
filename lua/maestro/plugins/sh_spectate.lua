@@ -1,5 +1,5 @@
 local specs = {}
-maestro.command("spectate", {"player:target"}, function(caller, targets)
+maestro.command("spectate", {"player:target(optional)"}, function(caller, targets)
     if targets then
         if #targets == 0 then
             return true, "Query matched no players."
@@ -21,7 +21,7 @@ maestro.command("spectate", {"player:target"}, function(caller, targets)
         return false, "stopped spectating"
     end
 end, [[
-Spectates a player.]])
+Spectates a player. Call with no arguments to unspectate.]])
 maestro.hook("SetupPlayerVisibility", "spectate", function(ply)
     if specs[ply] then
         AddOriginToPVS(specs[ply]:EyePos())
