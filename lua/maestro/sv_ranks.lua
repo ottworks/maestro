@@ -81,6 +81,7 @@ end
 function maestro.ranksetinherits(name, inherits)
 	local r = ranks[name]
 	r.inherits = inherits
+	maestro.saveranks()
 end
 function maestro.rankflag(rank, name, bool)
 	if ranks[rank] then
@@ -166,9 +167,9 @@ function maestro.sendranks(ply)
 	net.Send(ply)
 end
 function maestro.broadcastranks()
-	for _, v in pairs(player.GetAll()) do
-		maestro.sendranks(v)
-	end
+	net.Start("maestro_ranks")
+		net.WriteMeepTable(ranks)
+	net.Broadcast()
 end
 
 if newfile then
