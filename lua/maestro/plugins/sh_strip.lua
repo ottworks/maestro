@@ -1,4 +1,4 @@
-maestro.command("strip", {"player:target", "boolean:state(optional)"}, function(caller, targets, state)
+maestro.command("strip", {"player:target", "boolean:state(optional)", "boolean:reset(optional)"}, function(caller, targets, state, reset)
 	if not targets or #targets == 0 then
 		return true, "Query matched no players."
 	end
@@ -19,6 +19,10 @@ maestro.command("strip", {"player:target", "boolean:state(optional)"}, function(
 				ply.maestro_strip = weps
 				ply:StripWeapons()
 			end
+		elseif state and reset then
+			ply.maestro_strip = nil
+			ply:StripWeapons()
+			hook.Call("PlayerLoadout", GAMEMODE, ply)
 		elseif state then
 			if not ply.maestro_strip then
 				local weps = ply:GetWeapons()
@@ -41,6 +45,8 @@ maestro.command("strip", {"player:target", "boolean:state(optional)"}, function(
 	end
 	if state == nil then
 		return false, "toggled weapon strip on %1"
+	elseif state and reset then
+		return false, "reset the weapons of %1"
 	elseif state then
 		return false, "stripped weapons from %1"
 	else
@@ -50,7 +56,8 @@ end, [[
 Strips a player of their weapons. No weapons can be picked up while a player is stripped.
 If no player(s) are specified, it will toggle strip mode on you.
 If player(s) are specified but no boolean is specified, it will toggle strip mode on the players.
-If both player(s) and boolean are specified, it will set strip mode on the players to the boolean's value.]])
+If both player(s) and boolean are specified, it will set strip mode on the players to the boolean's value.
+The reset argument will strip all their weapons, then give them back the default ones.]])
 
 maestro.hook("PlayerDeath", "maestro_strip", function(v)
 	if v.maestro_strip then
