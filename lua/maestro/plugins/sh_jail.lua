@@ -46,6 +46,9 @@ maestro.command("jail", {"player:target", "boolean:state(optional)", "time:optio
         for i = 1, #targets do
             local ply = targets[i]
             jailed[ply] = not jailed[ply]
+            if jailed[ply] then
+                dojail(ply, false)
+            end
             dojail(ply, jailed[ply])
         end
         return false, "toggled jail on %1"
@@ -53,6 +56,9 @@ maestro.command("jail", {"player:target", "boolean:state(optional)", "time:optio
         for i = 1, #targets do
             local ply = targets[i]
             jailed[ply] = state
+            if state == true then
+                dojail(ply, false)
+            end
             dojail(ply, jailed[ply])
             if state and time then
                 timer.Create("jailtimer_" .. ply:EntIndex(), time, 1, function()

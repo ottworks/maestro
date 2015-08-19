@@ -25,7 +25,8 @@ Table of contents:
     2. Getting Started
     3. Adding a Rank/Introduction to Inheritance
     4. Flags
-    5. CanTarget
+    5. Targeting
+    6. Time
 Use !tutorial <page> to view a page.
 ]]
 tutorial[1] = [[
@@ -33,7 +34,7 @@ tutorial[1] = [[
 basics of getting a server up and running. Please note that maestro is NOT
 compatible with FAdmin (or ULX). If you're running DarkRP, you'll need to remove
 it by browsing to darkrp/gamemode/modules and deleting the "fadmin" folder. You
-can view the availalbe commands and specific command help by using the console
+can view the available commands and specific command help by using the console
 command "ms help" or the chat command "!help" at any time.
 ]]
 tutorial[2] = [[
@@ -74,6 +75,7 @@ recognize maestro ranks as admin and superadmin, we have flags:
 
     This command tells the game that the rank "moderator" should be considered
 admin. Here's a list of the current valid flags:
+
     admin: Marks a rank as admin.
     superadmin: Marks a rank as superadmin.
     anonymous: Hides a rank (people in this rank will appear as users).
@@ -82,18 +84,38 @@ tutorial[5] = [[
     Targetting players is governed by a special "code". You can type a partial
 name or use these tokens:
 
-* - Target all players
-^ - Target self
-$ - Target SteamID or EntIndex
-# - Target group
-< - Target players in ranks below this one
-> - Target players in ranks above this one
-! - Inverse selection
+    * - Target all players
+    ^ - Target self
+    $ - Target SteamID or EntIndex
+    # - Target group
+    < - Target players in ranks below this one
+    > - Target players in ranks above this one
+    ! - Inverse selection
 
 The target string is used for targetting players, configuring which players
 a rank can target, and what ranks a member of a rank can set other players to.
 ]]
+tutorial[6] = [[
+    When banning someone (or anything else on a timer), you aren't just limited
+to seconds. Time can be expressed in sets of numbers and letters, for example:
+3w4d5m2s translates to 3 weeks, 4 days, 5 minutes, and 2 seconds. Here's a list
+of all the available timecodes:
 
+    s: seconds
+    m: minutes
+    h: hours
+    d: days
+    w: weeks
+    M: months (~30.43 days)
+    q: quarters (1/4 year)
+    y: years
+    D: decades
+    c: centuries
+    a: ages (1,000 centuries)
+    e: epochs (10 ages)
+    E: eras (10 epochs)
+    A: aeons (10 eras)
+]]
 
 
 tutorial[#tutorial + 1] = [[
