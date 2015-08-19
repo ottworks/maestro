@@ -20,6 +20,10 @@ maestro.hook("PhysgunDrop", "physgunplayers", function(ply, ent)
 end)
 maestro.hook("Think", "physgunplayers", function()
     for ply, pos in pairs(grabbed) do
-        grabbed[ply] = ply:GetPos()
+        if IsValid(ply) then
+            grabbed[ply] = ply:GetPos()
+        else
+            grabbed[ply] = nil
+        end
     end
 end)
