@@ -45,7 +45,7 @@ local function convertTo(val, t, ply, cmd)
 		return false
 	elseif t == "time" then
 		return maestro.toseconds(val)
-	elseif t == "steamid" then
+	elseif t == "steamid" and IsValid(ply) then
 		local ret = maestro.cantargetid(ply:SteamID(), val, cmd)
 		if not ret then
 			return false, "You can't target this SteamID!"
@@ -137,6 +137,8 @@ function maestro.runcmd(silent, cmd, args, ply)
 			return
 		end
 	end
+	local ret = hook.Call("maestro_command", nil, ply, cmd, args)
+	if ret then return end
 	local err, msg = maestro.commands[cmd].callback(ply, unpack(args))
 	if err then
 		handleError(ply, cmd, msg)

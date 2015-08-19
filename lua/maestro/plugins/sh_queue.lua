@@ -43,6 +43,10 @@ timer.Create("maestro_queue", 1, 0, function()
                     if maestro.rankget(maestro.userrank(player.GetBySteamID(id))).perms[cmd] then
                         maestro.runcmd(false, cmd, split, player.GetBySteamID(id))
                     end
+                elseif maestro.userrank(id) == "root" then
+                    tab[stamp] = nil
+                    maestro.save("queue", queue)
+                    maestro.runcmd(false, cmd, split)
                 end
             end
         end
