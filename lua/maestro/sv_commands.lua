@@ -116,6 +116,11 @@ function maestro.runcmd(silent, cmd, args, ply)
 			end
 		end
 	end
+	local ident = "(Console)"
+	if IsValid(ply) then
+		ident = ply:Nick() .. "(" .. ply:SteamID() .. ")"
+	end
+	maestro.log("log_" .. os.date("%y-%m-%d"), os.date("[%H:%M] ") .. ident .. ": ms " .. cmd .. " " .. table.concat(args, " "))
 	for i = 1, #args do
 		local err
 		args[i], err = convertTo(args[i], string.match(maestro.commands[cmd].args[i] or "", "[^:]+"), ply, cmd)
@@ -256,5 +261,7 @@ maestro.hook("PlayerSay", "maestro_command", function(ply, txt, team)
 			end
 			return ""
 		end
+	else
+		maestro.log("log_" .. os.date("%y-%m-%d"), os.date("[%H:%M] ") .. ply:Nick() .. "(" .. ply:SteamID() .. "): " .. txt)
 	end
 end)
