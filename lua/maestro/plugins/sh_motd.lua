@@ -80,7 +80,7 @@ if CLIENT then
 </head>
 
 <body>
-<button onclick="console.log('maestro_close')">Close MOTD</button>
+<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onclick="console.log('maestro_close')">Close MOTD</button>
 <div class="container-fluid">
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
