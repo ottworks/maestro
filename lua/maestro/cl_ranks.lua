@@ -7,6 +7,11 @@ net.Receive("maestro_ranks", function()
 				return maestro.ranks[r.inherits].perms[key]
 			end
 		end})
+		setmetatable(r.flags, {__index = function(tab, key)
+			if tab ~= maestro.ranks[r.inherits].flags then
+				return maestro.ranks[r.inherits].flags[key]
+			end
+		end})
 	end
 	maestro.ranks = ranks
 end)

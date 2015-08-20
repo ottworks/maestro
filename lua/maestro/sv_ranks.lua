@@ -9,6 +9,11 @@ for rank, r in pairs(ranks) do
 			return ranks[r.inherits].perms[key]
 		end
 	end})
+	setmetatable(r.flags, {__index = function(tab, key)
+		if tab ~= ranks[r.inherits].flags then
+			return ranks[r.inherits].flags[key]
+		end
+	end})
 end
 function maestro.saveranks()
 	maestro.save("ranks", ranks)
