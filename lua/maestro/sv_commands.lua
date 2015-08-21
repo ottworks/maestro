@@ -138,7 +138,12 @@ function maestro.runcmd(silent, cmd, args, ply)
 		end
 	end
 	local ret = hook.Call("maestro_command", nil, ply, cmd, args)
-	if ret then return end
+	if ret then
+		if type(ret) == "string" then
+			handleError(ply, cmd, ret)
+		end
+		return
+	end
 	local err, msg = maestro.commands[cmd].callback(ply, unpack(args))
 	if err then
 		handleError(ply, cmd, msg)
