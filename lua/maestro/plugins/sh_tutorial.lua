@@ -30,7 +30,7 @@ Table of contents:
 Use !tutorial <page> to view a page.
 ]]
 tutorial[1] = [[
-    Hi, thanks for using maesto. In this tutorial, we're going to go over the
+    Hi, thanks for using maestro. In this tutorial, we're going to go over the
 basics of getting a server up and running. Please note that maestro is NOT
 compatible with FAdmin (or ULX). If you're running DarkRP, you'll need to remove
 it by browsing to darkrp/gamemode/modules and deleting the "fadmin" folder. You
