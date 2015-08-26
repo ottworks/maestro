@@ -32,16 +32,16 @@ function maestro.definelogproc(type, log, read)
 	}
 end
 
-function maestro.load(name)
+function maestro.load(name, callback)
 	if dataprocs[name] then
-		return dataprocs[name].load(name)
+		callback(dataprocs[name].load(name))
 	else
 		local newfile = false
 		if not file.Exists("maestro/" .. name .. ".txt", "DATA") then
 			file.Write("maestro/" .. name .. ".txt", "")
 			newfile = true
 		end
-		return util.JSONToTable(file.Read("maestro/" .. name .. ".txt")) or {}, newfile
+		callback(util.JSONToTable(file.Read("maestro/" .. name .. ".txt")) or {}, newfile)
 	end
 end
 

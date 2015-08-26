@@ -46,29 +46,31 @@ maestro.command("gimpremove", {"number:line"}, function(caller, line)
 end, [[
 Removes a gimp line.]])
 if not SERVER then return end
-gimps, newfile = maestro.load("gimps")
-if newfile then
-    gimps = {
-        "You make my software turn into hardware!",
-        "Are you sitting on the F5 key? Cause your ass is refreshing.",
-        "You had me at \"Hello World.\"",
-        "Want to see my HARD Disk? I promise it isn't 3.5 inches and it ain't floppy.",
-        "You still use Internet Explorer? You must like it nice and slow.",
-        "My servers never go down... but I do!",
-        "Are you a computer keyboard? Because you're my type.",
-        "How about we do a little peer-to-peer saliva swapping?",
-        "Mind if I run a sniffer to see if your ports are open?",
-        "I was hoping you wouldn't block my pop-up.",
-        "I'd switch to emacs for you.",
-        "Come to my 127.0.0.1 and I’ll give you sudo access.",
-        "You auto-complete me.",
-        "How about we go home and you handle my exception?",
-        "Hey baby, you’re hotter than magma and have more cleavage than a sheet silicate.",
-        "Are you a sample of carbon? Because I’d like to date you.",
-        "I wont take you for granite, baby.",
-    }
-    maestro.save("gimps", gimps)
-end
+maestro.load("gimps", function(val, newfile)
+    gimps = val
+    if newfile then
+        gimps = {
+            "You make my software turn into hardware!",
+            "Are you sitting on the F5 key? Cause your ass is refreshing.",
+            "You had me at \"Hello World.\"",
+            "Want to see my HARD Disk? I promise it isn't 3.5 inches and it ain't floppy.",
+            "You still use Internet Explorer? You must like it nice and slow.",
+            "My servers never go down... but I do!",
+            "Are you a computer keyboard? Because you're my type.",
+            "How about we do a little peer-to-peer saliva swapping?",
+            "Mind if I run a sniffer to see if your ports are open?",
+            "I was hoping you wouldn't block my pop-up.",
+            "I'd switch to emacs for you.",
+            "Come to my 127.0.0.1 and I’ll give you sudo access.",
+            "You auto-complete me.",
+            "How about we go home and you handle my exception?",
+            "Hey baby, you’re hotter than magma and have more cleavage than a sheet silicate.",
+            "Are you a sample of carbon? Because I’d like to date you.",
+            "I wont take you for granite, baby.",
+        }
+        maestro.save("gimps", gimps)
+    end
+end)
 local cur = 1
 maestro.hook("PlayerSay", "gimp", function(ply)
     if gimped[ply] then

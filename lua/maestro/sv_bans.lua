@@ -1,6 +1,9 @@
-maestro.bans = maestro.load("bans")
+maestro.load("bans", function(val)
+	maestro.bans = val
+end)
 
 function maestro.ban(id, time, reason)
+	if not maestro.bans then return end
 	local ply
 	if type(id) == "Player" then
 		ply = id
@@ -28,6 +31,7 @@ function maestro.ban(id, time, reason)
 	maestro.log("banlog", {type = "ban", id = id, date = os.time(), length = time, reason = reason, prevbans = prevbans, perma = (time == 0)})
 end
 function maestro.unban(id, reason)
+	if not maestro.bans then return end
 	local ban = maestro.bans[id]
 	if ban then
 		maestro.bans[id] = {unban = os.time(), reason = ban.reason, prevbans = ban.prevbans, perma = false}
@@ -37,6 +41,7 @@ function maestro.unban(id, reason)
 end
 
 maestro.hook("CheckPassword", "maestro_bans", function(id64)
+	if not maestro.bans then return end
 	local id = util.SteamIDFrom64(id64)
 	local ban = maestro.bans[id]
 	if ban then

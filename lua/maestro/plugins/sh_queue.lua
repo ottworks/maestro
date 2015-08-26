@@ -23,8 +23,9 @@ When not run from the server console, the initiating player needs to be connecte
 
 
 if CLIENT then return end
-local newfile
-queue, newfile = maestro.load("queue")
+maestro.load("queue", function(val)
+    queue = val
+end)
 
 timer.Create("maestro_queue", 1, 0, function()
     for id, tab in pairs(queue) do

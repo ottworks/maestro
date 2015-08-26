@@ -1,8 +1,12 @@
 local ranks = {}
-local newfile
 util.AddNetworkString("maestro_ranks")
 
-ranks, newfile = maestro.load("ranks")
+maestro.load("ranks", function(val, newfile)
+	ranks = val
+	if newfile then
+		maestro.RESETRANKS()
+	end
+end)
 for rank, r in pairs(ranks) do
 	setmetatable(r.perms, {__index = function(tab, key)
 		if tab ~= ranks[r.inherits].perms then
@@ -175,8 +179,4 @@ function maestro.broadcastranks()
 	net.Start("maestro_ranks")
 		net.WriteMeepTable(ranks)
 	net.Broadcast()
-end
-
-if newfile then
-	maestro.RESETRANKS()
 end

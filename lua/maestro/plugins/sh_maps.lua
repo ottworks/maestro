@@ -1,6 +1,3 @@
-if SERVER then
-	maestro.maps = maestro.load("bans")
-end
 local nominated = {}
 local rtv = {}
 maestro.command("map", {"map"}, function(caller, map)
