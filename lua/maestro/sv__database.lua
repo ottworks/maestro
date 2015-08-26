@@ -11,9 +11,9 @@ end
 	Example code:
 	maestro.definedataproc("ranks", function(name, tab)
 		saveSomeThingOrMaybeConvertItToADifferentStructureTheChoiceIsYours(tab)
-	end, function(name)
+	end, function(name, callback)
 		local tab = loadSomeThingOrDoSomethingMoreComplexIDontKnowYouDontNeedNoMan(name)
-		return tab
+		callback(tab)
 	end)
 --]]
 local dataprocs = {}
@@ -34,7 +34,7 @@ end
 
 function maestro.load(name, callback)
 	if dataprocs[name] then
-		callback(dataprocs[name].load(name))
+		dataprocs[name].load(name, callback)
 	else
 		local newfile = false
 		if not file.Exists("maestro/" .. name .. ".txt", "DATA") then
