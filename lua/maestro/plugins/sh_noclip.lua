@@ -31,7 +31,8 @@ maestro.hook("PlayerNoClip", "maestro_noclip", function(ply, state)
 		ply:SetMoveType(MOVETYPE_WALK)
 		return false
 	end
-	if maestro.rankget(maestro.userrank(ply)) and maestro.rankget(maestro.userrank(ply)).perms.noclip then
+	local r = maestro.rankget(maestro.userrank(ply))
+	if r and r.perms and r.perms.noclip then
 		return true
 	end
 end)
