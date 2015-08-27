@@ -1,24 +1,6 @@
 local ranks = {}
 util.AddNetworkString("maestro_ranks")
 
-maestro.load("ranks", function(val, newfile)
-	ranks = val
-	if newfile then
-		maestro.RESETRANKS()
-	end
-end)
-for rank, r in pairs(ranks) do
-	setmetatable(r.perms, {__index = function(tab, key)
-		if tab ~= ranks[r.inherits].perms then
-			return ranks[r.inherits].perms[key]
-		end
-	end})
-	setmetatable(r.flags, {__index = function(tab, key)
-		if tab ~= ranks[r.inherits].flags then
-			return ranks[r.inherits].flags[key]
-		end
-	end})
-end
 function maestro.saveranks()
 	maestro.save("ranks", ranks)
 	maestro.broadcastranks()
@@ -180,3 +162,22 @@ function maestro.broadcastranks()
 		net.WriteMeepTable(ranks)
 	net.Broadcast()
 end
+
+maestro.load("ranks", function(val, newfile)
+	ranks = val
+	for rank, r in pairs(ranks) do
+		setmetatable(r.perms, {__index = function(tab, key)
+			if tab ~= ranks[r.inherits].perms then
+				return ranks[r.inherits].perms[key]
+			end
+		end})
+		setmetatable(r.flags, {__index = function(tab, key)
+			if tab ~= ranks[r.inherits].flags then
+				return ranks[r.inherits].flags[key]
+			end
+		end})
+	end
+	if newfile then
+		maestro.RESETRANKS()
+	end
+end)

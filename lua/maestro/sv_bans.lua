@@ -45,7 +45,7 @@ maestro.hook("CheckPassword", "maestro_bans", function(id64)
 	local id = util.SteamIDFrom64(id64)
 	local ban = maestro.bans[id]
 	if ban then
-		if ban.unban > os.time() then
+		if tonumber(ban.unban) > os.time() then
 			local unban = "\n(" .. maestro.time(ban.unban - os.time(), 2) .. " remaining)"
 			return false, "Banned: " .. string.sub(ban.reason, 1, 255 - 8 - #unban) .. unban
 		elseif ban.perma then
