@@ -14,6 +14,9 @@
  * team: Set a player's team (DarkRP supported)
  * queue: Queue up commands for later.
  
+# Extra plugins
+ * [tmysql4/SQLite/MySQL support](http://github.com/daaott/maestro-mysql/)
+ 
 # Screenshots
 ![Menu](http://i.imgur.com/euS8waY.png)
 ![Voting](http://i.imgur.com/a6fWbNU.png)
