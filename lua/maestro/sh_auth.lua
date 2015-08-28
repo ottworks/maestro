@@ -2,10 +2,12 @@ local meta = FindMetaTable("Player")
 if not meta then return end
 
 function meta:IsAdmin()
+	if not maestro.rankget(self:GetUserGroup()).flags then return end
 	return maestro.rankget(self:GetUserGroup()).flags.admin
 end
 
 function meta:IsSuperAdmin()
+	if not maestro.rankget(self:GetUserGroup()).flags then return end
 	return maestro.rankget(self:GetUserGroup()).flags.superadmin
 end
 

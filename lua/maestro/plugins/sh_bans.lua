@@ -34,44 +34,84 @@ maestro.command("banlog", {"player:target"}, function(caller, targets)
 		return true, "Query matched more than 1 player."
 	end
 	local id = targets[1]:SteamID()
-	net.Start("maestro_banlog")
-		net.WriteEntity(targets[1])
-		net.WriteString(targets[1]:SteamID())
+	if caller then
+		net.Start("maestro_banlog")
+			net.WriteEntity(targets[1])
+			net.WriteString(targets[1]:SteamID())
+			for json in maestro.read("banlog", true) do
+				local item = util.JSONToTable(json)
+				if item.id == id then
+					net.WriteString(" ")
+					net.WriteBool(item.type == "ban")
+					net.WriteString(item.reason)
+					if item.type == "ban" then
+						net.WriteUInt(math.floor(item.length), 32)
+						net.WriteUInt(item.prevbans + 1, 16)
+						net.WriteBool(item.perma)
+					end
+				end
+			end
+		net.Send(caller)
+	else
+		MsgC(Color(255, 255, 255), "Banlog for ", targets[1]:Nick() .. " ", "(", id, "):\n")
 		for json in maestro.read("banlog", true) do
 			local item = util.JSONToTable(json)
 			if item.id == id then
-				net.WriteString(" ")
-				net.WriteBool(item.type == "ban")
-				net.WriteString(item.reason)
-				if item.type == "ban" then
-					net.WriteUInt(math.floor(item.length), 32)
-					net.WriteUInt(item.prevbans + 1, 16)
-					net.WriteBool(item.perma)
+				local ban = item.type == "ban"
+				local reason = item.reason or "no reason"
+				local date = item.date
+				if ban then
+					local length = math.floor(item.length)
+					local num = item.prevbans + 1
+					local perma = item.perma
+					MsgC(maestro.orange, "\t", os.date("%x - ", date), "Ban #", num, ": ", Color(255, 255, 255), reason, maestro.orange, " Length: ", Color(255, 255, 255), perma and "permenant" or maestro.time(length), "\n")
+				else
+					MsgC(maestro.blue, "\t", os.date("%x - ", date), "Unban: ", Color(255, 255, 255), reason, "\n")
 				end
 			end
 		end
-	net.Send(caller)
+	end
 end, [[
 Displays a history of bans and unbans for the specified player.]])
 maestro.command("banlogid", {"id"}, function(caller, id)
-	net.Start("maestro_banlog")
-		net.WriteEntity()
-		net.WriteString(id)
+	if caller then
+		net.Start("maestro_banlog")
+			net.WriteEntity()
+			net.WriteString(id)
+			for json in maestro.read("banlog", true) do
+				local item = util.JSONToTable(json)
+				if item.id == id then
+					net.WriteString(" ")
+					net.WriteBool(item.type == "ban")
+					net.WriteString(item.reason or "no reason")
+					net.WriteUInt(item.date, 32)
+					if item.type == "ban" then
+						net.WriteUInt(math.floor(item.length), 32)
+						net.WriteUInt(item.prevbans + 1, 16)
+						net.WriteBool(item.perma)
+					end
+				end
+			end
+		net.Send(caller)
+	else
+		MsgC(Color(255, 255, 255), "Banlog for (", id, "):\n")
 		for json in maestro.read("banlog", true) do
 			local item = util.JSONToTable(json)
 			if item.id == id then
-				net.WriteString(" ")
-				net.WriteBool(item.type == "ban")
-				net.WriteString(item.reason)
-				net.WriteUInt(item.date, 32)
-				if item.type == "ban" then
-					net.WriteUInt(math.floor(item.length), 32)
-					net.WriteUInt(item.prevbans + 1, 16)
-					net.WriteBool(item.perma)
+				local ban = item.type == "ban"
+				local reason = item.reason or "no reason"
+				local date = item.date
+				if ban then
+					local length = math.floor(item.length)
+					local num = item.prevbans + 1
+					local perma = item.perma
+					MsgC(maestro.orange, "\t", os.date("%x - ", date), "Ban #", num, ": ", Color(255, 255, 255), reason, maestro.orange, " Length: ", Color(255, 255, 255), perma and "permenant" or maestro.time(length), "\n")
+				else
+					MsgC(maestro.blue, "\t", os.date("%x - ", date), "Unban: ", Color(255, 255, 255), reason, "\n")
 				end
 			end
 		end
-	net.Send(caller)
+	end
 end, [[
 Displays a history of bans and unbans for the specified SteamID.]])
 if CLIENT then

@@ -1,6 +1,6 @@
 maestro.hook("CheckPassword", "maestro_messages", function(id64, ip, sv, cl, name)
 	local id = util.SteamIDFrom64(id64)
-	local ban = maestro.bans[id]
+	local ban = maestro.bans and maestro.bans[id] or false
 	if ban and ban.unban > os.time() then
 		return
 	end
