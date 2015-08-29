@@ -1,9 +1,22 @@
+local function ts(i)
+	if type(i) == "Player" then
+		return i:Nick() .. "(" .. i:SteamID() .. ")"
+	end
+	return tostring(i)
+end
 if SERVER then
 	util.AddNetworkString("maestro_chat")
 	function maestro.chat(ply, ...)
 		if not ply then
 			MsgC(...)
 			MsgC("\n")
+			local txt = ""
+			for _, i in ipairs{...} do
+				if type(i) ~= "table" then
+					txt = txt .. (ts(i) or "")
+				end
+			end
+			maestro.log("log_" .. os.date("%y-%m-%d"), os.date("[%H:%M] ") .. txt)
 		end
 		net.Start("maestro_chat")
 			net.WriteMeepTable({...})
