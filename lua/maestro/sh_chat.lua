@@ -18,12 +18,14 @@ if SERVER then
 			end
 			maestro.log("log_" .. os.date("%y-%m-%d"), os.date("[%H:%M] ") .. txt)
 		end
-		net.Start("maestro_chat")
-			net.WriteMeepTable({...})
-		if ply then
-			net.Send(ply)
-		else
-			net.Broadcast()
+		if ply ~= false then
+			net.Start("maestro_chat")
+				net.WriteMeepTable({...})
+			if ply then
+				net.Send(ply)
+			else
+				net.Broadcast()
+			end
 		end
 	end
 end

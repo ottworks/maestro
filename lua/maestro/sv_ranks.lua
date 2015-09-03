@@ -92,7 +92,10 @@ function maestro.rankresetcantarget(name)
 	maestro.saveranks()
 end
 function maestro.rankgetpermcantarget(name, perm)
-	return ranks[name].perms[perm]
+	local perm = ranks[name].perms[perm]
+	if perm == "true" then perm = true end
+	if perm == "false" then perm = false end
+	return perm
 end
 function maestro.ranksetpermcantarget(name, perm, str)
 	ranks[name].perms[perm] = str

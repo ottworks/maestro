@@ -254,11 +254,12 @@ function maestro.split(input, keepq)
 end
 
 function maestro.cantargetid(id1, id2, cmd)
-	local perm = maestro.rankgetpermcantarget(maestro.userrank(id1), cmd)
-	local ct = maestro.rankgetcantarget(maestro.userrank(id1))
+	local r1 = maestro.userrank(id1)
+	local perm = maestro.rankgetpermcantarget(r1, cmd)
+	local ct = maestro.rankgetcantarget(r1)
 	if type(perm) == "string" then
 		ct = perm
 	end
-	local ranks = maestro.targetrank(ct, maestro.userrank(id1))
+	local ranks = maestro.targetrank(ct, r1)
 	return ranks[maestro.userrank(id2)]
 end

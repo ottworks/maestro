@@ -57,14 +57,15 @@ end
 
 local function handleError(ply, cmd, msg)
 	if IsValid(ply) then
-		maestro.chat(ply, Color(255, 154, 27),  cmd .. ": " .. msg)
+		maestro.chat(ply, maestro.orange,  cmd .. ": " .. msg)
 	else
-		MsgC(Color(255, 154, 27), cmd .. ": " .. msg .. "\n")
+		MsgC(maestro.orange, cmd .. ": " .. msg .. "\n")
 	end
 end
 
 local function handleMultiple(a, ret, cmd, num)
 	local arg = maestro.commands[cmd].args[num] or maestro.commands[cmd].args[#maestro.commands[cmd].args]
+	local t = string.match(arg, "[^:]+")
 	if type(a) == "table" then
 		table.sort(a, function(a, b)
 			if type(a) == "Player" then
@@ -87,12 +88,18 @@ local function handleMultiple(a, ret, cmd, num)
 				table.insert(ret, a[j])
 			end
 		end
-	elseif string.match(arg, "[^:]+") == "time" then
-		table.insert(ret, Color(78, 196, 255))
+	elseif t == "time" then
+		table.insert(ret, maestro.blue)
 		print(maestro.time(a))
 		table.insert(ret, maestro.time(a))
+	elseif t == "steamid" then
+		table.insert(ret, "(")
+		table.insert(ret, maestro.blue)
+		table.insert(ret, a)
+		table.insert(ret, Color(255, 255, 255))
+		table.insert(ret, ")")
 	else
-		table.insert(ret, Color(78, 196, 255))
+		table.insert(ret, maestro.blue)
 		table.insert(ret, tostring(a))
 	end
 end
@@ -165,7 +172,7 @@ function maestro.runcmd(silent, cmd, args, ply)
 				local a = args[num]
 				handleMultiple(a, ret, cmd, num)
 			else --it's a vararg
-				table.insert(ret, Color(255, 154, 27))
+				table.insert(ret, maestro.orange)
 				table.insert(ret, "[")
 				for i = max, #args do
 					local a = args[i]
@@ -181,7 +188,7 @@ function maestro.runcmd(silent, cmd, args, ply)
 					end
 					handleMultiple(a, ret, cmd, num)
 				end
-				table.insert(ret, Color(255, 154, 27))
+				table.insert(ret, maestro.orange)
 				table.insert(ret, "]")
 			end
 			i = i + 1
