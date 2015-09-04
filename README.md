@@ -17,6 +17,7 @@
 
 # Extra plugins
  * [tmysql4/SQLite/MySQL support](http://github.com/daaott/maestro-mysql/)
+ * [Rank teams and colors (for sandbox)](http://github.com/daaott/maestro-rankteams/)
 
 # Screenshots
 ![Menu](http://i.imgur.com/euS8waY.png)
