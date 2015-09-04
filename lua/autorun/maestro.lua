@@ -1,4 +1,4 @@
-local version = "1.6.0"
+local version = "1.6.1"
 maestro = {}
 print("\201\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\187")
 print("\186 Maestro " .. version .. string.rep(" ", 25 - #version) .. "\186")
@@ -115,3 +115,6 @@ bugs and errors.
 		end)
 	end)
 end)
+
+maestro.orange = HSVToColor(33, 0.9, 1)
+maestro.blue = HSVToColor(200, 0.9, 1)

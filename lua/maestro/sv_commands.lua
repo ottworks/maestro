@@ -26,7 +26,7 @@ local function convertTo(val, t, ply, cmd)
 			if ranks[val] then
 				return val
 			end
-			return false, true
+			return false, "You can't target this rank!"
 		else
 			return val
 		end
