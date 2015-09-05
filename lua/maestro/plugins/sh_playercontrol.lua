@@ -47,7 +47,7 @@ maestro.command("flashlight", {"player:target","boolean:enabled(optional)"}, fun
 end, [[Toggle a player's ability to use the flashlight]])
 
 maestro.command("act", {"action"}, function(caller, action)
-		ply:ConCommand( "act "..action )
+		caller:ConCommand( "act "..action )
 end, [[The ability to act without using the console.]])
 
---Plugin by FluffyXVI
+--Plugin by FluffyXVI 
