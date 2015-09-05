@@ -1,3 +1,17 @@
+local maestro_trainfuck_models = {}
+maestro_trainfuck_models[1] = "models/props_trainstation/train001.mdl"
+maestro_trainfuck_models[2] = "models/props_trainstation/train002.mdl"
+maestro_trainfuck_models[3] = "models/props_trainstation/train003.mdl"
+
+local maestro_cartoss_models = {}
+maestro_cartoss_models[1] = "models/props_vehicles/car002a_physics.mdl"
+maestro_cartoss_models[2] = "models/props_vehicles/car003a_physics.mdl"
+maestro_cartoss_models[3] = "models/props_vehicles/car004a_physics.mdl"
+maestro_cartoss_models[4] = "models/props_vehicles/car005a_physics.mdl"
+maestro_cartoss_models[5] = "models/props_vehicles/van001a_physics.mdl"
+maestro_cartoss_models[6] = "models/props_vehicles/truck003a.mdl"
+maestro_cartoss_models[7] = "models/props_vehicles/car003b_physics.mdl"
+
 maestro.command("trainfuck", {"player:target"}, function(caller, targets)
 	if #targets == 0 then
 		return true, "Query matched no players."
@@ -28,10 +42,7 @@ maestro.command("trainfuck", {"player:target"}, function(caller, targets)
 end, [[
 Throws a train at the target.]])
 
-maestro_trainfuck_models = {}
-maestro_trainfuck_models[1] = "models/props_trainstation/train001.mdl"
-maestro_trainfuck_models[2] = "models/props_trainstation/train002.mdl"
-maestro_trainfuck_models[3] = "models/props_trainstation/train003.mdl"
+
 
 maestro.command("cartoss", {"player:target"}, function(caller, targets)
 	if #targets == 0 then
@@ -62,13 +73,6 @@ maestro.command("cartoss", {"player:target"}, function(caller, targets)
 end, [[
 Throws a car at the target.]])
 
-maestro_cartoss_models = {}
-maestro_cartoss_models[1] = "models/props_vehicles/car002a_physics.mdl"
-maestro_cartoss_models[2] = "models/props_vehicles/car003a_physics.mdl"
-maestro_cartoss_models[3] = "models/props_vehicles/car004a_physics.mdl"
-maestro_cartoss_models[4] = "models/props_vehicles/car005a_physics.mdl"
-maestro_cartoss_models[5] = "models/props_vehicles/van001a_physics.mdl"
-maestro_cartoss_models[6] = "models/props_vehicles/truck003a.mdl"
-maestro_cartoss_models[7] = "models/props_vehicles/car003b_physics.mdl"
+
 
 //Plugin by FluffyXVI
