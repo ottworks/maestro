@@ -13,9 +13,9 @@ end, [[
 Lights the targeted players on fire.]])
 
 maestro.command("extinguish", {}, function(caller)
-		for _, ent in pairs( ents.GetAll() ) do
-			ent:Extinguish()
-		end
+	for _, ent in pairs(ents.GetAll()) do
+		ent:Extinguish()
+	end
 	return false, "extinguished %1"
 end, [[
 Extingushes every entity]])

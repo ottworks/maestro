@@ -10,13 +10,12 @@ maestro.command("explode", {"player:target"}, function(caller, targets)
 			end
 			continue
 		end
-//death code
-	local boom = ents.Create("env_explosion")
-	boom:SetPos(ply:GetPos() )
-	boom:Spawn()
-	boom:SetKeyValue("iMagnitude", "100")
-	boom:Fire("Explode")
-	ply:Kill()
+		local boom = ents.Create("env_explosion")
+		boom:SetPos(ply:GetPos())
+		boom:Spawn()
+		boom:SetKeyValue("iMagnitude", "100")
+		boom:Fire("Explode")
+		ply:Kill()
 	end
 	return false, "exploded %1"
 end, [[
