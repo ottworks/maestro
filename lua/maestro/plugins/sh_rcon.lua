@@ -4,15 +4,50 @@ maestro.command("rcon", {"string:command"}, function(caller, cmd)
 	return false, "ran command %1 on the server"
 end, [[
 Runs a console command on the server.]])
-maestro.command("lua", {"string:lua"}, function(caller, code)
-	local ran, err = pcall(CompileString(code, "maestro_lua", false))
+
+local function lua(code, caller)
+	local func, a1, a2, a3 = CompileString(code, "maestro_lua", false)
+	local env = setmetatable({}, {
+		__index = function(tab, key)
+			if _G[key] then return _G[key] end
+			if key == "this" then
+				return caller:GetEyeTrace().Entity
+			elseif key == "me" then
+				return caller
+			else
+				local plys = player.GetAll()
+				for i = 1, #plys do
+					if string.lower(plys[i]:Nick()) == string.lower(key) then
+						return plys[i]
+					end
+				end
+				for i = 1, #plys do
+					if string.find(string.lower(plys[i]:Nick()), string.lower(key)) then
+						return plys[i]
+					end
+				end
+			end
+		end,
+	})
+	if type(func) == "string" then
+		return true, func
+	end
+	setfenv(func, env)
+	local ran, err = pcall(func)
 	if err then
-		return true, err .. "\nCode interpreted as:\n" .. code
+		return true, err
 	end
 	return false, "ran code %1 on the server"
+end
+maestro.command("lua", {"string:lua"}, function(caller, code)
+	return lua(code, caller)
 end, [[
-Runs Lua on the server.
-Include your code in double quotes to prevent malformation.]])
+Runs Lua on the server.]])
+maestro.command("l", {"string:lua"}, function(caller, code)
+	return lua(code, caller)
+end, [[
+Runs Lua on the server.]])
+
 maestro.command("ent", {"class", "keyvalues(multiple)"}, function(caller, class, ...)
 	if not caller then
 		return true, "You cannot create an entity from the console!"
