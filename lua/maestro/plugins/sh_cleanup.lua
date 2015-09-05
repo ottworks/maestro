@@ -4,9 +4,11 @@ maestro.command("cleanup", {"player:target"}, function(caller, targets)
 	end
 	
 	for _, ply in pairs(targets) do
-	ply:ConCommand( "gmod_cleanup" )
+		ply:ConCommand( "gmod_cleanup" )
 	end
 
 	return false, "cleaned up the entities of %1"
-end, [[
-Cleanup the entities of the map.]])
+	
+end, [[Cleanup player entities.]])
+
+--Plugin by FluffyXVI
