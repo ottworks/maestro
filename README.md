@@ -19,6 +19,9 @@
  * [tmysql4/SQLite/MySQL support](http://github.com/daaott/maestro-mysql/)
  * [Rank teams and colors (for sandbox)](http://github.com/daaott/maestro-rankteams/)
 
+  ### Third-Party plugins
+   * [FluffyXVI's maestro-extras (jump height, speed, frags/deaths, etc.)](https://github.com/KingFluffyXVI/maestro-extras)
+
 # Screenshots
 ![Menu](http://i.imgur.com/euS8waY.png)
 ![Voting](http://i.imgur.com/a6fWbNU.png)
