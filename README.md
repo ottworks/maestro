@@ -3,17 +3,21 @@
 # Stuff that Maestro has that ULX doesn't have
  * alias: Sets a player's name. Works with DarkRP.
  * banlog, banlogid: See ban history of a player in the console.
+ * cleanup: Clears props of selected people.
  * cvar: rcon, but limited to convars.
+ * decals: Clears all decals.
+ * explode: Blows people up.
  * fire: Ent_fire is back, baby!
  * fly: Fly mode.
  * menu: It's all web based! Bootstrap!
+ * notes: Take notes on players. Will display any notes to relevant players on join.
+ * queue: Queue up commands for later.
  * rtv: Map vote system, built-in with the voting interface.
  * rapidfire: Unlimited ammo, unlimited recoil, unlimited fun.
  * scale: Shrink or grow players in size! Works perfectly with all guns/tools (except camera because rubat is lazy).
+ * team: Set a player's team (DarkRP supported).
+ * trainfuck: The classic is back.
  * tutorial: Help text on most aspects of the mod.
- * team: Set a player's team (DarkRP supported)
- * queue: Queue up commands for later.
- * notes: Take notes on players. Will display any notes to relevant players on join.
 
 # Extra plugins
  * [tmysql4/SQLite/MySQL support](http://github.com/daaott/maestro-mysql/)
