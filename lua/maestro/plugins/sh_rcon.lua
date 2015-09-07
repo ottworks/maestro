@@ -28,6 +28,7 @@ local function lua(code, caller)
 				end
 			end
 		end,
+		__newindex = _G,
 	})
 	if type(func) == "string" then
 		return true, func
