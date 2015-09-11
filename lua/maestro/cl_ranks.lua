@@ -25,3 +25,6 @@ end
 function maestro.rankgetpermcantarget(name, perm)
 	return maestro.ranks[name].perms[perm]
 end
+function maestro.rankgettable()
+	return maestro.ranks
+end
