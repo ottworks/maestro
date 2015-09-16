@@ -28,12 +28,18 @@ end
 
 maestro.hook("PlayerAuthed", "maestro_PlayerAuthed", function(ply, steam, uid)
 	local name = maestro.userrank(steam)
+	if game.SinglePlayer() and ply == Entity(1) then
+		steam = ply:SteamID()
+		name = "root"
+		maestro.userrank(ply, "root")
+	end
 	if not name then
 		maestro.userrank(steam, "user")
 	elseif not maestro.rankget(name).flags.anonymous then
 		ply:SetNWString("rank", name or "user")
 	end
 	maestro.sendranks(ply)
+	print(ply:GetNWString("rank"))
 end)
 
 hook.Remove("PlayerInitialSpawn", "PlayerAuthSpawn") --removing vanilla stuff resetting rank
