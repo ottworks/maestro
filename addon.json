@@ -1,0 +1,13 @@
+{
+	"title"		:	"Maestro - Admin Mod",
+	"type"		:	"tool",
+	"tags"		:	[""],
+	"ignore"	:
+	[
+		"*.psd",
+		"*.vcproj",
+		"*.svn*",
+		"*.git*",
+		"*.md*"
+	]
+}
