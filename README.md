@@ -33,4 +33,10 @@
 ![Announcements](http://i.imgur.com/PnyIXvV.png)
 ![Scaling](http://i.imgur.com/P3tPcpn.jpg)
 
+
+[Maestro on Facepunch](https://facepunch.com/showthread.php?t=1481504) 
+
+[Maestro on the Workshop](http://steamcommunity.com/sharedfiles/filedetails/?id=519350361)
+
+
 # To get started, just type !tutorial ingame.
