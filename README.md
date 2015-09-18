@@ -18,6 +18,7 @@
  * team: Set a player's team (DarkRP supported).
  * trainfuck: The classic is back.
  * tutorial: Help text on most aspects of the mod.
+ * vac: Kicks a player with the VAC ban message. Fun!
 
 # Extra plugins
  * [tmysql4/SQLite/MySQL support](http://github.com/daaott/maestro-mysql/)
