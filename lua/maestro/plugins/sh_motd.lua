@@ -2,7 +2,7 @@ if SERVER then
     CreateConVar("maestro_motd", "", FCVAR_SERVER_CAN_EXECUTE + FCVAR_ARCHIVE, "MOTD URL.")
     util.AddNetworkString("maestro_motd")
     maestro.hook("PlayerInitialSpawn", "maestro_motd", function(ply)
-        ply:ConCommand("ms motd")
+        ply:ConCommand("say !motd")
     end)
 end
 maestro.command("motd", {}, function(caller)
@@ -10,9 +10,13 @@ maestro.command("motd", {}, function(caller)
     if #motd < 4 then
         return true, "This server has not set up their MOTD yet!"
     end
-    net.Start("maestro_motd")
-        net.WriteString(motd)
-    net.Send(caller)
+    if IsValid(caller) then
+        net.Start("maestro_motd")
+            net.WriteString(motd)
+        net.Send(caller)
+    else
+        maestro.chat(false, Color(255, 255, 255), "The motd is set to: ", maestro.blue, motd)
+    end
 end, [[
 Opens the MOTD.
 ]])
