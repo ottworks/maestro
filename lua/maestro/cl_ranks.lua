@@ -17,7 +17,7 @@ net.Receive("maestro_ranks", function()
 end)
 
 function maestro.rankget(name)
-	return maestro.ranks[name] or {}
+	return maestro.ranks[name] or {flags = {}, perms = {}}
 end
 function maestro.rankgetcantarget(name, str)
 	return maestro.ranks[name].cantarget

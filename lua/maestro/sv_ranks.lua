@@ -33,7 +33,7 @@ function maestro.rankremove(name)
 	maestro.saveranks()
 end
 function maestro.rankget(name)
-	return ranks[name]
+	return ranks[name] or {flags = {}, perms = {}}
 end
 function maestro.ranksetperms(name, perms)
 	local r = maestro.rankget(name)
