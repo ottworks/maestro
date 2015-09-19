@@ -1,4 +1,4 @@
-local function slap(ply)
+local function slap(ply, dmg)
 	if IsValid(ply:GetVehicle()) then
 		ply:ExitVehicle()
 	end
@@ -23,13 +23,13 @@ maestro.command("slap", {"player:target", "number:damage(optional)", "number:tim
 			continue
 		end
 		dmg = dmg or 0
-		slap(ply)
+		slap(ply, dmg)
 		if times then
 			timer.Create("maestro_slap_" .. ply:EntIndex(), 1, times - 1, function()
 				if not ply:Alive() then
 					timer.Remove("maestro_slap_" .. ply:EntIndex())
 				end
-				slap(ply)
+				slap(ply, dmg)
 			end)
 		end
 	end
