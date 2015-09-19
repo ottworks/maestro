@@ -86,7 +86,7 @@ function maestro.target(val, ply, cmd)
 		ret[player.GetBySteamID(name) or player.GetBySteamID64(name) or player.GetByID(name)] = true
 	elseif greater then
 		local ranks = {}
-		for rank, tab in pairs(maestro.ranks or maestro.rankgettable()) do
+		for rank, tab in pairs(maestro.rankgettable()) do
 			if traversedown(rank, name) and rank ~= name then
 				ranks[rank] = true
 			end
@@ -98,7 +98,7 @@ function maestro.target(val, ply, cmd)
 		end
 	elseif less then
 		local ranks = {}
-		for rank, tab in pairs(maestro.ranks or maestro.rankgettable()) do
+		for rank, tab in pairs(maestro.rankgettable()) do
 			if not traversedown(rank, name) then
 				ranks[rank] = true
 			end
@@ -174,19 +174,19 @@ function maestro.targetrank(val, plyrank)
 	local name = string.sub(val, cursor)
 	local ret = {}
 	if all then
-		ret = table.Copy(maestro.ranks or maestro.rankgettable())
+		ret = table.Copy(maestro.rankgettable())
 	elseif self then
 		if IsValid(plyrank) then
 			ret[plyrank] = true
 		end
 	elseif greater then
-		for rank, tab in pairs(maestro.ranks or maestro.rankgettable()) do
+		for rank, tab in pairs(maestro.rankgettable()) do
 			if traversedown(rank, name) and rank ~= name then
 				ret[rank] = true
 			end
 		end
 	elseif less then
-		for rank, tab in pairs(maestro.ranks or maestro.ranks or maestro.rankgettable()) do
+		for rank, tab in pairs(maestro.rankgettable()) do
 			if not traversedown(rank, name) then
 				ret[rank] = true
 			end
@@ -197,7 +197,7 @@ function maestro.targetrank(val, plyrank)
 		ret[name] = true
 	end
 	if cnot then
-		ret = inverse(ret, maestro.ranks or maestro.rankgettable())
+		ret = inverse(ret, maestro.rankgettable())
 	end
 	return ret
 end
