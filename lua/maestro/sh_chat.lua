@@ -20,7 +20,7 @@ if SERVER then
 		end
 		if ply ~= false then
 			net.Start("maestro_chat")
-				net.WriteMeepTable({...})
+				net.WriteTable({...})
 			if ply then
 				net.Send(ply)
 			else
@@ -31,7 +31,7 @@ if SERVER then
 end
 if CLIENT then
 	net.Receive("maestro_chat", function()
-		local args = net.ReadMeepTable()
+		local args = net.ReadTable()
 		for k, v in pairs(args) do
 			if type(v) ~= "table" and type(v) ~= "Player" then
 				args[k] = tostring(v)

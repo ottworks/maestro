@@ -1,8 +1,9 @@
 maestro.ranks = {}
 net.Receive("maestro_ranks", function()
-	local ranks = net.ReadMeepTable()
+	local ranks = net.ReadTable()
 	for rank, r in pairs(ranks) do
 		setmetatable(r.perms, {__index = function(tab, key)
+			if rank == "root" then return true end
 			if tab ~= maestro.ranks[r.inherits].perms then
 				return maestro.ranks[r.inherits].perms[key]
 			end

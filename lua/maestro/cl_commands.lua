@@ -126,7 +126,7 @@ end
 concommand.Add("ms", command, autocomplete, nil, FCVAR_USERINFO)
 concommand.Add("mss", command2, autocomplete, nil, FCVAR_USERINFO)
 net.Receive("maestro_commands", function()
-	maestro.commands = net.ReadMeepTable()
+	maestro.commands = net.ReadTable()
 end)
 
 

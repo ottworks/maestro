@@ -12,6 +12,17 @@ function maestro.rankadd(name, inherits, perms)
 	perms = perms or {}
 	local r = {perms = perms, inherits = inherits, cantarget = "<#" .. name, canrank = "!>#" .. name, flags = {}}
 	ranks[name] = r
+	setmetatable(r.perms, {__index = function(tab, key)
+		if name == "root" then return true end
+		if tab ~= ranks[r.inherits].perms then
+			return ranks[r.inherits].perms[key]
+		end
+	end})
+	setmetatable(r.flags, {__index = function(tab, key)
+		if tab ~= ranks[r.inherits].flags then
+			return ranks[r.inherits].flags[key]
+		end
+	end})
 	if inherits then
 		maestro.ranksetinherits(name, inherits)
 	else
@@ -145,12 +156,12 @@ end
 
 function maestro.sendranks(ply)
 	net.Start("maestro_ranks")
-		net.WriteMeepTable(ranks)
+		net.WriteTable(ranks)
 	net.Send(ply)
 end
 function maestro.broadcastranks()
 	net.Start("maestro_ranks")
-		net.WriteMeepTable(ranks)
+		net.WriteTable(ranks)
 	net.Broadcast()
 end
 
@@ -159,12 +170,12 @@ maestro.load("ranks", function(val, newfile)
 	for rank, r in pairs(ranks) do
 		setmetatable(r.perms, {__index = function(tab, key)
 			if rank == "root" then return true end
-			if tab ~= rawget(ranks, r.inherits).perms then
+			if tab ~= ranks[r.inherits].perms then
 				return ranks[r.inherits].perms[key]
 			end
 		end})
 		setmetatable(r.flags, {__index = function(tab, key)
-			if tab ~= rawget(ranks, r.inherits).flags then
+			if tab ~= ranks[r.inherits].flags then
 				return ranks[r.inherits].flags[key]
 			end
 		end})

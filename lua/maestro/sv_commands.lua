@@ -4,7 +4,7 @@ util.AddNetworkString("maestro_commands")
 util.AddNetworkString("maestro_cmd")
 function maestro.sendcommands(ply)
 	net.Start("maestro_commands")
-		net.WriteMeepTable(maestro.commands)
+		net.WriteTable(maestro.commands)
 	net.Send(ply)
 end
 
