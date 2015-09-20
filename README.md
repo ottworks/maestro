@@ -26,6 +26,7 @@
 
   ### Third-Party plugins
    * [FluffyXVI's maestro-extras (jump height, speed, frags/deaths, etc.)](https://github.com/KingFluffyXVI/maestro-extras)
+   * [Zerf's TTT-maestro-commands](https://github.com/zerfgog/TTT-maestro-commands)
 
 # Screenshots
 ![Menu](http://i.imgur.com/euS8waY.png)
