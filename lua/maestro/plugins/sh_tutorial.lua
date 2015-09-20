@@ -30,8 +30,8 @@ Table of contents:
 Use !tutorial <page> to view a page.
 ]]
 tutorial[1] = [[
-    Hi, thanks for using maestro. In this tutorial, we're going to go over the
-basics of getting a server up and running. Please note that maestro is NOT
+    Hi, thanks for using Maestro. In this tutorial, we're going to go over the
+basics of getting a server up and running. Please note that Maestro is NOT
 compatible with FAdmin (or ULX). If you're running DarkRP, you'll need to remove
 it by browsing to darkrp/gamemode/modules and deleting the "fadmin" folder. You
 can view the available commands and specific command help by using the console
@@ -69,7 +69,7 @@ tutorial[4] = [[
     What if something in your gamemode requires a person to be "admin", but you
 want your moderators to have access to it as well? Garry's Mod has a limited
 ranking system by default, consisting of just admin and superadmin. To make GMod
-recognize maestro ranks as admin and superadmin, we have flags:
+recognize Maestro ranks as admin and superadmin, we have flags:
 
     ms rankflag moderator admin
 
