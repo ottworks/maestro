@@ -138,6 +138,8 @@ function maestro.RESETRANKS()
 maestro.rankadd("superadmin", "admin", {alias = true, armor = true, chatprint = true, cloak = true, fly = true, gimp = true, gimps = true, hp = true, ignite = true, map = true, play = true, ragdoll = true, scale = true, slap = true, spawn = true, strip = true, veto = true, vote = true, announce = true, blind = true, queue = true})
 	maestro.rankflag("superadmin", "superadmin", true)
 	maestro.rankadd("root", "superadmin", perms)
+	maestro.ranksetcantarget("root", "*")
+	maestro.ranksetcanrank("root", "*")
 end
 
 
