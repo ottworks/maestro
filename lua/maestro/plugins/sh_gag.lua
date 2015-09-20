@@ -1,7 +1,7 @@
 local gagged = {}
 if SERVER then
 	maestro.hook("PlayerCanHearPlayersVoice", "maestro_gag", function(listener, talker)
-		return gagged[talker] and false
+		return gagged[talker] and false or nil
 	end)
 end
 maestro.command("gag", {"player:target", "boolean:state(optional)"}, function(caller, targets, state)
