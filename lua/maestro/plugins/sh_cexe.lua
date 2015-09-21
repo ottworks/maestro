@@ -7,6 +7,6 @@ maestro.command("cexe", {"player:target", "string:command"}, function(caller, ta
 	local ply = targets[1]
 	local cmd = table.concat({...}, " ")
 	ply:ConCommand(cmd)
-	return false, "made ran command %% on %1"
+	return false, "made %1 run command %2"
 end, [[
 Runs a console command on the specified player.]])
