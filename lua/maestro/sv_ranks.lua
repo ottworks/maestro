@@ -9,8 +9,7 @@ end
 
 
 function maestro.rankadd(name, inherits, perms)
-	perms = perms or {}
-	local r = {perms = perms, inherits = inherits, cantarget = "<#" .. name, canrank = "!>#" .. name, flags = {}}
+	local r = {perms = {}, inherits = inherits, cantarget = "<^", canrank = "!>^" .. name, flags = {}}
 	ranks[name] = r
 	setmetatable(r.perms, {__index = function(tab, key)
 		if name == "root" then return true end
@@ -23,6 +22,9 @@ function maestro.rankadd(name, inherits, perms)
 			return ranks[r.inherits].flags[key]
 		end
 	end})
+	if perms then
+		maestro.rankaddperms(name, perms)
+	end
 	if inherits then
 		maestro.ranksetinherits(name, inherits)
 	else
@@ -57,7 +59,12 @@ function maestro.rankaddperms(name, perms)
 	local newperms = {}
 	newperms = table.Copy(p)
 	for perm in pairs(perms) do
-		newperms[perm] = true
+		local t = maestro.commands[perm]
+		if t and t.cantarget then
+			newperms[perm] = t.cantarget
+		else
+			newperms[perm] = true
+		end
 	end
 	r.perms = newperms
 	maestro.ranksetinherits(name, r.inherits)
@@ -181,6 +188,8 @@ maestro.load("ranks", function(val, newfile)
 		end})
 	end
 	if newfile then
-		maestro.RESETRANKS()
+		maestro.hook("maestro_postpluginload", "reset", function()
+			maestro.RESETRANKS()
+		end)
 	end
 end)

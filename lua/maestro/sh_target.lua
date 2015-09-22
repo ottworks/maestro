@@ -78,17 +78,23 @@ function maestro.target(val, ply, cmd)
 	local ret = {}
 	if all then
 		ret = toLookup(player.GetAll())
-	elseif self then
-		if IsValid(ply) then
-			ret[ply] = true
-		end
 	elseif id then
 		ret[player.GetBySteamID(name) or player.GetBySteamID64(name) or player.GetByID(name)] = true
-	elseif greater then
+	elseif less or greater then
+		print(1)
+		if self then
+			name = maestro.userrank(ply)
+		end
 		local ranks = {}
 		for rank, tab in pairs(maestro.rankgettable()) do
-			if traversedown(rank, name) and rank ~= name then
-				ranks[rank] = true
+			if less then
+				if not traversedown(rank, name) then
+					ranks[rank] = true
+				end
+			elseif greater then
+				if traversedown(rank, name) and rank ~= name then
+					ranks[rank] = true
+				end
 			end
 		end
 		for _, ply in pairs(player.GetAll()) do
@@ -96,16 +102,10 @@ function maestro.target(val, ply, cmd)
 				ret[ply] = true
 			end
 		end
-	elseif less then
-		local ranks = {}
-		for rank, tab in pairs(maestro.rankgettable()) do
-			if not traversedown(rank, name) then
-				ranks[rank] = true
-			end
-		end
-		for _, ply in pairs(player.GetAll()) do
-			if ranks[maestro.userrank(ply)] then
-				ret[ply] = true
+	elseif group and self then
+		for _, v in pairs(player.GetAll()) do
+			if maestro.userrank(v) == maestro.userrank(ply) then
+				ret[v] = true
 			end
 		end
 	elseif group then
@@ -113,6 +113,10 @@ function maestro.target(val, ply, cmd)
 			if maestro.userrank(ply) == name then
 				ret[ply] = true
 			end
+		end
+	elseif self then
+		if IsValid(ply) then
+			ret[ply] = true
 		end
 	else
 		for _, v in pairs(player.GetAll()) do
@@ -175,21 +179,27 @@ function maestro.targetrank(val, plyrank)
 	local ret = {}
 	if all then
 		ret = table.Copy(maestro.rankgettable())
-	elseif self then
-		if IsValid(plyrank) then
-			ret[plyrank] = true
-		end
 	elseif greater then
+		if self then
+			name = plyrank
+		end
 		for rank, tab in pairs(maestro.rankgettable()) do
 			if traversedown(rank, name) and rank ~= name then
 				ret[rank] = true
 			end
 		end
 	elseif less then
+		if self then
+			name = plyrank
+		end
 		for rank, tab in pairs(maestro.rankgettable()) do
 			if not traversedown(rank, name) then
 				ret[rank] = true
 			end
+		end
+	elseif self then
+		if IsValid(plyrank) then
+			ret[plyrank] = true
 		end
 	elseif group then
 		ret[name] = true

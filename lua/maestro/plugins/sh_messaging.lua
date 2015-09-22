@@ -35,7 +35,7 @@ maestro.command("msg", {"player:target", "message"}, function(caller, targets, m
 	table.insert(ret, msg)
 	maestro.chat(targets, unpack(ret))
 end, [[
-Sends a message to the targetted players.]])
+Sends a message to the targetted players.]], "*")
 maestro.command("chatprint", {"text"}, function(caller, text)
 	if not text then
 		return true, "Invalid text."

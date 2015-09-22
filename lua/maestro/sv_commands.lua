@@ -239,11 +239,11 @@ net.Receive("maestro_cmd", function(len, ply)
 	end
 end)
 
-function maestro.command(cmd, args, callback)
+function maestro.command(cmd, args, callback, help, tgt)
 	for k, arg in pairs(args) do
 		args[k] = string.gsub(arg, "%s", "_")
 	end
-	maestro.commands[cmd] = {args = args, callback = callback}
+	maestro.commands[cmd] = {args = args, callback = callback, help = help, cantarget = tgt}
 end
 
 concommand.Add("ms", function(ply, cmd, args, str)

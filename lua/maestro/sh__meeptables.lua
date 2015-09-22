@@ -567,21 +567,26 @@ reading = {
 --
 -- We need this since #table returns undefined values
 -- by the lua spec if it doesn't have incremental keys
--- we use rawget since we don't want to get hurt by metatables
+-- we use pairs since it's backwards compatible
 --
 local function array_len(x)
 
-	local i = 1
-	if ( not rawget( x, 1 ) ) then return 0 end
+	local indices = {};
+    for k,v in pairs(x) do
 
-	while( rawget( x, i ) ) do
-		i = i + 1
-		if ( i > 8096 ) then
-			return i
-		end
-	end
+        indices[k] = true;
 
-	return i - 1
+    end
+
+    for i = 1, 8096 do
+
+        if(nil == indices[i]) then
+            return i - 1
+        end
+
+    end
+
+    return 8096
 
 end
 
@@ -745,12 +750,11 @@ writing = {
 	end,
 
 	--
-	-- our WriteTable
+	-- our writetable
 	-- directly used as net.WriteTable
 	--
 
 	table = function( tbl, indices, num )
-
 		--
 		-- our already cached data
 		--
@@ -818,7 +822,7 @@ writing = {
 
 		end
 
-		for k,v in next, tbl, nil do
+		for k,v in pairs(tbl) do
 
 			--
 			-- make sure we didn't already write
