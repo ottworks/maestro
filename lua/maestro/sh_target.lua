@@ -81,7 +81,6 @@ function maestro.target(val, ply, cmd)
 	elseif id then
 		ret[player.GetBySteamID(name) or player.GetBySteamID64(name) or player.GetByID(name)] = true
 	elseif less or greater then
-		print(1)
 		if self then
 			name = maestro.userrank(ply)
 		end
