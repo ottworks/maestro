@@ -78,7 +78,7 @@ maestro.command("ranksetinherits", {"rank", "rank:inherits"}, function(caller, r
 	return false, "set the inheritance of rank %1 to %2"
 end, [[
 Sets the rank this rank inherits from.]])
-maestro.command("rankflag", {"rank", "flag", "boolean:admin"}, function(caller, rank, flag, bool)
+maestro.command("rankflag", {"rank", "flag", "boolean:value"}, function(caller, rank, flag, bool)
 	if not rank or not maestro.rankget(rank) then
 		return true, "Invalid rank!"
 	end

@@ -200,9 +200,10 @@ function maestro.runcmd(silent, cmd, args, ply)
 
 		if silent then
 			local ranks = {}
+			ranks[maestro.userrank(ply)] = true
 			for name, tab in pairs(maestro.rankgettable()) do
-				local cr = tab.canrank
-				local rs = maestro.targetrank(cr, maestro.userrank(ply))
+				local ct = tab.cantarget
+				local rs = maestro.targetrank(ct, maestro.userrank(ply))
 				if rs[maestro.userrank(ply)] then
 					ranks[name] = true
 				end
