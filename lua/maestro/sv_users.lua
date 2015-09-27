@@ -10,7 +10,7 @@ function maestro.userrank(id, rank)
 			ply = id
 			id = id:SteamID()
 		else
-			ply = player.GetBySteamID()
+			ply = player.GetBySteamID(ply)
 		end
 		if not id then
 			return
