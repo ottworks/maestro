@@ -18,7 +18,7 @@ if SERVER then
 			end
 			maestro.log("log_" .. os.date("%y-%m-%d"), os.date("[%H:%M] ") .. txt)
 		end
-		if ply ~= false then
+		if ply ~= false and ply ~= NULL then
 			net.Start("maestro_chat")
 				net.WriteTable({...})
 			if ply then

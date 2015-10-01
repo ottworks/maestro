@@ -4,8 +4,8 @@ maestro.hook("CheckPassword", "maestro_messages", function(id64, ip, sv, cl, nam
 	if ban and ban.unban > os.time() then
 		return
 	end
-	if sv and sv ~= cl then
-		maestro.chat(nil, Color(255, 255, 255), "Player ", Color(78, 196, 255), name, Color(255, 255, 255), " (", Color(78, 196, 255), util.SteamIDFrom64(id64), Color(255, 255, 255), ") tried to connect to the server with incorrect password \"", cl, "\".")
+	if sv ~= "" and sv ~= cl then
+		maestro.chat(false, Color(255, 255, 255), "Player ", Color(78, 196, 255), name, Color(255, 255, 255), " (", Color(78, 196, 255), util.SteamIDFrom64(id64), Color(255, 255, 255), ") tried to connect to the server with incorrect password \"", cl, "\".")
 	else
 		maestro.chat(nil, Color(255, 255, 255), "Player ", Color(78, 196, 255), name, Color(255, 255, 255), " (", Color(78, 196, 255), util.SteamIDFrom64(id64), Color(255, 255, 255), ") has connected to the server.")
 	end

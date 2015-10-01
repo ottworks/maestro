@@ -1,4 +1,4 @@
-local version = "1.11.2"
+local version = "1.11.3"
 maestro = {}
 print("\201\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\187")
 print("\186 Maestro " .. version .. string.rep(" ", 25 - #version) .. "\186")
@@ -88,24 +88,27 @@ hook.Add("InitPostEntity", "maestro_updatecheck", function()
 --2345678901234567890123456789012
 				msg = [[
 A new major version of Maestro is
-available. Note that new major
-versions break compatibility with
-previous major versions.
+available (%%%%%%%%). Note that
+new major versions break
+compatibility with previous major
+versions.
 ]]
 			elseif minor > curminor then
 				msg = [[
 A new minor version of Maestro is
-available. Minor versions add a
-new feature or mechanismsm.
+available (%%%%%%%%). Minor
+versions add a new feature or
+mechanismsm.
 ]]
 			elseif patch > curpatch then
 				msg = [[
 A new patch is available for
-Maestro. Patches offer fixes for
-bugs and errors.
+Maestro (%%%%%%%%). Patches offer
+fixes for bugs and errors.
 ]]
 			end
 			if msg then
+				msg = string.gsub(msg, "%%+", ver)
 				print("\201\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\187")
 				for w in string.gmatch(msg, "[^\n]+") do
 					print("\186 " .. w .. string.rep(" ", 32 - #w) .. " \186")
