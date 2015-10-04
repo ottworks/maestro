@@ -12,19 +12,25 @@ if not CLIENT then return end
 local function populatecommands()
 	local ret = ""
 	local cmds = {}
+	local cmds2 = {}
 	for cmd in pairs(maestro.commands) do
-		cmds[#cmds + 1] = cmd
+		if maestro.rankget(maestro.userrank(LocalPlayer())).perms[cmd] then
+			cmds[#cmds + 1] = cmd
+		else
+			cmds2[#cmds2 + 1] = cmd
+		end
 	end
 	table.sort(cmds)
+	table.sort(cmds2)
 	for i = 1, #cmds do
 		local cmd = cmds[i]
-		if maestro.rankget(maestro.userrank(LocalPlayer())).perms[cmd] then
-			ret = ret .. [[
+		ret = ret .. [[
 <li><a onclick="resetPills(); this.parentNode.className = 'active'; console.log('RUNLUA: maestromenuupdate(\']] .. cmd .. [[\')');">]]..cmd..'</a></li>\n'
-		else
-			ret = ret .. [[
+	end
+	for i = 1, #cmds2 do
+		local cmd = cmds2[i]
+		ret = ret .. [[
 <li class="disabled"><a>]]..cmd..'</a></li>\n'
-		end
 	end
 	return ret
 end
