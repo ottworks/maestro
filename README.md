@@ -22,7 +22,6 @@
 
 # Extra plugins
  * [tmysql4/SQLite/MySQL support](http://github.com/daaott/maestro-mysql/)
- * [Rank teams and colors (for sandbox)](http://github.com/daaott/maestro-rankteams/)
 
   ### Third-Party plugins
    * [FluffyXVI's maestro-extras (jump height, speed, frags/deaths, etc.)](https://github.com/KingFluffyXVI/maestro-extras)
@@ -36,7 +35,7 @@
 ![Scaling](http://i.imgur.com/P3tPcpn.jpg)
 
 
-[Maestro on Facepunch](https://facepunch.com/showthread.php?t=1481504) 
+[Maestro on Facepunch](https://facepunch.com/showthread.php?t=1481504)
 
 [Maestro on the Workshop](http://steamcommunity.com/sharedfiles/filedetails/?id=519350361)
 
