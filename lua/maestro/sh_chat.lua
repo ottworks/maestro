@@ -16,10 +16,34 @@ if SERVER then
 					txt = txt .. (ts(i) or "")
 				end
 			end
-			maestro.log("log_" .. os.date("%y-%m-%d"), os.date("[%H:%M] ") .. txt)
+			maestro.serverlog(txt)
 		end
 		if ply ~= false and ply ~= NULL then
 			net.Start("maestro_chat")
+				net.WriteBool(true)
+				net.WriteTable({...})
+			if ply then
+				net.Send(ply)
+			else
+				net.Broadcast()
+			end
+		end
+	end
+	function maestro.chatconsole(ply, ...)
+		if not ply then
+			MsgC(...)
+			MsgC("\n")
+			local txt = ""
+			for _, i in ipairs{...} do
+				if type(i) ~= "table" then
+					txt = txt .. (ts(i) or "")
+				end
+			end
+			maestro.serverlog(txt)
+		end
+		if ply ~= false and ply ~= NULL then
+			net.Start("maestro_chat")
+				net.WriteBool(false)
 				net.WriteTable({...})
 			if ply then
 				net.Send(ply)
@@ -31,12 +55,18 @@ if SERVER then
 end
 if CLIENT then
 	net.Receive("maestro_chat", function()
+		local msgtype = net.ReadBool()
 		local args = net.ReadTable()
 		for k, v in pairs(args) do
 			if type(v) ~= "table" and type(v) ~= "Player" then
 				args[k] = tostring(v)
 			end
 		end
-		chat.AddText(unpack(args))
+		if msgtype then
+			chat.AddText(unpack(args))
+		else
+			MsgC(unpack(args))
+			MsgC("\n")
+		end
 	end)
 end

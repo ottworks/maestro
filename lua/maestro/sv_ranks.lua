@@ -1,8 +1,8 @@
-local ranks = {}
+maestro.ranks = {}
 util.AddNetworkString("maestro_ranks")
 
 function maestro.saveranks()
-	maestro.save("ranks", ranks)
+	maestro.save("ranks", maestro.ranks)
 	maestro.broadcastranks()
 end
 
@@ -10,16 +10,16 @@ end
 
 function maestro.rankadd(name, inherits, perms)
 	local r = {perms = {}, inherits = inherits, cantarget = "<^", canrank = "!>^" .. name, flags = {}}
-	ranks[name] = r
+	maestro.ranks[name] = r
 	setmetatable(r.perms, {__index = function(tab, key)
 		if name == "root" then return true end
-		if tab ~= ranks[r.inherits].perms then
-			return ranks[r.inherits].perms[key]
+		if tab ~= maestro.ranks[r.inherits].perms then
+			return maestro.ranks[r.inherits].perms[key]
 		end
 	end})
 	setmetatable(r.flags, {__index = function(tab, key)
-		if tab ~= ranks[r.inherits].flags then
-			return ranks[r.inherits].flags[key]
+		if tab ~= maestro.ranks[r.inherits].flags then
+			return maestro.ranks[r.inherits].flags[key]
 		end
 	end})
 	if perms then
@@ -34,19 +34,19 @@ end
 function maestro.rankremove(name)
 	for _, v in pairs(player.GetAll()) do
 		if maestro.userrank(v) == name then
-			maestro.userrank(v, ranks[name].inherits)
+			maestro.userrank(v, maestro.ranks[name].inherits)
 		end
 	end
-	for rank, tab in pairs(ranks) do
+	for rank, tab in pairs(maestro.ranks) do
 		if tab.inherits == name then
-			maestro.ranksetinherits(rank, ranks[name].inherits)
+			maestro.ranksetinherits(rank, maestro.ranks[name].inherits)
 		end
 	end
-	ranks[name] = nil
+	maestro.ranks[name] = nil
 	maestro.saveranks()
 end
 function maestro.rankget(name)
-	return ranks[name] or {flags = {}, perms = {}}
+	return maestro.ranks[name] or {flags = {}, perms = {}}
 end
 function maestro.ranksetperms(name, perms)
 	local r = maestro.rankget(name)
@@ -54,7 +54,7 @@ function maestro.ranksetperms(name, perms)
 	maestro.ranksetinherits(name, r.inherits)
 end
 function maestro.rankaddperms(name, perms)
-	local r = ranks[name]
+	local r = maestro.ranks[name]
 	local p = r.perms
 	local newperms = {}
 	newperms = table.Copy(p)
@@ -70,7 +70,7 @@ function maestro.rankaddperms(name, perms)
 	maestro.ranksetinherits(name, r.inherits)
 end
 function maestro.rankremoveperms(name, perms)
-	local r = ranks[name]
+	local r = maestro.ranks[name]
 	local p = r.perms
 	local newperms = {}
 	newperms = table.Copy(p)
@@ -81,78 +81,80 @@ function maestro.rankremoveperms(name, perms)
 	maestro.ranksetinherits(name, r.inherits)
 end
 function maestro.rankresetperms(name)
-	ranks[name].perms = {}
-	maestro.ranksetinherits(name, ranks[name].inherits)
+	maestro.ranks[name].perms = {}
+	maestro.ranksetinherits(name, maestro.ranks[name].inherits)
 end
 function maestro.rankgettable()
-	return ranks
+	print("Deprecated function: maestro.rankgettable()")
+	return maestro.ranks
 end
 function maestro.ranksetinherits(name, inherits)
-	local r = ranks[name]
+	local r = maestro.ranks[name]
 	r.inherits = inherits
 	maestro.saveranks()
 end
 function maestro.rankflag(rank, name, bool)
-	if ranks[rank] then
-		ranks[rank].flags[name] = bool
+	if maestro.ranks[rank] then
+		maestro.ranks[rank].flags[name] = bool
 	end
 	maestro.saveranks()
 end
 function maestro.rankgetcantarget(name, str)
-	return ranks[name].cantarget
+	return maestro.ranks[name].cantarget
 end
 function maestro.ranksetcantarget(name, str)
-	ranks[name].cantarget = str
+	maestro.ranks[name].cantarget = str
 	maestro.saveranks()
 end
 function maestro.rankresetcantarget(name)
-	ranks[name].cantarget = "<#" .. name
+	maestro.ranks[name].cantarget = "<#" .. name
 	maestro.saveranks()
 end
 function maestro.rankgetpermcantarget(name, perm)
-	local perm = ranks[name].perms[perm]
+	local perm = maestro.ranks[name].perms[perm]
 	if perm == "true" then perm = true end
 	if perm == "false" then perm = false end
 	return perm
 end
 function maestro.ranksetpermcantarget(name, perm, str)
-	ranks[name].perms[perm] = str
+	maestro.ranks[name].perms[perm] = str
 end
 function maestro.rankresetpermcantarget(name, perm)
-	ranks[name].perms[perm] = true
+	maestro.ranks[name].perms[perm] = true
 end
 function maestro.rankgetcanrank(name, str)
-	return ranks[name].canrank
+	return maestro.ranks[name].canrank
 end
 function maestro.ranksetcanrank(name, str)
-	ranks[name].canrank = str
+	maestro.ranks[name].canrank = str
 	maestro.saveranks()
 end
 function maestro.rankresetcanrank(name)
-	ranks[name].canrank = "!>#" .. name
+	maestro.ranks[name].canrank = "!>#" .. name
 	maestro.saveranks()
 end
 function maestro.rankrename(name, to)
-	ranks[to] = ranks[name]
+	maestro.ranks[to] = maestro.ranks[name]
 	for _, v in pairs(player.GetAll()) do
 		if maestro.userrank(v) == name then
 			maestro.userrank(v, to)
 		end
 	end
-	for rank, tab in pairs(ranks) do
+	for rank, tab in pairs(maestro.ranks) do
 		if tab.inherits == name then
 			maestro.ranksetinherits(rank, to)
 		end
 	end
-	ranks[name] = nil
+	maestro.ranks[name] = nil
 	maestro.saveranks()
 end
 function maestro.RESETRANKS()
-	ranks = {}
+	maestro.ranks = {}
 	maestro.rankadd("user", "user", {help = true, who = true, msg = true, menu = true, motd = true, admin = true, tutorial = true, ranks = true})
 	--forgive me padre
 	maestro.rankadd("admin", "user", {kick = true, slay = true, bring = true, goto = true, tp = true, send = true, votekick = true, voteban = true, ["return"] = true, jail = true, jailtp = true, ban = true, banid = true, banlog = true, banlogid = true, gag = true, mute = true, freeze = true, god = true, noclip = true, unban = true, spectate = true, notes = true, notesid = true, note = true, noteid = true, noteremove = true, noteremoveid = true})
 	maestro.rankflag("admin", "admin", true)
+	maestro.rankflag("admin", "echo", true)
 maestro.rankadd("superadmin", "admin", {alias = true, armor = true, chatprint = true, cloak = true, fly = true, gimp = true, gimps = true, hp = true, ignite = true, map = true, play = true, ragdoll = true, scale = true, slap = true, spawn = true, strip = true, veto = true, vote = true, announce = true, blind = true, queue = true})
 	maestro.rankflag("superadmin", "superadmin", true)
 	maestro.rankadd("root", "superadmin", perms)
@@ -163,27 +165,27 @@ end
 
 function maestro.sendranks(ply)
 	net.Start("maestro_ranks")
-		net.WriteTable(ranks)
+		net.WriteTable(maestro.ranks)
 	net.Send(ply)
 end
 function maestro.broadcastranks()
 	net.Start("maestro_ranks")
-		net.WriteTable(ranks)
+		net.WriteTable(maestro.ranks)
 	net.Broadcast()
 end
 
 maestro.load("ranks", function(val, newfile)
-	ranks = val
-	for rank, r in pairs(ranks) do
+	maestro.ranks = val
+	for rank, r in pairs(maestro.ranks) do
 		setmetatable(r.perms, {__index = function(tab, key)
 			if rank == "root" then return true end
-			if tab ~= ranks[r.inherits].perms then
-				return ranks[r.inherits].perms[key]
+			if tab ~= maestro.ranks[r.inherits].perms then
+				return maestro.ranks[r.inherits].perms[key]
 			end
 		end})
 		setmetatable(r.flags, {__index = function(tab, key)
-			if tab ~= ranks[r.inherits].flags then
-				return ranks[r.inherits].flags[key]
+			if tab ~= maestro.ranks[r.inherits].flags then
+				return maestro.ranks[r.inherits].flags[key]
 			end
 		end})
 	end

@@ -132,7 +132,7 @@ maestro.command("ranks", {}, function(caller)
 	else
 		print("Available ranks:")
 	end
-	for rank in pairs(maestro.rankgettable()) do
+	for rank in pairs(maestro.ranks) do
 		if caller then
 			maestro.chat(caller, "\t", rank)
 		else

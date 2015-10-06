@@ -85,7 +85,7 @@ function maestro.target(val, ply, cmd)
 			name = maestro.userrank(ply)
 		end
 		local ranks = {}
-		for rank, tab in pairs(maestro.rankgettable()) do
+		for rank, tab in pairs(maestro.ranks) do
 			if less then
 				if not traversedown(rank, name) then
 					ranks[rank] = true
@@ -177,12 +177,12 @@ function maestro.targetrank(val, plyrank)
 	local name = string.sub(val, cursor)
 	local ret = {}
 	if all then
-		ret = table.Copy(maestro.rankgettable())
+		ret = table.Copy(maestro.ranks)
 	elseif greater then
 		if self then
 			name = plyrank
 		end
-		for rank, tab in pairs(maestro.rankgettable()) do
+		for rank, tab in pairs(maestro.ranks) do
 			if traversedown(rank, name) and rank ~= name then
 				ret[rank] = true
 			end
@@ -191,7 +191,7 @@ function maestro.targetrank(val, plyrank)
 		if self then
 			name = plyrank
 		end
-		for rank, tab in pairs(maestro.rankgettable()) do
+		for rank, tab in pairs(maestro.ranks) do
 			if not traversedown(rank, name) then
 				ret[rank] = true
 			end
@@ -206,7 +206,7 @@ function maestro.targetrank(val, plyrank)
 		ret[name] = true
 	end
 	if cnot then
-		ret = inverse(ret, maestro.rankgettable())
+		ret = inverse(ret, maestro.ranks)
 	end
 	return ret
 end
