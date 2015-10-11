@@ -94,60 +94,61 @@ function maestro.time(num, limit)
 		return "all of time"
 	end
 	local ret = {}
-	while not limit or limit > 0 do
-		if num >= TIME_AEON then
+	while not limit or limit ~= 0 do
+		local templimit = limit or 0
+		if num >= TIME_AEON or templimit <= -14 then
 			local c = math.floor(num / TIME_AEON)
 			ret[#ret + 1] = c .. " " .. plural("aeon", c)
 			num = num - TIME_AEON * c
-		elseif num >= TIME_ERA then
+		elseif num >= TIME_ERA or templimit <= -13 then
 			local c = math.floor(num / TIME_ERA)
 			ret[#ret + 1] = c .. " " .. plural("era", c)
 			num = num - TIME_ERA * c
-		elseif num >= TIME_EPOCH then
+		elseif num >= TIME_EPOCH or templimit <= -12 then
 			local c = math.floor(num / TIME_EPOCH)
 			ret[#ret + 1] = c .. " " .. plural("epoch", c)
 			num = num - TIME_EPOCH * c
-		elseif num >= TIME_AGE then
+		elseif num >= TIME_AGE or templimit <= -11 then
 			local c = math.floor(num / TIME_AGE)
 			ret[#ret + 1] = c .. " " .. plural("age", c)
 			num = num - TIME_AGE * c
-		elseif num >= TIME_MILLENNIUM then
+		elseif num >= TIME_MILLENNIUM or templimit <= -10 then
 			local c = math.floor(num / TIME_MILLENNIUM)
 			ret[#ret + 1] = c .. " " .. plural("millennium", c)
 			num = num - TIME_MILLENNIUM * c
-		elseif num >= TIME_CENTURY then
+		elseif num >= TIME_CENTURY or templimit <= -9 then
 			local c = math.floor(num / TIME_CENTURY)
 			ret[#ret + 1] = c .. " " .. plural("century", c)
 			num = num - TIME_CENTURY * c
-		elseif num >= TIME_DECADE then
+		elseif num >= TIME_DECADE or templimit <= -8 then
 			local c = math.floor(num / TIME_DECADE)
 			ret[#ret + 1] = c .. " " .. plural("decade", c)
 			num = num - TIME_DECADE * c
-		elseif num >= TIME_YEAR then
+		elseif num >= TIME_YEAR or templimit <= -7 then
 			local c = math.floor(num / TIME_YEAR)
 			ret[#ret + 1] = c .. " " .. plural("year", c)
 			num = num - TIME_YEAR * c
-		elseif num >= TIME_MONTH then
+		elseif num >= TIME_MONTH or templimit <= -6 then
 			local c = math.floor(num / TIME_MONTH)
 			ret[#ret + 1] = c .. " " .. plural("month", c)
 			num = num - TIME_MONTH * c
-		elseif num >= TIME_WEEK then
+		elseif num >= TIME_WEEK or templimit <= -5 then
 			local c = math.floor(num / TIME_WEEK)
 			ret[#ret + 1] = c .. " " .. plural("week", c)
 			num = num - TIME_WEEK * c
-		elseif num >= TIME_DAY then
+		elseif num >= TIME_DAY or templimit <= -4 then
 			local c = math.floor(num / TIME_DAY)
 			ret[#ret + 1] = c .. " " .. plural("day", c)
 			num = num - TIME_DAY * c
-		elseif num >= TIME_HOUR then
+		elseif num >= TIME_HOUR or templimit <= -3 then
 			local c = math.floor(num / TIME_HOUR)
 			ret[#ret + 1] = c .. " " .. plural("hour", c)
 			num = num - TIME_HOUR * c
-		elseif num >= TIME_MINUTE then
+		elseif num >= TIME_MINUTE or templimit <= -2 then
 			local c = math.floor(num / TIME_MINUTE)
 			ret[#ret + 1] = c .. " " .. plural("minute", c)
 			num = num - TIME_MINUTE * c
-		elseif num >= TIME_SECOND then
+		elseif num >= TIME_SECOND or templimit <= -1 then
 			local c = math.floor(num / TIME_SECOND)
 			ret[#ret + 1] = c .. " " .. plural("second", c)
 			num = num - TIME_SECOND * c
@@ -155,7 +156,11 @@ function maestro.time(num, limit)
 			break
 		end
 		if limit then
-			limit = limit - 1
+			if limit > 0 then
+				limit = limit - 1
+			else
+				limit = limit + 1
+			end
 		end
 	end
 	local str = ""
