@@ -79,6 +79,7 @@ admin. Here's a list of the current valid flags:
     admin: Marks a rank as admin.
     superadmin: Marks a rank as superadmin.
     anonymous: Hides a rank (people in this rank will appear as users).
+    echo: Will echo any logs (prop spawns, chat, etc) to users in this rank.
 ]]
 tutorial[5] = [[
     Targetting players is governed by a special "code". You can type a partial

@@ -24,7 +24,7 @@ maestro.command("slap", {"player:target", "number:damage(optional)", "number:tim
 		end
 		dmg = dmg or 0
 		slap(ply, dmg)
-		if times then
+		if times and times > 1 then
 			timer.Create("maestro_slap_" .. ply:EntIndex(), 1, times - 1, function()
 				if not ply:Alive() then
 					timer.Remove("maestro_slap_" .. ply:EntIndex())

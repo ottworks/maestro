@@ -148,7 +148,7 @@ maestro.command("userrank", {"player:target", "rank"}, function(caller, targets,
 	elseif not targets or #targets == 0 then
 		return true, "Query matched no players."
 	end
-	if not maestro.rankget(rank) then
+	if not maestro.ranks[rank] then
 		return true, "Invalid rank!"
 	end
 	local ply = targets[1]
@@ -157,7 +157,7 @@ maestro.command("userrank", {"player:target", "rank"}, function(caller, targets,
 end, [[
 Sets the rank of this user.]])
 maestro.command("userrankid", {"steamid", "rank"}, function(caller, id, rank)
-	if not maestro.rankget(rank) then
+	if not maestro.ranks[rank] then
 		return true, "Invalid rank!"
 	end
 	maestro.userrank(id, rank)
