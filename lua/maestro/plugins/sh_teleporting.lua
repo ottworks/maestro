@@ -223,3 +223,13 @@ maestro.command("return", {"player:target(optional)"}, function(caller, targets)
 	end
 end, [[
 Returns the targets to their positions before any teleport commands.]])
+maestro.command("sethome", {}, function(caller)
+	caller.maestro_home = caller:GetPos()
+	maestro.chat(caller, Color(255, 255, 255), "Home set.")
+end, [[
+Sets your home position.]])
+maestro.command("home", {}, function(caller)
+	caller:SetPos(caller.maestro_home or caller:GetPos())
+	return false, "teleported home."
+end, [[
+Teleports you to your home position.]])
