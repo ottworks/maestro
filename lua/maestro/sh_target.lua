@@ -45,7 +45,7 @@ end
 
 function maestro.target(val, ply, cmd)
 	if not val then return {} end
-	local magic = "!*^$#<>"
+	local magic = "!*^$#<>@"
 	local cursor = 1
 	local s = string.sub(val, 1, 1)
 	local cnot = false
@@ -55,6 +55,7 @@ function maestro.target(val, ply, cmd)
 	local group = false
 	local greater = false
 	local less = false
+	local picker = false
 	while magic:find(escape(s)) and #s > 0 do
 		if s == "!" then
 			cnot = not cnot
@@ -70,6 +71,8 @@ function maestro.target(val, ply, cmd)
 			less = true
 		elseif s == ">" then
 			greater = true
+		elseif s == "@" then
+			picker = true
 		end
 		cursor = cursor + 1
 		s = string.sub(val, cursor, cursor)
@@ -80,6 +83,17 @@ function maestro.target(val, ply, cmd)
 		ret = toLookup(player.GetAll())
 	elseif id then
 		ret[player.GetBySteamID(name) or player.GetBySteamID64(name) or player.GetByID(name)] = true
+	elseif picker and ply then
+		local tr = util.TraceLine{
+			start = ply:GetShootPos(),
+			endpos = ply:GetShootPos() + ply:EyeAngles():Forward() * 1024,
+			filter = function(ent)
+				return ent:GetClass() ~= "Player"
+			end,
+		}
+		if IsValid(tr.Entity) and tr.Entity:IsPlayer() then
+			ret[tr.Entity] = true
+		end
 	elseif less or greater then
 		if self then
 			name = maestro.userrank(ply)

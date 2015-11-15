@@ -92,6 +92,7 @@ name or use these tokens:
     < - Target players in ranks below this one
     > - Target players in ranks above this one
     ! - Inverse selection
+    @ - Target what you're looking at
 
 The target string is used for targetting players, configuring which players
 a rank can target, and what ranks a member of a rank can set other players to.
