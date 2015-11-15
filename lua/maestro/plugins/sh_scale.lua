@@ -4,6 +4,7 @@ scaledata.runspeed = {}
 scaledata.crouchspeed = {}
 scaledata.walkspeed = {}
 scaledata.scaled = {}
+scaledata.gravity = {}
 local function doscale(ply, scale)
     scaledata.scaled[ply] = scale
     ply:SetModelScale(scale)
@@ -13,11 +14,17 @@ local function doscale(ply, scale)
     ply:SetViewOffsetDucked(Vector(0, 0, 28 * scale))
     ply:SetStepSize(18 * scale)
     scaledata.jump[ply] = ply:GetJumpPower()
-    ply:SetJumpPower(ply:GetJumpPower() * scale^(1/3))
+    ply:SetJumpPower(ply:GetJumpPower() * scale^(1/4))
     scaledata.runspeed[ply] = ply:GetRunSpeed()
     ply:SetRunSpeed(ply:GetRunSpeed() * scale)
     scaledata.walkspeed[ply] = ply:GetWalkSpeed()
     ply:SetWalkSpeed(ply:GetWalkSpeed() * scale)
+    scaledata.gravity[ply] = ply:GetGravity()
+    ply:SetGravity(scale^(1/4))
+
+    if scale < 0.18 then
+        ply:SetCrouchedWalkSpeed(0.82)
+    end
 
     local hat = ply:LookupBone("ValveBiped.Bip01_Head1")
     if hat then
@@ -36,6 +43,9 @@ local function unscale(ply)
     if scaledata.jump[ply] then ply:SetJumpPower(scaledata.jump[ply]) end
     if scaledata.runspeed[ply] then ply:SetRunSpeed(scaledata.runspeed[ply]) end
     if scaledata.walkspeed[ply] then ply:SetWalkSpeed(scaledata.walkspeed[ply]) end
+    if scaledata.gravity[ply] then ply:SetGravity(scaledata.gravity[ply]) end
+
+    ply:SetCrouchedWalkSpeed(0.3)
 
     local hat = ply:LookupBone("ValveBiped.Bip01_Head1")
     if hat then
@@ -182,5 +192,15 @@ maestro.hook("UpdatePlayerSpeed", "scale", function(ply)
         unscale(ply)
         doscale(ply, scale)
         return true
+    end
+end)
+
+if not CLIENT then return end
+maestro.hook("CalcView", "scale_nearz", function(ply, pos, angles, fov, nearz, farz)
+    if not scaledata.scaled[ply] then return end
+    if not IsValid(GetViewEntity()) or GetViewEntity() == ply then
+        local view = {}
+        view.znear = nearz * scaledata.scaled[ply]
+        return view
     end
 end)
