@@ -5,15 +5,18 @@ if SERVER then
         ply:ConCommand("say !motd")
     end)
 end
-maestro.command("motd", {}, function(caller)
+maestro.command("motd", {"player:target(optional"}, function(caller, targets)
     local motd = GetConVarString("maestro_motd")
     if #motd < 4 then
         return true, "This server has not set up their MOTD yet!"
     end
-    if IsValid(caller) then
+    if not targets or #targets == 0 then
+        targets = nil
+    end
+    if IsValid(caller or targets) then
         net.Start("maestro_motd")
             net.WriteString(motd)
-        net.Send(caller)
+        net.Send(targets or caller)
     else
         maestro.chat(false, Color(255, 255, 255), "The motd is set to: ", maestro.blue, motd)
     end

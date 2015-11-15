@@ -2,7 +2,7 @@ if SERVER then
 	util.AddNetworkString("maestro_menu")
 end
 maestro.command("menu", {}, function(caller)
-	if not caller then return true, "You can't open the menu from the server console!" end
+	if not caller then return true, "Command cannot be run from the server console." end
 	net.Start("maestro_menu")
 	net.Send(caller)
 end, [[

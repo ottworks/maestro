@@ -1,5 +1,6 @@
 maestro.command("god", {"player:target(optional)", "boolean:state(optional)"}, function(caller, targets, state)
 	if not targets then
+		if not caller then return true, "Command cannot be run from the server console." end
 		if caller:HasGodMode() then
 			caller:GodDisable()
 		else
