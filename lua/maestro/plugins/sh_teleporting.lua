@@ -19,6 +19,7 @@ maestro.command("tp", {"player:target(optional)"}, function(caller, targets)
 		targets[1]:SetPos(tr.HitPos)
 		return false, "teleported %1"
 	else
+		if not caller then return true, "Command cannot be run from the server console." end
 		caller.maestro_return = caller:GetPos()
 		caller:SetPos(tr.HitPos)
 		return false, "teleported themselves"

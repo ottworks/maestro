@@ -96,7 +96,14 @@ function maestromenuadd(a)
 	submitargs[#submitargs + 1] = a
 end
 function maestromenuend()
-	RunConsoleCommand("ms", curcmd, unpack(submitargs))
+	net.Start("maestro_cmd")
+		net.WriteUInt(#submitargs + 1, 8)
+		net.WriteString(curcmd)
+		for i = 1, #submitargs do
+			net.WriteString(submitargs[i])
+		end
+		net.WriteBool(false)
+	net.SendToServer()
 end
 
 net.Receive("maestro_menu", function()
