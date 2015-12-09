@@ -1,4 +1,4 @@
-local version = "1.14.1"
+local version = "1.15.0"
 maestro = {}
 print("\201\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\187")
 print("\186 Maestro " .. version .. string.rep(" ", 25 - #version) .. "\186")
@@ -85,7 +85,7 @@ hook.Add("InitPostEntity", "maestro_updatecheck", function()
 			curpatch = tonumber(curpatch) or 0
 			local msg
 			if major > curmajor then
---2345678901234567890123456789012
+--3456789012345678901234567890123
 				msg = [[
 A new major version of Maestro is
 available (%%%%%%%%). Note that

@@ -91,7 +91,7 @@ Creates an entity and sets properties on it.
 Keyvalues are formatted as such:
 key:value
 Flags are numbers.]])
-maestro.command("fire", {"input", "param", "number:delay"}, function(caller, input, param, delay)
+maestro.command("fire", {"input", "param", "number:delay(optional)"}, function(caller, input, param, delay)
 	if not caller then
 		return true, "You cannot fire an ent from the console!"
 	end
@@ -111,3 +111,21 @@ maestro.command("fire", {"input", "param", "number:delay"}, function(caller, inp
 	return false, "fired input %1 on " .. tostring(ent)
 end, [[
 Fires an input on an entity. Can be used to do virtually anything.]])
+maestro.command("give", {"player:target", "class"}, function(caller, targets, class)
+	if #targets == 0 then
+		return true, "Query matched no players."
+	end
+	local ent = ents.Create(class)
+	if not IsValid(ent) then
+		return true, "Invalid entity \"" .. class .. "\"."
+	elseif not ent:IsWeapon() then
+		return true, "Entity \"" .. class .. "\" is not a weapon."
+	end
+	ent:Remove()
+	for i = 1, #targets do
+		targets[i]:Give(class)
+	end
+	return false, "gave weapon %2 to %1"
+end, [[
+Gives a player a weapon.
+]])
