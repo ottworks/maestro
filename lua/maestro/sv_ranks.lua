@@ -30,6 +30,12 @@ function maestro.rankadd(name, inherits, perms)
 	else
 		maestro.saveranks()
 	end
+	if name ~= "user" and name ~= "admin" and name ~= "superadmin" then
+		CAMI.RegisterUsergroup({
+			Name = name,
+			Inherits = inherits,
+		}, "maestro")
+	end
 end
 function maestro.rankremove(name)
 	for _, v in pairs(player.GetAll()) do
@@ -44,6 +50,9 @@ function maestro.rankremove(name)
 	end
 	maestro.ranks[name] = nil
 	maestro.saveranks()
+	if name ~= "user" and name ~= "admin" and name ~= "superadmin" then
+		CAMI.UnregisterUsergroup(name, "maestro")
+	end
 end
 function maestro.rankget(name)
 	return maestro.ranks[name] or {flags = {}, perms = {}}
@@ -162,7 +171,6 @@ maestro.rankadd("superadmin", "admin", {alias = true, armor = true, chatprint = 
 	maestro.ranksetcanrank("root", "*")
 end
 
-
 function maestro.sendranks(ply)
 	net.Start("maestro_ranks")
 		net.WriteTable(maestro.ranks)
@@ -173,6 +181,20 @@ function maestro.broadcastranks()
 		net.WriteTable(maestro.ranks)
 	net.Broadcast()
 end
+
+hook.Add("CAMI.OnUsergroupRegistered", "maestro", function(name, source)
+	if source ~= "maestro" then
+		maestro.rankadd(name)
+	end
+end)
+hook.Add("CAMI.OnUsergroupUnregistered", "maestro", function(name, source)
+	if source ~= "maestro" then
+		maestro.rankremove(name)
+	end
+end)
+hook.Add("CAMI.PlayerHasAccess", "maestro", function(_, ply, name, callback, target)
+
+end)
 
 maestro.load("ranks", function(val, newfile)
 	maestro.ranks = val
@@ -193,5 +215,10 @@ maestro.load("ranks", function(val, newfile)
 		maestro.hook("maestro_postpluginload", "reset", function()
 			maestro.RESETRANKS()
 		end)
+	end
+
+	for k, v in pairs(CAMI.GetUsergroups()) do
+		if maestro.ranks[v.Name] then continue end
+		maestro.rankadd(v.Name, v.Inherits)
 	end
 end)
