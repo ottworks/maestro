@@ -39,9 +39,10 @@ command "ms help" or the chat command "!help" at any time.
 ]]
 tutorial[2] = [[
     If you run "ms ranks", you'll see that there's a few ranks already: User,
-admin, superadmin, and root. In the server console, add yourself to root:
+admin, superadmin, and root. In the server console, add yourself to root (don't
+forget the quotes!):
 
-    ms userrank <yournamehere> root
+    ms userrank "<yournamehere>" root
 
     Now, you can do everything from the ingame console or chat commands. We'll
 be using the ingame console because it has autocomplete. The server is pretty
