@@ -33,7 +33,7 @@ function maestro.userrank(id, rank, source)
 			end
 
 			maestro.save("users", maestro.users)
-			if source then
+			if not source then
 				CAMI.SignalUserGroupChanged(ply, old, rank, "maestro")
 			end
 		end
@@ -51,6 +51,7 @@ function maestro.userrank(id, rank, source)
 	end
 end
 hook.Add("CAMI.PlayerUsergroupChanged", "maestro", function(ply, old, new, source)
+	print("CAMI.PlayerUsergroupChanged", ply, old, new, source)
 	if source ~= "maestro" then
 		maestro.userrank(ply, new, source)
 	end
