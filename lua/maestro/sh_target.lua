@@ -1,6 +1,8 @@
 local function traversedown(rank, val)
 	if rank == val then
 		return true
+	elseif not rank then
+		return false
 	end
 	if rank ~= "user" then
 		return traversedown(maestro.rankget(rank).inherits, val)
@@ -154,7 +156,7 @@ function maestro.target(val, ply, cmd)
 			ret = intersect(ret, tab2)
 		end
 	end
-	return toSequence(ret)
+	return toSequence(ret), ret
 end
 
 function maestro.targetrank(val, plyrank)

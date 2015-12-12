@@ -16,7 +16,7 @@ function maestro.userrank(id, rank, source)
 			return
 		end
 		if IsValid(ply) then
-			if maestro.rankget(rank) and not maestro.rankget(rank).anonymous then
+			if not maestro.rankget(rank).flags.anonymous then
 				ply:SetNWString("rank", rank)
 			else
 				ply:SetNWString("rank", "user")

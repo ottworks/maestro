@@ -9,7 +9,7 @@ end
 
 
 function maestro.rankadd(name, inherits, perms)
-	local r = {perms = {}, inherits = inherits, cantarget = "<^", canrank = "!>^" .. name, flags = {}}
+	local r = {perms = {}, inherits = inherits, cantarget = "<^", canrank = "!>^", flags = {}}
 	maestro.ranks[name] = r
 	setmetatable(r.perms, {__index = function(tab, key)
 		if name == "root" then return true end
@@ -18,6 +18,7 @@ function maestro.rankadd(name, inherits, perms)
 		end
 	end})
 	setmetatable(r.flags, {__index = function(tab, key)
+		if not maestro.ranks[r.inherits] then return end
 		if tab ~= maestro.ranks[r.inherits].flags then
 			return maestro.ranks[r.inherits].flags[key]
 		end
@@ -185,16 +186,17 @@ end
 
 hook.Add("CAMI.OnUsergroupRegistered", "maestro", function(name, source)
 	if source ~= "maestro" then
-		maestro.rankadd(name)
+		maestro.rankadd(name.Name)
 	end
 end)
 hook.Add("CAMI.OnUsergroupUnregistered", "maestro", function(name, source)
 	if source ~= "maestro" then
-		maestro.rankremove(name)
+		maestro.rankremove(name.Name)
 	end
 end)
-hook.Add("CAMI.PlayerHasAccess", "maestro", function(_, ply, name, callback, target)
-
+hook.Add("CAMI.PlayerHasAccess", "maestro", function(ply, name, callback, target)
+	local _, plys = maestro.target("$" .. target:EntIndex(), ply, name)
+	if plys[target] then return true end
 end)
 
 maestro.load("ranks", function(val, newfile)
@@ -207,6 +209,7 @@ maestro.load("ranks", function(val, newfile)
 			end
 		end})
 		setmetatable(r.flags, {__index = function(tab, key)
+			if not maestro.ranks[r.inherits] then return end
 			if tab ~= maestro.ranks[r.inherits].flags then
 				return maestro.ranks[r.inherits].flags[key]
 			end

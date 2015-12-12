@@ -17,7 +17,7 @@ end
 
 local function convertTo(val, t, ply, cmd)
 	if t == "player" then
-		return maestro.target(val, ply, cmd)
+		return maestro.target(val, ply, cmd), nil
 	elseif t == "rank" then
 		if not ply then return val end
 		local cr = maestro.rankget(maestro.userrank(ply)).canrank
@@ -90,7 +90,6 @@ local function handleMultiple(a, ret, cmd, num)
 		end
 	elseif t == "time" then
 		table.insert(ret, maestro.blue)
-		print(maestro.time(a))
 		table.insert(ret, maestro.time(a))
 	elseif t == "steamid" then
 		table.insert(ret, "(")
