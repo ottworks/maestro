@@ -9,7 +9,7 @@ end
 
 
 function maestro.rankadd(name, inherits, perms)
-	local r = {perms = {}, inherits = inherits, cantarget = "<^", canrank = "!>^" .. name, flags = {}}
+	local r = {perms = {}, inherits = inherits, cantarget = "<^", canrank = "!>^", flags = {}}
 	maestro.ranks[name] = r
 	setmetatable(r.perms, {__index = function(tab, key)
 		if name == "root" then return true end
@@ -18,6 +18,7 @@ function maestro.rankadd(name, inherits, perms)
 		end
 	end})
 	setmetatable(r.flags, {__index = function(tab, key)
+		if not maestro.ranks[r.inherits] then return end
 		if tab ~= maestro.ranks[r.inherits].flags then
 			return maestro.ranks[r.inherits].flags[key]
 		end
@@ -29,6 +30,13 @@ function maestro.rankadd(name, inherits, perms)
 		maestro.ranksetinherits(name, inherits)
 	else
 		maestro.saveranks()
+	end
+	if CAMI.GetUsergroup(name) then return end
+	if name ~= "user" and name ~= "admin" and name ~= "superadmin" then
+		CAMI.RegisterUsergroup({
+			Name = name,
+			Inherits = inherits,
+		}, "maestro")
 	end
 end
 function maestro.rankremove(name)
@@ -44,6 +52,9 @@ function maestro.rankremove(name)
 	end
 	maestro.ranks[name] = nil
 	maestro.saveranks()
+	if name ~= "user" and name ~= "admin" and name ~= "superadmin" then
+		CAMI.UnregisterUsergroup(name, "maestro")
+	end
 end
 function maestro.rankget(name)
 	return maestro.ranks[name] or {flags = {}, perms = {}}
@@ -162,7 +173,6 @@ maestro.rankadd("superadmin", "admin", {alias = true, armor = true, chatprint = 
 	maestro.ranksetcanrank("root", "*")
 end
 
-
 function maestro.sendranks(ply)
 	net.Start("maestro_ranks")
 		net.WriteTable(maestro.ranks)
@@ -174,6 +184,21 @@ function maestro.broadcastranks()
 	net.Broadcast()
 end
 
+hook.Add("CAMI.OnUsergroupRegistered", "maestro", function(name, source)
+	if source ~= "maestro" then
+		maestro.rankadd(name.Name)
+	end
+end)
+hook.Add("CAMI.OnUsergroupUnregistered", "maestro", function(name, source)
+	if source ~= "maestro" then
+		maestro.rankremove(name.Name)
+	end
+end)
+hook.Add("CAMI.PlayerHasAccess", "maestro", function(ply, name, callback, target)
+	local _, plys = maestro.target("$" .. target:EntIndex(), ply, name)
+	if plys[target] then return true end
+end)
+
 maestro.load("ranks", function(val, newfile)
 	maestro.ranks = val
 	for rank, r in pairs(maestro.ranks) do
@@ -184,14 +209,25 @@ maestro.load("ranks", function(val, newfile)
 			end
 		end})
 		setmetatable(r.flags, {__index = function(tab, key)
+			if not maestro.ranks[r.inherits] then return end
 			if tab ~= maestro.ranks[r.inherits].flags then
 				return maestro.ranks[r.inherits].flags[key]
 			end
 		end})
+		if CAMI.GetUsergroup(rank) then continue end
+		CAMI.RegisterUsergroup({
+			Name = rank,
+			Inherits = r.inherits,
+		}, "maestro")
 	end
 	if newfile then
 		maestro.hook("maestro_postpluginload", "reset", function()
 			maestro.RESETRANKS()
 		end)
+	end
+
+	for k, v in pairs(CAMI.GetUsergroups()) do
+		if maestro.ranks[v.Name] then continue end
+		maestro.rankadd(v.Name, v.Inherits)
 	end
 end)
