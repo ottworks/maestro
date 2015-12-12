@@ -3,7 +3,7 @@ maestro.load("users", function(val)
 	maestro.users = val
 end)
 
-function maestro.userrank(id, rank)
+function maestro.userrank(id, rank, source)
 	if rank then
 		local ply
 		if type(id) == "Player" then
@@ -22,12 +22,21 @@ function maestro.userrank(id, rank)
 				ply:SetNWString("rank", "user")
 			end
 		end
-		maestro.users[id] = maestro.users[id] or {}
-		maestro.users[id].rank = rank
-		if rank == "user" then
-			maestro.users[id] = nil
+
+		if source ~= "init" then
+			maestro.users[id] = maestro.users[id] or {}
+			local old = maestro.users[id].rank
+
+			maestro.users[id].rank = rank
+			if rank == "user" then
+				maestro.users[id] = nil
+			end
+
+			maestro.save("users", maestro.users)
+			if source then
+				CAMI.SignalUserGroupChanged(ply, old, rank, "maestro")
+			end
 		end
-		maestro.save("users", maestro.users)
 	else
 		if type(id) == "Player" then
 			id = id:SteamID()
@@ -41,6 +50,11 @@ function maestro.userrank(id, rank)
 		return "user"
 	end
 end
+hook.Add("CAMI.PlayerUsergroupChanged", "maestro", function(ply, old, new, source)
+	if source ~= "maestro" then
+		maestro.userrank(ply, new, source)
+	end
+end)
 
 function maestro.RESETUSERS()
 	for _, ply in pairs(player.GetAll()) do

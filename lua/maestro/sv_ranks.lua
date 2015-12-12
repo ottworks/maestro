@@ -30,6 +30,7 @@ function maestro.rankadd(name, inherits, perms)
 	else
 		maestro.saveranks()
 	end
+	if CAMI.GetUsergroup(name) then return end
 	if name ~= "user" and name ~= "admin" and name ~= "superadmin" then
 		CAMI.RegisterUsergroup({
 			Name = name,
@@ -210,6 +211,11 @@ maestro.load("ranks", function(val, newfile)
 				return maestro.ranks[r.inherits].flags[key]
 			end
 		end})
+		if CAMI.GetUsergroup(rank) then continue end
+		CAMI.RegisterUsergroup({
+			Name = rank,
+			Inherits = r.inherits,
+		}, "maestro")
 	end
 	if newfile then
 		maestro.hook("maestro_postpluginload", "reset", function()

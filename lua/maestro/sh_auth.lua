@@ -31,10 +31,10 @@ maestro.hook("PlayerAuthed", "maestro_PlayerAuthed", function(ply, steam, uid)
 	if game.SinglePlayer() and ply == Entity(1) then
 		steam = ply:SteamID()
 		name = "root"
-		maestro.userrank(ply, "root")
+		maestro.userrank(ply, "root", "init")
 	end
 	if not name then
-		maestro.userrank(steam, "user")
+		maestro.userrank(steam, "user", "init")
 	elseif not maestro.rankget(name).flags.anonymous then
 		ply:SetNWString("rank", name or "user")
 	end
