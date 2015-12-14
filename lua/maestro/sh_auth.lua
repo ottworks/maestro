@@ -26,9 +26,9 @@ function meta:SetUserGroup(name)
 	maestro.userrank(self, name)
 end
 
-maestro.hook("PlayerAuthed", "maestro_PlayerAuthed", function(ply, steam, uid)
+local function auth(ply, steam)
 	local name = maestro.userrank(steam)
-	if game.SinglePlayer() and ply == Entity(1) then
+	if game.SinglePlayer() or ply:IsListenServerHost() then
 		steam = ply:SteamID()
 		name = "root"
 		maestro.userrank(ply, "root", "init")
@@ -39,7 +39,20 @@ maestro.hook("PlayerAuthed", "maestro_PlayerAuthed", function(ply, steam, uid)
 		ply:SetNWString("rank", name or "user")
 	end
 	maestro.sendranks(ply)
-	print(ply:GetNWString("rank"))
+end
+maestro.hook("PlayerAuthed", "maestro_PlayerAuthed", function(ply, steam)
+	if ply.IsFullyAuthenticated and not ply:IsFullyAuthenticated() then
+		maestro.chat(ply, maestro.orange, "Hey, your SteamID isn't validated. We're going to check again in 15 seconds and then kick you if you aren't validated by then.")
+		timer.Simple(15, function()
+			if ply.IsFullyAuthenticated and not ply:IsFullyAuthenticated() then
+				ply:Kick("SteamID not validated, try again later.")
+				return
+			end
+			auth(ply, steam)
+		end)
+		return
+	end
+	auth(ply, steam)
 end)
 
 hook.Remove("PlayerInitialSpawn", "PlayerAuthSpawn") --removing vanilla stuff resetting rank
