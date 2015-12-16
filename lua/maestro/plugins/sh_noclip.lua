@@ -17,7 +17,7 @@ maestro.command("noclip", {"player:target(optional)", "boolean:state(optional)"}
 	else
 		if not caller then return true, "Command cannot be run from the server console." end
 		caller:SetMoveType((caller:GetMoveType() == MOVETYPE_NOCLIP) and MOVETYPE_WALK or MOVETYPE_NOCLIP)
-		return false, "toggled noclip mode on themselves"
+		return false
 	end
 end, [[
 Makes a player noclip.

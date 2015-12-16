@@ -9,6 +9,9 @@ end, [[
 Opens a menu for running commands.]])
 
 if not CLIENT then return end
+maestro.menu = {}
+maestro.menu.tabs = {}
+
 local function populatecommands()
 	local ret = ""
 	local cmds = {}
@@ -39,12 +42,80 @@ local function escape(str)
 	str = str:gsub(">", "&gt;")
 	return str:gsub("(['\"])", "\\%1")
 end
+local function populatetabbody()
+	local ret = ""
+	local first = " active"
+	for i = 1, #maestro.menu.tabs do
+		local name = maestro.menu.tabs[i].name
+		local body = maestro.menu.tabs[i].body
+		local safe = name:lower():gsub(" ", "")
+		ret = ret .. [[
+			<div role="tabpanel" class="tab-pane]] .. first .. [[" id="]] .. safe .. [[">
+				]] .. body() .. [[
+			</div>
+		]]
+		first = ""
+	end
+	return ret
+end
+local function populatetabs()
+	local ret = ""
+	local first = " class=\"active\""
+	for i = 1, #maestro.menu.tabs do
+		local name = maestro.menu.tabs[i].name
+		local safe = name:lower():gsub(" ", "")
+		ret = ret .. [[
+			<li role="presentation"]] .. first .. [[><a href="#]] .. safe .. [[" aria-controls="]] .. safe .. [[" role="tab" data-toggle="tab">]] .. name .. [[</a></li>
+		]]
+		first = ""
+	end
+	return ret
+end
+function maestro.menu.addtab(name, body)
+	maestro.menu.tabs[#maestro.menu.tabs + 1] = {name = name, body = body}
+end
+
+maestro.menu.addtab("Commands", function() return [[
+<div class="row clearfix">
+	<div class="col-xs-2 column noselect">
+		<ul class="nav nav-pills nav-stacked" id="commandpills">
+			]] .. populatecommands() .. [[
+		</ul>
+	</div>
+	<div class="col-xs-10 column">
+		<div data-spy="affix" id="affix">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title" id="commandname">&nbsp;</h3>
+				</div>
+				<div class="panel-body">
+					<div class="highlight">
+						<pre><code class="language-html" data-lang="html" id="commandsyntax"> </code></pre>
+					</div>
+					<dl>
+						<span id="commandhelp">
+
+						</span>
+					</dl>
+					<div class="well noselect">
+						<div class="controls" id="commandform">
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+]] end)
+
+
 local curcmd = ""
 function maestromenuupdate(cmd)
 	curcmd = cmd
-	maestro_menu:Call([[
+	maestro.menu.panel:Call([[
 document.getElementById("commandname").innerHTML = "]] .. cmd .. [[";]])
-	maestro_menu:Call([[
+	maestro.menu.panel:Call([[
 document.getElementById("commandhelp").innerHTML = "]] .. (maestro.commands[cmd].help or ""):gsub("\n", "<br>") .. [[";]])
 	local function args(t)
 		local ret = ""
@@ -53,9 +124,9 @@ document.getElementById("commandhelp").innerHTML = "]] .. (maestro.commands[cmd]
 		end
 		return ret
 	end
-	maestro_menu:Call([[
+	maestro.menu.panel:Call([[
 document.getElementById("commandsyntax").innerHTML = "ms ]] .. cmd .. args(maestro.commands[cmd].args) .. [[";]])
-	maestro_menu:Call([[
+	maestro.menu.panel:Call([[
 document.getElementById("commandform").innerHTML = "";]])
 	for i = 1, #maestro.commands[cmd].args do
 		local arg = maestro.commands[cmd].args[i]
@@ -78,9 +149,9 @@ document.getElementById("commandform").innerHTML = "";]])
 	<ul class="dropdown-menu" role="menu">]] .. plys() .. [[</ul>\
 </div>]]
 		end
-		maestro_menu:Call([[ $("#commandform").append(']] .. code .. [[');]])
+		maestro.menu.panel:Call([[ $("#commandform").append(']] .. code .. [[');]])
 	end
-	maestro_menu:Call([[
+	maestro.menu.panel:Call([[
 $("#commandform").append('<button type="submit" class="btn btn-default form-control-inline" onclick="runCommand(]] .. #maestro.commands[cmd].args .. [[);">\
 	Submit\
 </button>');]])
@@ -107,15 +178,15 @@ function maestromenuend()
 end
 
 net.Receive("maestro_menu", function()
-	if maestro_menu then maestro_menu:Remove() end
-	maestro_menu = vgui.Create("DHTML")
-	maestro_menu:SetSize(1024, 576)
-	maestro_menu:Center()
-	maestro_menu:MakePopup()
-	maestro_menu:SetAllowLua(true)
-	maestro_menu:SetScrollbars(false)
-	maestro_menu:SetVerticalScrollbarEnabled(false)
-	maestro_menu:SetHTML([[
+	if maestro.menu.panel then maestro.menu.panel:Remove() end
+	maestro.menu.panel = vgui.Create("DHTML")
+	maestro.menu.panel:SetSize(1024, 576)
+	maestro.menu.panel:Center()
+	maestro.menu.panel:MakePopup()
+	maestro.menu.panel:SetAllowLua(true)
+	maestro.menu.panel:SetScrollbars(false)
+	maestro.menu.panel:SetVerticalScrollbarEnabled(false)
+	maestro.menu.panel:SetHTML([[
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -130,13 +201,13 @@ net.Receive("maestro_menu", function()
 	<!--script src="js/less-1.3.3.min.js"></script-->
 	<!--append ‘#!watch’ to the browser URL, then refresh the page. -->
 
-	<link rel="stylesheet" href=" https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
 
 
 	<!-- Latest compiled and minified JavaScript -->
-	<script src=" https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	<script src=" https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	<script>
 		function resetPills() {
 			var a = document.getElementById("commandpills").children;
@@ -211,13 +282,18 @@ net.Receive("maestro_menu", function()
 	<div class="row clearfix noselect">
 		<div class="col-md-12 column">
 			<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-				<div align="right">
-					<button type="button" class="close" aria-label="Close" align="right" onclick="console.log('RUNLUA: maestro_menu:Remove()');">
-						<span aria-hidden="true">&times;&nbsp;</span>
-					</button>
-				</div>
-				<div class="navbar-header">
-					<a class="navbar-brand">Maestro</a>
+				<div class="container-fluid">
+					<div align="right">
+						<button type="button" class="close" aria-label="Close" align="right" onclick="console.log('RUNLUA: maestro.menu.panel:Remove()');">
+							<span aria-hidden="true">&times;&nbsp;</span>
+						</button>
+					</div>
+					<div class="navbar-header">
+						<a class="navbar-brand">Maestro</a>
+					</div>
+					<ul class="nav navbar-nav">
+						]] .. populatetabs() .. [[
+					</ul>
 				</div>
 			</nav>
 			<h3>
@@ -225,36 +301,8 @@ net.Receive("maestro_menu", function()
 			</h3>
 		</div>
 	</div>
-	<div class="row clearfix">
-		<div class="col-xs-2 column noselect">
-			<ul class="nav nav-pills nav-stacked" id="commandpills">
-				]] .. populatecommands() .. [[
-			</ul>
-		</div>
-		<div class="col-xs-10 column">
-			<div data-spy="affix" id="affix">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title" id="commandname">&nbsp;</h3>
-					</div>
-					<div class="panel-body">
-						<div class="highlight">
-							<pre><code class="language-html" data-lang="html" id="commandsyntax"> </code></pre>
-						</div>
-						<dl>
-							<span id="commandhelp">
-
-							</span>
-						</dl>
-						<div class="well noselect">
-							<div class="controls" id="commandform">
-
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+	<div class="tab-content">
+		]] .. populatetabbody() .. [[
 	</div>
 </div>
 </body>
