@@ -1,4 +1,5 @@
 maestro.commands = maestro.commands or {}
+maestro.commandaliases = maestro.commandaliases or {}
 
 util.AddNetworkString("maestro_commands")
 util.AddNetworkString("maestro_cmd")
@@ -104,6 +105,7 @@ local function handleMultiple(a, ret, cmd, num)
 end
 
 function maestro.runcmd(silent, cmd, args, ply)
+	cmd = maestro.commandaliases[cmd] or cmd
 	if not maestro.commands[cmd] then
 		print("Invalid command!")
 		return
@@ -243,6 +245,12 @@ function maestro.command(cmd, args, callback, help, tgt)
 	for k, arg in pairs(args) do
 		args[k] = string.gsub(arg, "%s", "_")
 	end
+	for name, tab in pairs(maestro.commands) do
+		if tab.callback == callback and cmd ~= name then
+			maestro.commandaliases[cmd] = name
+			return
+		end
+	end
 	maestro.commands[cmd] = {args = args, callback = callback, help = help, cantarget = tgt}
 end
 
@@ -267,6 +275,7 @@ maestro.hook("PlayerSay", "maestro_command", function(ply, txt, team)
 		end
 		table.remove(args, 1)
 		cmd = string.lower(cmd)
+		cmd = maestro.commandaliases[cmd] or cmd
 		if maestro.commands[cmd] then
 			if maestro.rankget(maestro.userrank(ply)).perms[cmd] then
 				maestro.runcmd(team, cmd, args, ply)

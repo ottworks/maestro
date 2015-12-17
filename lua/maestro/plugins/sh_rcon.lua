@@ -5,7 +5,7 @@ maestro.command("rcon", {"string:command"}, function(caller, cmd)
 end, [[
 Runs a console command on the server.]])
 
-local function lua(code, caller)
+local function lua(caller, code)
 	local func, a1, a2, a3 = CompileString(code, "maestro_lua", false)
 	local env = setmetatable({}, {
 		__index = function(tab, key)
@@ -40,13 +40,9 @@ local function lua(code, caller)
 	end
 	return false, "ran code %1 on the server"
 end
-maestro.command("lua", {"string:lua"}, function(caller, code)
-	return lua(code, caller)
-end, [[
+maestro.command("lua", {"string:lua"}, lua, [[
 Runs Lua on the server.]])
-maestro.command("l", {"string:lua"}, function(caller, code)
-	return lua(code, caller)
-end, [[
+maestro.command("l", {"string:lua"}, lua, [[
 Runs Lua on the server.]])
 
 maestro.command("ent", {"class", "keyvalues(multiple)"}, function(caller, class, ...)

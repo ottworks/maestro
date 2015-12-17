@@ -1,4 +1,5 @@
 maestro.commands = maestro.commands or {}
+maestro.commandaliases = maestro.commandaliases or {}
 
 local function command(ply, cmd, args, str)
 	net.Start("maestro_cmd")
@@ -32,9 +33,21 @@ local function autocomplete(base, str)
 				table.insert(t, base .. k)
 			end
 		end
+		for k, v in pairs(maestro.commandaliases) do
+			if maestro.rankget(maestro.userrank(LocalPlayer())).perms[v] then
+				table.insert(t, base .. k)
+			end
+		end
 	elseif #args == 1 then
 		for k, v in pairs(maestro.commands) do
 			if maestro.rankget(maestro.userrank(LocalPlayer())).perms[k] then
+				if string.sub(k, 1, #args[1]):lower() == args[1]:lower() then
+					table.insert(t, base .. k)
+				end
+			end
+		end
+		for k, v in pairs(maestro.commandaliases) do
+			if maestro.rankget(maestro.userrank(LocalPlayer())).perms[v] then
 				if string.sub(k, 1, #args[1]):lower() == args[1]:lower() then
 					table.insert(t, base .. k)
 				end
@@ -48,9 +61,16 @@ local function autocomplete(base, str)
 				types = v.args
 			end
 		end
+		for k, v in pairs(maestro.commandaliases) do
+			if k:lower() == args[1]:lower() then
+				cmd = k
+				types = maestro.commands[v].args
+			end
+		end
 		local params = table.Copy(args)
 		table.remove(params, 1)
 		if cmd then
+			cmd = maestro.commandaliases[cmd] or cmd
 			local cnct = table.concat(args, " ", 2, #args - 1)
 			cnct = " " .. cnct .. " "
 			cnct = cnct:gsub("%s+", " ")
@@ -131,5 +151,11 @@ end)
 
 
 function maestro.command(cmd, args, func, help)
-	maestro.commands[cmd] = {args = args, help = help}
+	for name, tab in pairs(maestro.commands) do
+		if tab.serversidecallback == func and name ~= cmd then
+			maestro.commandaliases[cmd] = name
+			return
+		end
+	end
+	maestro.commands[cmd] = {args = args, help = help, serversidecallback = func}
 end

@@ -22,6 +22,7 @@ end, [[
 Displays this menu.]])
 function maestro.help(cmd)
 	if cmd then
+		cmd = maestro.commandaliases[cmd] or cmd
 		local col = maestro.blue
 		if LocalPlayer and not maestro.rankget(maestro.userrank(LocalPlayer())).perms[cmd] then
 			col = maestro.orange
