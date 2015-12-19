@@ -4,11 +4,13 @@ net.Receive("maestro_ranks", function()
 	for rank, r in pairs(ranks) do
 		setmetatable(r.perms, {__index = function(tab, key)
 			if rank == "root" then return true end
+			if not maestro.ranks[r.inherits] then return end
 			if tab ~= maestro.ranks[r.inherits].perms then
 				return maestro.ranks[r.inherits].perms[key]
 			end
 		end})
 		setmetatable(r.flags, {__index = function(tab, key)
+			if not maestro.ranks[r.inherits] then return end
 			if tab ~= maestro.ranks[r.inherits].flags then
 				return maestro.ranks[r.inherits].flags[key]
 			end
