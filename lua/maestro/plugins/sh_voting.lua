@@ -68,6 +68,32 @@ maestro.command("voteban", {"player:target", "time", "reason"}, function(caller,
 	return false, "started a voteban against %1 for %2"
 end, [[
 Starts a vote to ban the target for the specified time and an optional reason.]])
+maestro.command("voteclean", {}, function(caller)
+	maestro.vote("Clean up the map?", {"Yes", "No"}, function(option, voted, total)
+		if option and option == "Yes" then
+			maestro.chat(nil, Color(255, 255, 255), "The map will be cleaned in 30 seconds. (", voted, "/", total, ")")
+			maestro.announce("The map will be cleaned up in 30 seconds.", "Map Clean Up", "warning")
+			timer.Simple(15, function()
+				maestro.chat(nil, Color(255, 255, 255), "The map will be cleaned in 15 seconds.")
+				timer.Simple(10, function()
+					maestro.chat(nil, Color(255, 255, 255), "The map will be cleaned in 5 seconds.")
+					for i = 1, 4 do
+						timer.Simple(i, function()
+							maestro.chat(nil, Color(255, 255, 255), "The map will be cleaned in ", 5 - i, " seconds.")
+						end)
+						timer.Simple(5, function()
+							game.CleanUpMap()
+						end)
+					end
+				end)
+			end)
+		else
+			maestro.chat(nil, Color(255, 255, 255), "The map will not be cleaned.")
+		end
+	end)
+	return false, "started a vote to clean the map"
+end, [[
+Starts a vote to clean the map.]])
 maestro.command("veto", {}, function(caller)
 	if not votes[caller] or not votes[caller][1] then
 		return true, "You have no active vote!"

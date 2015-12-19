@@ -26,21 +26,36 @@ Broadcasts a message on everybody's screen. Possible values for style:
 if SERVER then
     util.AddNetworkString("maestro_announce")
 end
+function maestro.announce(text, title, style)
+	title = title or "Announcement"
+	text = text or ""
+	style = style or "primary"
+	if SERVER then
+		net.Start("maestro_announce")
+			net.WriteString(text)
+			net.WriteString(style)
+			net.WriteString(title)
+		net.Broadcast()
+	end
+	if CLIENT then
+		maestro_announce:Call([[
+	document.getElementById("panel-title").innerHTML = "]] .. title .. [[";
+	document.getElementById("panel-body").innerHTML = "]] .. text .. [[";
+	document.getElementById("panel").className = "panel panel-]] .. style .. [[";
+	]])
+	    maestro_announce:MoveTo(ScrW()/2 - 320, 20, 1, 0, 0.1, function()
+	        timer.Simple(5, function()
+	            maestro_announce:MoveTo(ScrW()/2 - 320, -180, 1, 0, 2)
+	        end)
+	    end)
+	end
+end
 if not CLIENT then return end
 net.Receive("maestro_announce", function()
     local text = escape(net.ReadString())
     local style = escape(net.ReadString())
     local title = escape(net.ReadString())
-    maestro_announce:Call([[
-document.getElementById("panel-title").innerHTML = "]] .. title .. [[";
-document.getElementById("panel-body").innerHTML = "]] .. text .. [[";
-document.getElementById("panel").className = "panel panel-]] .. style .. [[";
-]])
-    maestro_announce:MoveTo(ScrW()/2 - 320, 20, 1, 0, 0.1, function()
-        timer.Simple(5, function()
-            maestro_announce:MoveTo(ScrW()/2 - 320, -180, 1, 0, 2)
-        end)
-    end)
+    maestro.announce(text, title, style)
 end)
 if maestro_announce then
     maestro_announce:Remove()
