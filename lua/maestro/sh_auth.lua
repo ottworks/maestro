@@ -29,7 +29,7 @@ end
 local function auth(ply, steam)
 	local name = maestro.userrank(steam)
 	if game.SinglePlayer() or ply:IsListenServerHost() then
-		steam = ply:SteamID()
+		steam = ply:SteamID64()
 		name = "root"
 		maestro.userrank(ply, "root", "init")
 	end
