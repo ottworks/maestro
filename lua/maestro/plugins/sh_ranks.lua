@@ -15,7 +15,7 @@ maestro.command("rankadd", {"string:name", "rank:inherits", "command:multiple"},
 end, [[
 Adds a new rank to the server, inheriting from another rank, with access to the specified commands (or "*" for all commands).]])
 maestro.command("rankremove", {"rank"}, function(caller, rank)
-	if not rank or not maestro.rankget(rank) then
+	if not maestro.ranks[rank] then
 		return true, "Invalid rank!"
 	end
 	maestro.rankremove(rank)
@@ -23,7 +23,7 @@ maestro.command("rankremove", {"rank"}, function(caller, rank)
 end, [[
 Removes the rank from the server.]])
 maestro.command("ranksetperms", {"rank", "command:multiple"}, function(caller, rank, ...)
-	if not rank or not maestro.rankget(rank) then
+	if not maestro.ranks[rank] then
 		return true, "Invalid rank!"
 	end
 	local args = {...}
@@ -36,7 +36,7 @@ maestro.command("ranksetperms", {"rank", "command:multiple"}, function(caller, r
 end, [[
 Sets the commands available to the rank.]])
 maestro.command("rankaddperms", {"rank", "command:multiple"}, function(caller, rank, ...)
-	if not rank or not maestro.rankget(rank) then
+	if not maestro.ranks[rank] then
 		return true, "Invalid rank!"
 	end
 	local args = {...}
@@ -49,7 +49,7 @@ maestro.command("rankaddperms", {"rank", "command:multiple"}, function(caller, r
 end, [[
 Grants the rank access to new commands.]])
 maestro.command("rankremoveperms", {"rank", "command:multiple"}, function(caller, rank, ...)
-	if not rank or not maestro.rankget(rank) then
+	if not maestro.ranks[rank] then
 		return true, "Invalid rank!"
 	end
 	local args = {...}
@@ -63,7 +63,7 @@ end, [[
 Explicitly revokes the commands this rank can use.
 Any ranks that inherit from this one will also be unable to use the command.]])
 maestro.command("rankresetperms", {"rank"}, function(caller, rank)
-	if not rank or not maestro.rankget(rank) then
+	if not maestro.ranks[rank] then
 		return true, "Invalid rank!"
 	end
 	maestro.rankresetperms(rank)
@@ -71,7 +71,7 @@ maestro.command("rankresetperms", {"rank"}, function(caller, rank)
 end, [[
 Resets a rank's permissions to only ones it inherits.]])
 maestro.command("ranksetinherits", {"rank", "rank:inherits"}, function(caller, rank, inherits)
-	if not rank or not maestro.rankget(rank) then
+	if not maestro.ranks[rank] then
 		return true, "Invalid rank!"
 	end
 	maestro.ranksetinherits(rank, inherits)
@@ -79,7 +79,7 @@ maestro.command("ranksetinherits", {"rank", "rank:inherits"}, function(caller, r
 end, [[
 Sets the rank this rank inherits from.]])
 maestro.command("rankflag", {"rank", "flag", "boolean:value"}, function(caller, rank, flag, bool)
-	if not rank or not maestro.rankget(rank) then
+	if not maestro.ranks[rank] then
 		return true, "Invalid rank!"
 	end
 	maestro.rankflag(rank, flag, bool)
@@ -87,7 +87,7 @@ maestro.command("rankflag", {"rank", "flag", "boolean:value"}, function(caller, 
 end, [[
 Sets a flag on this rank.]])
 maestro.command("ranksetcantarget", {"rank", "targetstring"}, function(caller, rank, str)
-	if not rank or not maestro.rankget(rank) then
+	if not maestro.ranks[rank] then
 		return true, "Invalid rank!"
 	end
 	maestro.ranksetcantarget(rank, str)
@@ -95,7 +95,7 @@ maestro.command("ranksetcantarget", {"rank", "targetstring"}, function(caller, r
 end, [[
 Sets the players this rank can target in the form of a targetstring.]])
 maestro.command("rankresetcantarget", {"rank"}, function(caller, rank)
-	if not rank or not maestro.rankget(rank) then
+	if not maestro.ranks[rank] then
 		return true, "Invalid rank!"
 	end
 	maestro.rankresetcantarget(rank)
@@ -103,7 +103,7 @@ maestro.command("rankresetcantarget", {"rank"}, function(caller, rank)
 end, [[
 Resets the players this rank can target to the default value (hierarchical).]])
 maestro.command("ranksetpermcantarget", {"rank", "command", "targetstring"}, function(caller, rank, cmd, str)
-	if not rank or not maestro.rankget(rank) then
+	if not maestro.ranks[rank] then
 		return true, "Invalid rank!"
 	end
 	maestro.ranksetpermcantarget(rank, cmd, str)
@@ -111,7 +111,7 @@ maestro.command("ranksetpermcantarget", {"rank", "command", "targetstring"}, fun
 end, [[
 Sets the players this rank can target with this command in the form of a targetstring.]])
 maestro.command("rankresetpermcantarget", {"rank", "command"}, function(caller, rank, cmd)
-	if not rank or not maestro.rankget(rank) then
+	if not maestro.ranks[rank] then
 		return true, "Invalid rank!"
 	end
 	maestro.rankresetpermcantarget(rank, cmd)
@@ -119,13 +119,20 @@ maestro.command("rankresetpermcantarget", {"rank", "command"}, function(caller, 
 end, [[
 Resets the players this rank can target with this command to that of the rank's.]])
 maestro.command("rankrename", {"rank:from", "to"}, function(caller, from, to)
-	if not from or not maestro.rankget(from) then
+	if not maestro.rankget(from) then
 		return true, "Invalid rank!"
 	end
 	maestro.rankrename(from, to)
 	return false, "renamed rank %1 to %2"
 end, [[
 Renames a rank.]])
+maestro.command("rankcolor", {"rank", "number:r", "number:g", "number:b"}, function(caller, rank, r, g, b)
+	if not maestro.ranks[rank] then
+		return true, "Invalid rank!"
+	end
+	maestro.rankcolor(rank, r, g, b)
+	return false, "set the color of rank %1 to (%2, %3, %4)"
+end)
 maestro.command("ranks", {}, function(caller)
 	if caller then
 		maestro.chat(caller, Color(255, 255, 255), "Available ranks:")

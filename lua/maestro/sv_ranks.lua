@@ -2,7 +2,7 @@ maestro.ranks = {}
 util.AddNetworkString("maestro_ranks")
 
 function maestro.rankadd(name, inherits, perms)
-	local r = {perms = {}, inherits = inherits, cantarget = "<^", canrank = "!>^", flags = {}}
+	local r = {perms = {}, inherits = inherits, cantarget = "<^", canrank = "!>^", flags = {}, color = Color(255, 255, 255)}
 	maestro.ranks[name] = r
 	setmetatable(r.perms, {__index = function(tab, key)
 		if name == "root" then return true end
@@ -29,6 +29,7 @@ function maestro.rankadd(name, inherits, perms)
 		q:Insert("inherits", inherits)
 		q:Insert("cantarget", r.cantarget)
 		q:Insert("canrank", r.canrank)
+		q:Insert("color", "255 255 255")
 	q:Execute()
 
 	if CAMI.GetUsergroup(name) then return end
@@ -286,6 +287,14 @@ function maestro.rankrename(name, to)
 	q:Execute()
 	maestro.broadcastranks()
 end
+function maestro.rankcolor(name, r, g, b)
+	if not r then return maestro.ranks[name].color end
+	maestro.ranks[name].color = Color(r, g, b)
+	local q = mysql:Update("maestro_ranks")
+		q:Where("rank", name)
+		q:Update("color", string.format("%03d %03d %03d", r, g, b))
+	q:Execute()
+end
 function maestro.RESETRANKS()
 	maestro.ranks = {}
 	local q = mysql:Delete("maestro_ranks")
@@ -344,6 +353,7 @@ maestro.hook("DatabaseConnected", "ranks", function()
         q:Create("inherits", "VARCHAR(255) NOT NULL")
         q:Create("cantarget", "VARCHAR(255) NOT NULL")
         q:Create("canrank", "VARCHAR(255) NOT NULL")
+		q:Create("color", "VARCHAR(11) NOT NULL")
         q:PrimaryKey("id")
     q:Execute()
     local q = mysql:Create("maestro_perms")
@@ -368,6 +378,7 @@ maestro.hook("DatabaseConnected", "ranks", function()
 				local tab = res[i]
 				local name = tab.rank
 				local r = {perms = {}, inherits = tab.inherits, cantarget = tab.cantarget, canrank = tab.canrank, flags = {}}
+				r.color = Color(string.match(tab.color or "255 255 255", "(%d%d%d)[%s%S](%d%d%d)[%s%S](%d%d%d)"))
 				maestro.ranks[name] = r
 				setmetatable(r.perms, {__index = function(tab, key)
 					if name == "root" then return true end
