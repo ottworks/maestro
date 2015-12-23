@@ -83,7 +83,7 @@ end
 
 maestro.hook("DatabaseConnected", "users", function()
 	local q = mysql:Create("maestro_users")
-        q:Create("id", "INT64 NOT NULL")
+        q:Create("id", "BIGINT NOT NULL")
         q:Create("rank", "VARCHAR(255) NOT NULL")
         q:PrimaryKey("id")
     q:Execute()
