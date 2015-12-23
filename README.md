@@ -22,6 +22,7 @@
 
 # Extra plugins
  * [tmysql4/SQLite/MySQL support](http://github.com/daaott/maestro-mysql/)
+ * [Playtime tracker and autopromote](https://github.com/DaaOtt/maestro-promote)
 
   ### Third-Party plugins
    * [FluffyXVI's maestro-extras (jump height, speed, frags/deaths, etc.)](https://github.com/KingFluffyXVI/maestro-extras)
