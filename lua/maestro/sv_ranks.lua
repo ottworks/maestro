@@ -373,48 +373,48 @@ maestro.hook("DatabaseConnected", "ranks", function()
 
 	local q = mysql:Select("maestro_ranks")
 		q:Callback(function(res, status, id)
-			if type(res) ~= "table" then return end
-			for i = 1, #res do
-				local tab = res[i]
-				local name = tab.rank
-				local r = {perms = {}, inherits = tab.inherits, cantarget = tab.cantarget, canrank = tab.canrank, flags = {}}
-				r.color = Color(string.match(tab.color or "255 255 255", "(%d%d%d)[%s%S](%d%d%d)[%s%S](%d%d%d)"))
-				maestro.ranks[name] = r
-				setmetatable(r.perms, {__index = function(tab, key)
-					if name == "root" then return true end
-					if not maestro.ranks[r.inherits] then return end
-					if tab ~= maestro.ranks[r.inherits].perms then
-						return maestro.ranks[r.inherits].perms[key]
-					end
-				end})
-				setmetatable(r.flags, {__index = function(tab, key)
-					if not maestro.ranks[r.inherits] then return end
-					if tab ~= maestro.ranks[r.inherits].flags then
-						return maestro.ranks[r.inherits].flags[key]
-					end
-				end})
-				local q = mysql:Select("maestro_perms")
-					q:Where("rank", name)
-					q:Callback(function(res, status, id)
-						if type(res) ~= "table" then return end
-						for j = 1, #res do
-							local p = res[j]
-							r.perms[p.perm] = bool(p.value)
+			if type(res) == "table" and #res > 0 then
+				for i = 1, #res do
+					local tab = res[i]
+					local name = tab.rank
+					local r = {perms = {}, inherits = tab.inherits, cantarget = tab.cantarget, canrank = tab.canrank, flags = {}}
+					r.color = Color(string.match(tab.color or "255 255 255", "(%d%d%d)[%s%S](%d%d%d)[%s%S](%d%d%d)"))
+					maestro.ranks[name] = r
+					setmetatable(r.perms, {__index = function(tab, key)
+						if name == "root" then return true end
+						if not maestro.ranks[r.inherits] then return end
+						if tab ~= maestro.ranks[r.inherits].perms then
+							return maestro.ranks[r.inherits].perms[key]
 						end
-					end)
-				q:Execute()
-				local q = mysql:Select("maestro_flags")
-					q:Where("rank", name)
-					q:Callback(function(res, status, id)
-						if type(res) ~= "table" then return end
-						for j = 1, #res do
-							local f = res[j]
-							r.perms[f.flag] = bool(f.value)
+					end})
+					setmetatable(r.flags, {__index = function(tab, key)
+						if not maestro.ranks[r.inherits] then return end
+						if tab ~= maestro.ranks[r.inherits].flags then
+							return maestro.ranks[r.inherits].flags[key]
 						end
-					end)
-				q:Execute()
-			end
-			if #res == 0 then
+					end})
+					local q = mysql:Select("maestro_perms")
+						q:Where("rank", name)
+						q:Callback(function(res, status, id)
+							if type(res) ~= "table" then return end
+							for j = 1, #res do
+								local p = res[j]
+								r.perms[p.perm] = bool(p.value)
+							end
+						end)
+					q:Execute()
+					local q = mysql:Select("maestro_flags")
+						q:Where("rank", name)
+						q:Callback(function(res, status, id)
+							if type(res) ~= "table" then return end
+							for j = 1, #res do
+								local f = res[j]
+								r.perms[f.flag] = bool(f.value)
+							end
+						end)
+					q:Execute()
+				end
+			else
 				maestro.RESETRANKS()
 			end
 		end)

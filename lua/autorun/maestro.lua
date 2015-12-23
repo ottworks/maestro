@@ -72,6 +72,9 @@ hook.Add("maestro_pluginload", "maestro", function()
 	print("\200\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\205\188")
 end)
 hook.Call("maestro_postload")
+if CLIENT then
+	hook.Call("maestro_pluginload")
+end
 
 hook.Add("InitPostEntity", "maestro_updatecheck", function()
 	timer.Simple(0, function()

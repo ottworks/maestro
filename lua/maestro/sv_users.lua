@@ -54,7 +54,7 @@ function maestro.userrank(id, rank, source)
 		end
 	else
 		if type(id) == "Player" then
-			id = id:SteamID()
+			id = id:SteamID64()
 		end
 		if not maestro.users[id] then
 			return "user"
