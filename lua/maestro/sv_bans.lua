@@ -1,16 +1,21 @@
-maestro.load("bans", function(val)
-	maestro.bans = val
-end)
+maestro.bans = {}
 
-function maestro.ban(id, time, reason)
-	if not maestro.bans then return end
+function maestro.ban(id, time, reason, adminid)
 	local ply
 	if type(id) == "Player" then
 		ply = id
-		id = id:SteamID()
+		id = id:SteamID64()
 	end
-	if player.GetBySteamID and player.GetBySteamID(id) then
-		ply = player.GetBySteamID(id)
+	if player.GetBySteamID and player.GetBySteamID64(id) then
+		ply = player.GetBySteamID64(id)
+	end
+	local admin
+	if type(id) == "Player" then
+		admin = adminid
+		adminid = adminid:SteamID64()
+	end
+	if player.GetBySteamID and player.GetBySteamID64(adminid) then
+		admin = player.GetBySteamID64(adminid)
 	end
 	if ply then
 		if time == 0 then
@@ -21,29 +26,58 @@ function maestro.ban(id, time, reason)
 		end
 	end
 
-	local prevbans = 0
-	if maestro.bans[id] then
-		prevbans = maestro.bans[id].prevbans + 1
-	end
-	maestro.bans[id] = {unban = os.time() + time, reason = reason, prevbans = prevbans, perma = (time == 0)}
-	maestro.save("bans", maestro.bans)
+	local q = mysql:Select("maestro_bans")
+		q:Where("steamid", id)
+		q:WhereGT("until", os.time())
+		q:Where("unban", "")
+		q:Callback(function(res, status, last)
+			if last then
+				local q = mysql:Update("maestro_bans")
+					q:Update("name", ply and ply:Nick() or "")
+					q:Update("when", os.time())
+					q:Update("until", os.time() + time)
+					q:Update("reason", reason or "")
+					q:Update("admin", admin and admin:Nick() or "")
+					q:Update("adminid", adminid or 0)
+					q:Where("steamid", id)
+					q:WhereGT("until", os.time())
+					q:Where("unban", "")
+				q:Execute()
+			else
+				local q = mysql:Insert("maestro_bans")
+					q:Insert("name", ply and ply:Nick() or "")
+					q:Insert("steamid", id)
+					q:Insert("when", os.time())
+					q:Insert("until", os.time() + time)
+					q:Insert("reason", reason or "")
+					q:Insert("admin", admin and admin:Nick() or "")
+					q:Insert("adminid", adminid or 0)
+					q:Insert("unban", "")
+					q:Insert("unbanid", 0)
+				q:Execute()
+			end
+		end)
+	q:Execute()
 
-	maestro.log("banlog", {type = "ban", id = id, date = os.time(), length = time, reason = reason, prevbans = prevbans, perma = (time == 0)})
 end
-function maestro.unban(id, reason)
-	if not maestro.bans then return end
-	local ban = maestro.bans[id]
-	if ban then
-		maestro.bans[id] = {unban = os.time(), reason = ban.reason, prevbans = ban.prevbans, perma = false}
-		maestro.save("bans", maestro.bans)
-		maestro.log("banlog", {type = "unban", id = id, reason = reason, date = os.time()})
-	end
+function maestro.unban(id, reason, adminid)
+	local q = mysql:Update("maestro_bans")
+		q:Update("name", ply and ply:Nick() or "")
+		q:Update("until", os.time() + time)
+		q:Update("reason", reason or "")
+		q:Update("admin", admin and admin:Nick() or "")
+		q:Update("adminid", adminid)
+		q:Where("steamid", id)
+		q:WhereGT("when", os.time())
+		q:WhereLT("until", os.time())
+		q:Where("unban", "")
+	q:Execute()
 end
 
 maestro.hook("CheckPassword", "maestro_bans", function(id64)
 	if not maestro.bans then return end
 	local id = util.SteamIDFrom64(id64)
-	local ban = maestro.bans[id]
+	--local ban = maestro.bans[id]
 	if ban then
 		if tonumber(ban.unban) > os.time() then
 			local unban = "\n(" .. maestro.time(ban.unban - os.time(), 2) .. " remaining)"
@@ -52,4 +86,20 @@ maestro.hook("CheckPassword", "maestro_bans", function(id64)
 			return false, "Permabanned: " .. ban.reason
 		end
 	end
+end)
+
+maestro.hook("DatabaseConnected", "bans", function()
+	local q = mysql:Create("maestro_bans")
+		q:Create("id", "INT NOT NULL AUTO_INCREMENT")
+		q:Create("name", "VARCHAR(32) NOT NULL")
+		q:Create("steamid", "BIGINT NOT NULL")
+		q:Create("when", "BIGINT NOT NULL")
+		q:Create("until", "BIGINT NOT NULL")
+		q:Create("reason", "VARCHAR(255) NOT NULL")
+		q:Create("admin", "VARCHAR(32) NOT NULL")
+		q:Create("adminid", "BIGINT NOT NULL")
+		q:Create("unban", "VARCHAR(255) NOT NULL")
+		q:Create("unbanid", "BIGINT NOT NULL")
+		q:PrimaryKey("id")
+	q:Execute()
 end)

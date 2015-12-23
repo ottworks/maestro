@@ -105,6 +105,7 @@ local function handleMultiple(a, ret, cmd, num)
 end
 
 function maestro.runcmd(silent, cmd, args, ply)
+	if ply == nil then ply = false end
 	cmd = maestro.commandaliases[cmd] or cmd
 	if not maestro.commands[cmd] then
 		print("Invalid command!")
