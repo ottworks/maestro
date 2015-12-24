@@ -10,22 +10,6 @@ config.port = 3306
 config.socket = ""
 
 
-
-hook.Add("DatabaseConnected", "maestro", function()
-    local q = mysql:Create("maestro_users")
-        q:Create("id", "VARCHAR(32) NOT NULL")
-        q:Create("rank", "VARCHAR(255) NOT NULL")
-        q:PrimaryKey("id")
-    q:Execute()
-    local q = mysql:Create("maestro_bans")
-        q:Create("id", "VARCHAR(32) NOT NULL")
-        q:Create("prevbans", "INT NOT NULL")
-        q:Create("reason", "VARCHAR(32)")
-        q:Create("unban", "INT NOT NULL")
-        q:PrimaryKey("id")
-    q:Execute()
-end)
-
 hook.Add("maestro_postload", "database", function()
 	mysql:SetModule(config.module)
 	function mysql:OnConnected()
