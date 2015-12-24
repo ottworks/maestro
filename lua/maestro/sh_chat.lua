@@ -10,13 +10,6 @@ if SERVER then
 		if not ply then
 			MsgC(...)
 			MsgC("\n")
-			local txt = ""
-			for _, i in ipairs{...} do
-				if type(i) ~= "table" then
-					txt = txt .. (ts(i) or "")
-				end
-			end
-			maestro.serverlog(txt)
 		end
 		if ply ~= false and ply ~= NULL then
 			net.Start("maestro_chat")
@@ -26,6 +19,13 @@ if SERVER then
 				net.Send(ply)
 			else
 				net.Broadcast()
+				local txt = ""
+				for _, i in ipairs{...} do
+					if type(i) ~= "table" then
+						txt = txt .. (ts(i) or "")
+					end
+				end
+				maestro.serverlog(txt)
 			end
 		end
 	end
@@ -33,13 +33,6 @@ if SERVER then
 		if not ply then
 			MsgC(...)
 			MsgC("\n")
-			local txt = ""
-			for _, i in ipairs{...} do
-				if type(i) ~= "table" then
-					txt = txt .. (ts(i) or "")
-				end
-			end
-			maestro.serverlog(txt)
 		end
 		if ply ~= false and ply ~= NULL then
 			net.Start("maestro_chat")
@@ -49,6 +42,13 @@ if SERVER then
 				net.Send(ply)
 			else
 				net.Broadcast()
+				local txt = ""
+				for _, i in ipairs{...} do
+					if type(i) ~= "table" then
+						txt = txt .. (ts(i) or "")
+					end
+				end
+				maestro.serverlog(txt)
 			end
 		end
 	end

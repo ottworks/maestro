@@ -47,7 +47,7 @@ local function convertTo(val, t, ply, cmd)
 	elseif t == "time" then
 		return maestro.toseconds(val)
 	elseif t == "steamid" and IsValid(ply) then
-		local ret = maestro.cantargetid(ply:SteamID(), val, cmd)
+		local ret = maestro.cantargetid(ply:SteamID64(), val, cmd)
 		if not ret then
 			return false, "You can't target this SteamID!"
 		end
@@ -105,6 +105,7 @@ local function handleMultiple(a, ret, cmd, num)
 end
 
 function maestro.runcmd(silent, cmd, args, ply)
+	if ply == nil then ply = false end
 	cmd = maestro.commandaliases[cmd] or cmd
 	if not maestro.commands[cmd] then
 		print("Invalid command!")
