@@ -28,7 +28,7 @@
    * [Zerf's TTT-maestro-commands](https://github.com/zerfgog/TTT-maestro-commands)
 
 # Screenshots
-![Menu](http://i.imgur.com/euS8waY.png)
+![Menu](http://i.imgur.com/YtXrkR6.png)
 ![Voting](http://i.imgur.com/a6fWbNU.png)
 ![RTV](http://i.imgur.com/7AJIP4e.png)
 ![Announcements](http://i.imgur.com/PnyIXvV.png)
