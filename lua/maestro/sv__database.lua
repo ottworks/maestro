@@ -1,7 +1,7 @@
 include("mysql.lua")
 local config = {}
 
-config.module = "sqlite" --sqlite, mysql, or tmysql4
+config.module = "sqlite" --sqlite, mysqloo, or tmysql4
 config.host = "localhost"
 config.username = ""
 config.password = ""
