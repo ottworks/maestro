@@ -21,7 +21,6 @@
  * vac: Kicks a player with the VAC ban message. Fun!
 
 # Extra plugins
- * [tmysql4/SQLite/MySQL support](http://github.com/daaott/maestro-mysql/)
  * [Playtime tracker and autopromote](https://github.com/DaaOtt/maestro-promote)
 
   ### Third-Party plugins
