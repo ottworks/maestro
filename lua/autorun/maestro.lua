@@ -101,8 +101,8 @@ versions.
 ]]
 			elseif minor > curminor then
 				msg = [[
-A new minor version of Maestro is
-available (%%%%%%%%). Minor
+A new minor version of Maestro
+is available (%%%%%%%%). Minor
 versions add a new feature or
 mechanismsm.
 ]]

@@ -28,26 +28,28 @@ maestro.load("queue", function(val)
 end)
 
 timer.Create("maestro_queue", 1, 0, function()
-    for id, tab in pairs(queue) do
-        for stamp, command in pairs(tab) do
-            if stamp < os.time() then
-                local rank = maestro.userrank(id)
-                local split = maestro.split(command)
-                local cmd = table.remove(split, 1)
-                if id == "server" then
-                    tab[stamp] = nil
-                    maestro.save("queue", queue)
-                    maestro.runcmd(false, cmd, split)
-                elseif player.GetBySteamID(id) then
-                    tab[stamp] = nil
-                    maestro.save("queue", queue)
-                    if maestro.rankget(maestro.userrank(player.GetBySteamID(id))).perms[cmd] then
-                        maestro.runcmd(false, cmd, split, player.GetBySteamID(id))
+    if queue then
+        for id, tab in pairs(queue) do
+            for stamp, command in pairs(tab) do
+                if stamp < os.time() then
+                    local rank = maestro.userrank(id)
+                    local split = maestro.split(command)
+                    local cmd = table.remove(split, 1)
+                    if id == "server" then
+                        tab[stamp] = nil
+                        maestro.save("queue", queue)
+                        maestro.runcmd(false, cmd, split)
+                    elseif player.GetBySteamID(id) then
+                        tab[stamp] = nil
+                        maestro.save("queue", queue)
+                        if maestro.rankget(maestro.userrank(player.GetBySteamID(id))).perms[cmd] then
+                            maestro.runcmd(false, cmd, split, player.GetBySteamID(id))
+                        end
+                    elseif maestro.userrank(id) == "root" then
+                        tab[stamp] = nil
+                        maestro.save("queue", queue)
+                        maestro.runcmd(false, cmd, split)
                     end
-                elseif maestro.userrank(id) == "root" then
-                    tab[stamp] = nil
-                    maestro.save("queue", queue)
-                    maestro.runcmd(false, cmd, split)
                 end
             end
         end
