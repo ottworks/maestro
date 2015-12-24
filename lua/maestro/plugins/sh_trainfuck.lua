@@ -30,7 +30,7 @@ maestro.command("trainfuck", {"player:target"}, function(caller, targets)
 		train:SetPos(trainPos)
 		train:Spawn()
 		train:Activate()
-		train:EmitSound("ambient/alarms/train_horn2.wav", 511, 100)
+		targets[i]:EmitSound("ambient/alarms/train_horn2.wav", 511, 100)
 		local obj = train:GetPhysicsObject()
 		if IsValid(obj) then
 			obj:EnableGravity(false)
@@ -45,7 +45,9 @@ maestro.command("trainfuck", {"player:target"}, function(caller, targets)
 			dmg:SetAttacker(train)
 			targets[i]:TakeDamageInfo(dmg)
 			timer.Simple(0, function()
-				targets[i]:Kill()
+				if targets[i]:Alive() then
+					targets[i]:Kill()
+				end
 			end)
 		end)
 
