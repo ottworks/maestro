@@ -88,18 +88,4 @@ maestro.hook("DatabaseConnected", "users", function()
         q:Create("rank", "VARCHAR(255) NOT NULL")
         q:PrimaryKey("id")
     q:Execute()
-
-	--[[
-
-	--]]
-end)
-
-maestro.hook("CheckPassword", function(id64)
-	local q = mysql:Select("maestro_users")
-		q:Where("steamid", id64)
-		q:Callback(function(res, status)
-			if type(res) ~= "table" then return end
-			maestro.users[id64] = {rank = res[1].rank}
-		end)
-	q:Execute()
 end)

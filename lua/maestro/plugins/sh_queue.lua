@@ -3,6 +3,7 @@ maestro.command("queue", {"time", "command"}, function(caller, time, command)
     if not time then
         return true, "Invalid time!"
     end
+    print(queue)
     if queue then
         local id = "server"
         if caller then
@@ -22,9 +23,10 @@ When not run from the server console, the initiating player needs to be connecte
 (This measure is to prevent abuse such as queuing a ban on a higher rank, then disconnecting.)]])
 
 
-if CLIENT then return end
+if not SERVER then return end
 maestro.load("queue", function(val)
-    queue = val
+    print("load", val)
+    queue = val or {}
 end)
 
 timer.Create("maestro_queue", 1, 0, function()

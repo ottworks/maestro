@@ -52,7 +52,11 @@ function maestro.load(name, callback)
 		file.Write("maestro/" .. name .. ".txt", "")
 		newfile = true
 	end
-	return util.JSONToTable(file.Read("maestro/" .. name .. ".txt")), newfile
+    if callback then
+        callback(util.JSONToTable(file.Read("maestro/" .. name .. ".txt")), newfile)
+    else
+        return util.JSONToTable(file.Read("maestro/" .. name .. ".txt")), newfile
+    end
 end
 
 function maestro.save(name, tab)
