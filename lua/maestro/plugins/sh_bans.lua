@@ -15,8 +15,8 @@ maestro.command("banid", {"steamid", "time", "reason"}, function(caller, id, tim
 end, [[
 Bans the SteamID for the specified time and reason.
 Any currently connected players with this SteamID will be kicked.]])
-maestro.command("unban", {"id", "reason:optional"}, function(caller, id, reason)
-	maestro.unban(id, reason, caller and IsValid(caller) and caller:SteamID64())
+maestro.command("unban", {"steamid", "reason:optional"}, function(caller, id, reason)
+	maestro.unban(util.SteamIDTo64(id), reason, caller and IsValid(caller) and caller:SteamID64())
 	if reason then
 		return false, "unbanned %1 (%2)"
 	end

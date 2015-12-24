@@ -62,14 +62,17 @@ function maestro.ban(id, time, reason, adminid)
 end
 function maestro.unban(id, reason, adminid)
 	local q = mysql:Update("maestro_bans")
-		q:Update("name", ply and ply:Nick() or "")
-		q:Update("until", os.time() + time)
-		q:Update("reason", reason or "")
-		q:Update("admin", admin and admin:Nick() or "")
-		q:Update("adminid", adminid)
+		q:Update("unbanid", adminid or 0)
+		q:Update("unban", reason)
 		q:Where("steamid", id)
-		q:WhereGT("when", os.time())
-		q:WhereLT("until", os.time())
+		q:WhereGT("until", os.time())
+		q:Where("unban", "")
+	q:Execute()
+	local q = mysql:Update("maestro_bans")
+		q:Update("unbanid", adminid or 0)
+		q:Update("unban", reason)
+		q:Where("steamid", id)
+		q:Where("until", 0)
 		q:Where("unban", "")
 	q:Execute()
 end
@@ -85,15 +88,15 @@ maestro.hook("CheckPassword", "maestro_bans", function(id64)
 		q:Callback(function(res, status, last)
 			if type(res) == "table" and #res > 0 then
 				local last = res[1]
-				local unban = "\n(" .. maestro.time(last["until"] - os.time(), 2) .. " remaining)"
-				game.ConsoleCommand("kickid \"" .. id .. "\" \"Banned: " .. string.sub(last.reason:gsub(";", ":"), 1, 255 - 8 - #unban) .. unban .. "\"\n")
+				local unban = " (" .. maestro.time(last["until"] - os.time(), 2) .. " remaining)"
+				game.ConsoleCommand("kickid " .. id .. " Banned: " .. string.sub(last.reason:gsub(";", ":"), 1, 255 - 8 - #unban) .. unban .. "\n")
 			end
 		end)
 	q:Execute()
 	local q = mysql:Select("maestro_bans")
 		q:Where("steamid", id64)
 		q:Where("unban", "")
-		q:WhereGT("until", 0)
+		q:Where("until", 0)
 		q:Callback(function(res, status)
 			if type(res) == "table" and #res > 0 then
 				local last = res[1]
