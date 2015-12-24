@@ -25,7 +25,6 @@ When not run from the server console, the initiating player needs to be connecte
 
 if not SERVER then return end
 maestro.load("queue", function(val)
-    print("load", val)
     queue = val or {}
 end)
 
