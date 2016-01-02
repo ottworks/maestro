@@ -90,6 +90,12 @@ end, [[
 Removes the restriction status from a rank's tool. The rank's tool availibility will be determined by inheritance.
 ]])
 
+maestro.hook("CanTool", "tools", function(ply, tr, tool)
+    if maestro.rankget(maestro.userrank(ply)).tools[tool] == false then
+        maestro.chat(ply, maestro.orange, "This tool is restricted from your rank!")
+        return false
+    end
+end)
 
 if not SERVER then return end
 for rank, r in pairs(maestro.ranks) do
@@ -125,10 +131,3 @@ local q = mysql:Select("maestro_tools")
         end
     end)
 q:Execute()
-
-maestro.hook("CanTool", "tools", function(ply, tr, tool)
-    if maestro.rankget(maestro.userrank(ply)).tools[tool] == false then
-        maestro.chat(ply, maestro.orange, "This tool is restricted from your rank!")
-        return false
-    end
-end)
