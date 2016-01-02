@@ -6,7 +6,16 @@ maestro.command("toolrestrict", {"rank", "tool:optional"}, function(caller, rank
             return true, "You need to be ingame to use the current tool."
         end
     end
-    maestro.ranks[rank].tools[tool] = false
+    local r = maestro.ranks[rank]
+    r.tools = r.tools or {}
+    setmetatable(r.tools, {__index = function(tab, key)
+        if rank == "root" then return true end
+        if not maestro.ranks[r.inherits] then return end
+        if tab ~= maestro.ranks[r.inherits].tools then
+            return maestro.ranks[r.inherits].tools[key]
+        end
+    end})
+    r.tools[tool] = false
     maestro.broadcastranks()
     local q = mysql:Delete("maestro_tools")
         q:Where("rank", rank)
@@ -29,7 +38,16 @@ maestro.command("toolallow", {"rank", "tool:optional"}, function(caller, rank, t
             return true, "You need to be ingame to use the current tool."
         end
     end
-    maestro.ranks[rank].tools[tool] = true
+    local r = maestro.ranks[rank]
+    r.tools = r.tools or {}
+    setmetatable(r.tools, {__index = function(tab, key)
+        if rank == "root" then return true end
+        if not maestro.ranks[r.inherits] then return end
+        if tab ~= maestro.ranks[r.inherits].tools then
+            return maestro.ranks[r.inherits].tools[key]
+        end
+    end})
+    r.tools[tool] = true
     maestro.broadcastranks()
     local q = mysql:Delete("maestro_tools")
         q:Where("rank", rank)
@@ -52,7 +70,16 @@ maestro.command("toolreset", {"rank", "tool:optional"}, function(caller, rank, t
             return true, "You need to be ingame to use the current tool."
         end
     end
-    maestro.ranks[rank].tools[tool] = nil
+    local r = maestro.ranks[rank]
+    r.tools = r.tools or {}
+    setmetatable(r.tools, {__index = function(tab, key)
+        if rank == "root" then return true end
+        if not maestro.ranks[r.inherits] then return end
+        if tab ~= maestro.ranks[r.inherits].tools then
+            return maestro.ranks[r.inherits].tools[key]
+        end
+    end})
+    r.tools[tool] = nil
     maestro.broadcastranks()
     local q = mysql:Delete("maestro_tools")
         q:Where("rank", rank)
