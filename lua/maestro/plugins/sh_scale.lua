@@ -90,24 +90,26 @@ maestro.command("scale", {"player:target", "number:scale(optional)"}, function(c
     end
 end, [[
 Scales a player between 1/16th and 16 times their size.]])
-net.Receive("maestro_scale", function()
-    local num = net.ReadUInt(8)
-    local plys = {}
-    for i = 1, num do
-        plys[i] = net.ReadEntity()
-    end
-    local scale = net.ReadFloat()
-    if scale == 0 then
-        for i = 1, #plys do
-            unscale(plys[i])
+if CLIENT then
+    net.Receive("maestro_scale", function()
+        local num = net.ReadUInt(8)
+        local plys = {}
+        for i = 1, num do
+            plys[i] = net.ReadEntity()
         end
-    else
-        for i = 1, #plys do
-            unscale(plys[i])
-            doscale(plys[i], scale)
+        local scale = net.ReadFloat()
+        if scale == 0 then
+            for i = 1, #plys do
+                unscale(plys[i])
+            end
+        else
+            for i = 1, #plys do
+                unscale(plys[i])
+                doscale(plys[i], scale)
+            end
         end
-    end
-end)
+    end)
+end
 maestro.hook("PlayerSpawn", "scale", function(ply)
     if scaledata.scaled[ply] then
         unscale(ply)

@@ -188,7 +188,7 @@ function maestro.rankflag(rank, name, bool)
 					local q = mysql:Update("maestro_flags")
 						q:Update("value", bool)
 						q:Where("rank", rank)
-						q:Where("flag", name)
+						q:Wherew("flag", name)
 					q:Execute()
 				else
 					local q = mysql:Insert("maestro_flags")
@@ -344,6 +344,8 @@ end)
 local function bool(str)
 	if str == "true" then return true end
 	if str == "false" then return false end
+	if tonumber(str) == 1 then return true end
+	if tonumber(str) == 0 then return false end
 	return str
 end
 maestro.hook("DatabaseConnected", "ranks", function()
@@ -376,9 +378,9 @@ maestro.hook("DatabaseConnected", "ranks", function()
 				for i = 1, #res do
 					local tab = res[i]
 					local name = tab.rank
+					print(name)
 					local r = {perms = {}, inherits = tab.inherits, cantarget = tab.cantarget, canrank = tab.canrank, flags = {}}
 					r.color = Color(string.match(tab.color or "255 255 255", "(%d%d%d)[%s%S](%d%d%d)[%s%S](%d%d%d)"))
-					maestro.ranks[name] = r
 					setmetatable(r.perms, {__index = function(tab, key)
 						if name == "root" then return true end
 						if not maestro.ranks[r.inherits] then return end
@@ -408,18 +410,23 @@ maestro.hook("DatabaseConnected", "ranks", function()
 							if type(res) ~= "table" then return end
 							for j = 1, #res do
 								local f = res[j]
-								r.perms[f.flag] = bool(f.value)
+								r.flags[f.flag] = bool(f.value)
+								print(name, f.flag, r.flags[f.flag])
 							end
 						end)
 					q:Execute()
+					maestro.ranks[name] = r
 				end
 			else
+				print("No ranks found! Resetting.")
 				maestro.RESETRANKS()
 			end
 		end)
 	q:Execute()
-	for k, v in pairs(CAMI.GetUsergroups()) do
-		if maestro.ranks[v.Name] then continue end
-		maestro.rankadd(v.Name, v.Inherits)
-	end
+	timer.Simple(1, function()
+		for k, v in pairs(CAMI.GetUsergroups()) do
+			if maestro.ranks[v.Name] then continue end
+			maestro.rankadd(v.Name, v.Inherits)
+		end
+	end)
 end)
