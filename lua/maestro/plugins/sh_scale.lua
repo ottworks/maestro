@@ -74,7 +74,7 @@ maestro.command("scale", {"player:target", "number:scale(optional)"}, function(c
             end
             net.WriteFloat(scale, 4)
         net.Broadcast()
-        return false, "scaled %1 by %2"
+        return false, "scaled %1 by %2", false, scale
     else
         for i = 1, #targets do
             unscale(targets[i])

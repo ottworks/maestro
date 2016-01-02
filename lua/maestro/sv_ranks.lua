@@ -378,7 +378,6 @@ maestro.hook("DatabaseConnected", "ranks", function()
 				for i = 1, #res do
 					local tab = res[i]
 					local name = tab.rank
-					print(name)
 					local r = {perms = {}, inherits = tab.inherits, cantarget = tab.cantarget, canrank = tab.canrank, flags = {}}
 					r.color = Color(string.match(tab.color or "255 255 255", "(%d%d%d)[%s%S](%d%d%d)[%s%S](%d%d%d)"))
 					setmetatable(r.perms, {__index = function(tab, key)
@@ -411,7 +410,6 @@ maestro.hook("DatabaseConnected", "ranks", function()
 							for j = 1, #res do
 								local f = res[j]
 								r.flags[f.flag] = bool(f.value)
-								print(name, f.flag, r.flags[f.flag])
 							end
 						end)
 					q:Execute()
