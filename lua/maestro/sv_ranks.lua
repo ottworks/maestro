@@ -203,7 +203,7 @@ function maestro.rankflag(rank, name, bool)
 	maestro.broadcastranks()
 end
 function maestro.rankgetcantarget(name, str)
-	return maestro.ranks[name].cantarget
+	return maestro.rankget(name).cantarget
 end
 function maestro.ranksetcantarget(name, str)
 	maestro.ranks[name].cantarget = str
@@ -222,7 +222,7 @@ function maestro.rankresetcantarget(name)
 	maestro.broadcastranks()
 end
 function maestro.rankgetpermcantarget(name, perm)
-	local perm = maestro.ranks[name].perms[perm]
+	local perm = maestro.rankget(name).perms[perm]
 	if perm == "true" then perm = true end
 	if perm == "false" then perm = false end
 	return perm
@@ -336,9 +336,19 @@ hook.Add("CAMI.OnUsergroupUnregistered", "maestro", function(name, source)
 		maestro.rankremove(name.Name)
 	end
 end)
-hook.Add("CAMI.PlayerHasAccess", "maestro", function(ply, name, callback, target)
-	local _, plys = maestro.target("$" .. target:EntIndex(), ply, name)
-	if plys[target] then return true end
+hook.Add("CAMI.PlayerHasAccess", "maestro", function(ply, name, callback, target, extra)
+
+	if maestro.rankget(maestro.userrank(ply)).perms[name] ~= nil then
+		if (extra and extra.IgnoreImmunity) or not target then
+			callback(maestro.rankget(maestro.userrank(ply)).perms[name], "maestro")
+			return true
+		end
+		local _, plys = maestro.target("$" .. target:EntIndex(), ply, name)
+		if plys[target] then
+			callback(true, "maestro")
+			return true
+		end
+	end
 end)
 
 local function bool(str)

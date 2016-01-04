@@ -91,7 +91,7 @@ Removes the restriction status from a rank's tool. The rank's tool availibility 
 ]])
 
 maestro.hook("CanTool", "tools", function(ply, tr, tool)
-    if maestro.rankget(maestro.userrank(ply)).tools[tool] == false then
+    if maestro.rankget(maestro.userrank(ply)).tools and maestro.rankget(maestro.userrank(ply)).tools[tool] == false then
         maestro.chat(ply, maestro.orange, "This tool is restricted from your rank!")
         return false
     end
