@@ -35,7 +35,7 @@ maestro.hook("DarkRPFinishedLoading", "maestro_alias", function()
     PLAYER.Name = PLAYER.Nick
     PLAYER.GetName = PLAYER.Nick
 end)
-if CLIENT then
+if CLIENT and not atlaschat then
     chat.AddTextOld = chat.AddTextOld or chat.AddText
     function chat.AddText(...)
         local args = {...}
