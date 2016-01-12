@@ -178,7 +178,7 @@ if SERVER then
 	util.AddNetworkString("maestro_voteover")
 	net.Receive("maestro_votecast", function(len, ply)
 		local num = net.ReadUInt(4)
-		if votes[ply][1] then
+		if votes[ply] and votes[ply][1] then
 			local id = votes[ply][1]
 			if num == 0 or not votes[id][num] then
 				table.remove(votes[ply], 1)
