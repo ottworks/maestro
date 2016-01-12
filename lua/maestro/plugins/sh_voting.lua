@@ -118,7 +118,8 @@ Stops the current vote.]])
 
 
 if SERVER then
-	function maestro.vote(title, args, callback)
+	function maestro.vote(title, args, callback, targets)
+		targets = targets or player.GetAll()
 		voteid = voteid + 1
 		local id = voteid
 		net.Start("maestro_votenew")
@@ -127,8 +128,9 @@ if SERVER then
 			for i = 1, math.min(#args, 9) do
 				net.WriteString(args[i])
 			end
-		net.Broadcast()
-		for _, ply in pairs(player.GetAll()) do
+		net.Send(targets)
+		
+		for _, ply in pairs(targets) do
 			votes[ply] = votes[ply] or {}
 			table.insert(votes[ply], id)
 			timer.Simple(60, function()
@@ -141,12 +143,13 @@ if SERVER then
 		votes[id].title = title
 		votes[id].results = {}
 		votes[id].callback = callback
+		votes[id].targets = targets
 		for i = 1, #args do
 			votes[id].results[i] = 0
 		end
 		timer.Create("maestro_vote_" .. id, 60, 1, function()
 			if votes[id] then
-				local plys = #player.GetAll()
+				local plys = #targets
 				local max = 0
 				local winner
 				for i = 1, #votes[id].results do
@@ -163,7 +166,7 @@ if SERVER then
 					net.Start("maestro_voteover")
 						net.WriteUInt(id, 16)
 						net.WriteUInt(winner, 4)
-					net.Broadcast()
+					net.Send(targets)
 				else
 					callback()
 				end
@@ -185,7 +188,7 @@ if SERVER then
 				net.Start("maestro_votecast")
 					net.WriteUInt(id, 16)
 					net.WriteUInt(num, 4)
-				net.Broadcast()
+				net.Send(votes[id].targets)
 				table.remove(votes[ply], 1)
 			end
 		end
