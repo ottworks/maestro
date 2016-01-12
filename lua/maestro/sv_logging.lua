@@ -52,3 +52,7 @@ end)
 maestro.hook("PlayerSay", "logging", function(ply, txt, team)
     log(fmt("%s%s: %s", team and "(TEAM) " or "", plystr(ply), txt))
 end)
+
+maestro.hook("CanTool", "logging", function(ply, tr, tool)
+    log(fmt("%s used tool %s", plystr(ply), tool))
+end)

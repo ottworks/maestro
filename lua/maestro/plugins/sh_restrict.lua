@@ -150,7 +150,9 @@ local q = mysql:Select("maestro_items")
             for i = 1, #res do
                 local item = res[i]
                 local r = maestro.ranks[item.rank]
-                r.items[item.item] = bool(item.value)
+                if r then
+                    r.items[item.item] = bool(item.value)
+                end
             end
         end
     end)
