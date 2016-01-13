@@ -129,7 +129,7 @@ if SERVER then
 				net.WriteString(args[i])
 			end
 		net.Send(targets)
-		
+
 		for _, ply in pairs(targets) do
 			votes[ply] = votes[ply] or {}
 			table.insert(votes[ply], id)
@@ -144,11 +144,11 @@ if SERVER then
 		votes[id].results = {}
 		votes[id].callback = callback
 		votes[id].targets = targets
-		for i = 1, #args do
-			votes[id].results[i] = 0
-		end
-		timer.Create("maestro_vote_" .. id, 60, 1, function()
-			if votes[id] then
+		votes[id].tally = 0
+		votes[id].done = false
+		votes[id].finish = function()
+			if votes[id] and not votes[id].done then
+				votes[id].done = true
 				local plys = #targets
 				local max = 0
 				local winner
@@ -169,8 +169,18 @@ if SERVER then
 					net.Send(targets)
 				else
 					callback()
+					net.Start("maestro_voteover")
+						net.WriteUInt(id, 16)
+						net.WriteUInt(0, 4)
+					net.Send(targets)
 				end
 			end
+		end
+		for i = 1, #args do
+			votes[id].results[i] = 0
+		end
+		timer.Create("maestro_vote_" .. id, 60, 1, function()
+			votes[id].finish()
 		end)
 	end
 	util.AddNetworkString("maestro_votenew")
@@ -182,14 +192,19 @@ if SERVER then
 			local id = votes[ply][1]
 			if num == 0 or not votes[id][num] then
 				table.remove(votes[ply], 1)
+				votes[id].tally = votes[id].tally + 1
 			elseif not votes[id][ply] then
 				votes[id].results[num] = votes[id].results[num] + 1
+				votes[id].tally = votes[id].tally + 1
 				votes[id][ply] = true
 				net.Start("maestro_votecast")
 					net.WriteUInt(id, 16)
 					net.WriteUInt(num, 4)
 				net.Send(votes[id].targets)
 				table.remove(votes[ply], 1)
+			end
+			if votes[id].tally == #votes[id].targets then
+				votes[id].finish()
 			end
 		end
 	end)
@@ -256,15 +271,6 @@ setInterval(function() {
 	}
 }, 50);
 ]])
-	timer.Simple(63, function()
-		if votes[1] and votes[1].id == id then
-			maestro_votepanel:Call([[
-var a = document.getElementById("voterow");
-a.removeChild(a.childNodes[1]);
-]])
-			table.remove(votes, 1)
-		end
-	end)
 end
 maestro.hook("PlayerBindPress", "maestro_voting", function(plu, bind, pressed)
 	if not pressed then return end
@@ -322,7 +328,8 @@ if (voted && voted.id != "listitem_]] .. id .. [[_]] .. num .. [[")
 var win = document.getElementById("listitem_]] .. id .. [[_]] .. num .. [[");
 win.className = "list-group-item list-group-item-success";
 ]])
-	else
+	end
+	timer.Simple(3, function()
 		local pos
 		for i = 1, #votes do
 			if votes[i].id == id then
@@ -337,7 +344,7 @@ var a = document.getElementById("voterow");
 a.removeChild(a.childNodes[]] .. pos .. [[]);
 ]])
 		end
-	end
+	end)
 end)
 timer.Create("maestro_voting", 1, 0, function()
 	maestro_votepanel = vgui.Create("DHTML")
