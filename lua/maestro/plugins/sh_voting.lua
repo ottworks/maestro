@@ -124,6 +124,7 @@ if SERVER then
 		local id = voteid
 		net.Start("maestro_votenew")
 			net.WriteString(title)
+			net.WriteUInt(id, 16)
 			net.WriteUInt(math.min(#args, 9), 4)
 			for i = 1, math.min(#args, 9) do
 				net.WriteString(args[i])
@@ -226,9 +227,7 @@ local function nextvote()
 		end
 	end
 end
-local function addvote(title, ...)
-	voteid = voteid + 1
-	local id = voteid
+local function addvote(id, title, ...)
 	table.insert(votes, {id = id, done = false})
 	local args = {...}
 	local function options()
@@ -243,6 +242,7 @@ local function addvote(title, ...)
 		end
 		return ret
 	end
+
 	maestro_votepanel:Call([[
 $("#voterow").append('\
 <div class="col-xs-3 column id="column_]] .. id .. [[">\
@@ -280,6 +280,7 @@ maestro.hook("PlayerBindPress", "maestro_voting", function(plu, bind, pressed)
 			net.Start("maestro_votecast")
 				net.WriteUInt(num, 4)
 			net.SendToServer()
+
 			if num ~= 0 then
 				maestro_votepanel:Call([[
 var a = document.getElementById("listitem_]] .. nextvote().id .. [[_]] .. num .. [[");
@@ -300,16 +301,19 @@ a.removeChild(a.childNodes[]] .. i .. [[]);
 end)
 net.Receive("maestro_votenew", function()
 	local title = net.ReadString()
+	local id = net.ReadUInt(16)
 	local count = net.ReadUInt(4)
 	local args = {}
 	for i = 1, count do
 		args[i] = net.ReadString()
 	end
-	addvote(title, unpack(args))
+	addvote(id, title, unpack(args))
+
 end)
 net.Receive("maestro_votecast", function()
 	local id = net.ReadUInt(16)
 	local num = net.ReadUInt(4)
+
 	maestro_votepanel:Call([[
 var badge = document.getElementById("badge_]] .. id .. [[_]] .. num .. [[");
 badge.innerHTML = Number(badge.innerHTML) + 1;
@@ -318,6 +322,7 @@ end)
 net.Receive("maestro_voteover", function()
 	local id = net.ReadUInt(16)
 	local num = net.ReadUInt(4)
+
 	if num ~= 0 then
 		maestro_votepanel:Call([[
 var voted = document.getElementsByClassName("list-group-item-warning")[0]
@@ -339,6 +344,7 @@ win.className = "list-group-item list-group-item-success";
 			end
 		end
 		if pos then
+
 			maestro_votepanel:Call([[
 var a = document.getElementById("voterow");
 a.removeChild(a.childNodes[]] .. pos .. [[]);
