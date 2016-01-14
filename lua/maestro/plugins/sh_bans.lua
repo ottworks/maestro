@@ -38,12 +38,12 @@ maestro.command("banlog", {"player:target"}, function(caller, targets)
 		q:Callback(function(res, status)
 			if type(res) == "table" then
 				table.sort(res, function(a, b) return a.id < b.id end)
-				maestro.chatconsole(caller, Color(255, 255, 255), "Banlog for (", id, "):")
+				maestro.chatconsole(caller, Color(255, 255, 255), "Banlog for (", maestro.blue, id, Color(255, 255, 255), "):")
 				for i = 1, #res do
 					local ban = res[i]
 					local col = tonumber(ban["until"]) > os.time() and maestro.orange or maestro.blue
 					local len = ban["until"] == 0 and "permanent" or maestro.time(ban["until"] - ban.when)
-					maestro.chatconsole(caller, col, "\t", os.date("%x - ", ban.when), "ID #", ban.id, ", ", ban.admin, " (", util.SteamIDFrom64(ban.adminid), "): ", Color(255, 255, 255), ban.reason, col, " Length: ", Color(255, 255, 255), len)
+					maestro.chatconsole(caller, col, "\t", os.date("%x - ", ban.when), "#", ban.id, ", ", ban.admin, " (", util.SteamIDFrom64(ban.adminid), "): ", Color(255, 255, 255), ban.reason, col, " Length: ", Color(255, 255, 255), len)
 				end
 			end
 		end)
@@ -56,12 +56,12 @@ maestro.command("banlogid", {"id"}, function(caller, id)
 		q:Callback(function(res, status)
 			if type(res) == "table" then
 				table.sort(res, function(a, b) return a.id < b.id end)
-				maestro.chatconsole(caller, Color(255, 255, 255), "Banlog for (", id, "):")
+				maestro.chatconsole(caller, Color(255, 255, 255), "Banlog for (", maestro.blue, id, Color(255, 255, 255), "):")
 				for i = 1, #res do
 					local ban = res[i]
 					local col = tonumber(ban["until"]) > os.time() and maestro.orange or maestro.blue
 					local len = ban["until"] == 0 and "permanent" or maestro.time(ban["until"] - ban.when)
-					maestro.chatconsole(caller, col, "\t", os.date("%x - ", ban.when), "ID #", ban.id, ", ", ban.admin, " (", util.SteamIDFrom64(ban.adminid), "): ", Color(255, 255, 255), ban.reason, col, " Length: ", Color(255, 255, 255), len)
+					maestro.chatconsole(caller, col, "\t", os.date("%x - ", ban.when), "#", ban.id, ", ", ban.admin, " (", util.SteamIDFrom64(ban.adminid), "): ", Color(255, 255, 255), ban.reason, col, " Length: ", Color(255, 255, 255), len)
 				end
 			end
 		end)

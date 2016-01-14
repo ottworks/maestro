@@ -256,15 +256,27 @@ function maestro.command(cmd, args, callback, help, tgt)
 	maestro.commands[cmd] = {args = args, callback = callback, help = help, cantarget = tgt}
 end
 
-concommand.Add("ms", function(ply, cmd, args, str)
+concommand.Add("ms", function(ply, cmd, args2, txt)
+	local args = maestro.split(txt)
 	local cmd = args[1]
+	print(cmd)
 	table.remove(args, 1)
-	maestro.runcmd(false, cmd, args)
+	cmd = string.lower(cmd)
+	cmd = maestro.commandaliases[cmd] or cmd
+	if maestro.commands[cmd] then
+		maestro.runcmd(false, cmd, args)
+	end
 end)
-concommand.Add("mss", function(ply, cmd, args, str)
+concommand.Add("mss", function(ply, cmd, args2, txt)
+	local args = maestro.split(txt)
 	local cmd = args[1]
+	print(cmd)
 	table.remove(args, 1)
-	maestro.runcmd(true, cmd, args)
+	cmd = string.lower(cmd)
+	cmd = maestro.commandaliases[cmd] or cmd
+	if maestro.commands[cmd] then
+		maestro.runcmd(true, cmd, args)
+	end
 end)
 
 maestro.hook("PlayerSay", "maestro_command", function(ply, txt, team)

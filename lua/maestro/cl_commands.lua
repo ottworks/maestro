@@ -1,7 +1,8 @@
 maestro.commands = maestro.commands or {}
 maestro.commandaliases = maestro.commandaliases or {}
 
-local function command(ply, cmd, args, str)
+local function command(ply, cmd, args2, str)
+	local args = maestro.split(str)
 	net.Start("maestro_cmd")
 		net.WriteUInt(#args, 8)
 		for i = 1, #args do
@@ -10,7 +11,8 @@ local function command(ply, cmd, args, str)
 		net.WriteBool(false)
 	net.SendToServer()
 end
-local function command2(ply, cmd, args, str)
+local function command2(ply, cmd, args2, str)
+	local args = maestro.split(str)
 	net.Start("maestro_cmd")
 		net.WriteUInt(#args, 8)
 		for i = 1, #args do

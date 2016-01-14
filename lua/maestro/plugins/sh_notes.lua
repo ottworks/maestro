@@ -1,15 +1,14 @@
 local notes = {}
 
 local function donotes(caller, id, nick)
-    nick = " " .. nick
-    maestro.chat(caller, Color(255, 255, 255), "Notes on", maestro.blue, nick, Color(255, 255, 255), " (", maestro.blue, id, Color(255, 255, 255), "):")
+    maestro.chat(caller, Color(255, 255, 255), "Notes on ", maestro.blue, nick, Color(255, 255, 255), "(", maestro.blue, util.SteamIDFrom64(id), Color(255, 255, 255), "):")
     local q = mysql:Select("maestro_notes")
         q:Where("steamid", id)
         q:Callback(function(res, status)
             if type(res) == "table" then
                 for i = 1, #res do
                     local note = res[i]
-                    maestro.chat(caller, Color(255, 255, 255), "\t", os.date("%x - ", note.when), "ID #", note.id, ", ", note.admin, " (", util.SteamIDFrom64(note.adminid), "): ", Color(255, 255, 255), note.note)
+                    maestro.chat(caller, Color(255, 255, 255), "\t", os.date("%x - ", note.when), "#", note.id, ", ", note.admin, "(", util.SteamIDFrom64(note.adminid), "): ", Color(255, 255, 255), note.note)
                 end
             end
         end)
@@ -44,7 +43,8 @@ maestro.command("notes", {"player:target"}, function(caller, targets)
 end, [[
 Gets any notes that have been taken on a player.]])
 maestro.command("notesid", {"steamid"}, function(caller, id)
-    donotes(caller, id)
+    id = util.SteamIDTo64(id)
+    donotes(caller, id, "")
 end, [[
 Gets any notes that have been taken on a SteamID.]])
 maestro.command("note", {"player:target", "text"}, function(caller, targets, txt)
