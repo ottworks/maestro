@@ -151,6 +151,7 @@ local q = mysql:Select("maestro_items")
                 local item = res[i]
                 local r = maestro.ranks[item.rank]
                 if r then
+                    r.items = r.items or {}
                     r.items[item.item] = bool(item.value)
                 end
             end
