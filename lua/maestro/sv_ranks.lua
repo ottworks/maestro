@@ -24,7 +24,7 @@ function maestro.rankadd(name, inherits, perms)
 		maestro.ranksetinherits(name, inherits)
 	end
 
-	local q = mysql:Insert("maestro_ranks")
+	local q = mysql:Insert(maestro.config.tables.ranks)
 		q:Insert("rank", name)
 		q:Insert("inherits", inherits)
 		q:Insert("cantarget", r.cantarget)
@@ -53,7 +53,7 @@ function maestro.rankremove(name)
 	end
 	maestro.ranks[name] = nil
 	maestro.broadcastranks()
-	local q = mysql:Delete("maestro_ranks")
+	local q = mysql:Delete(maestro.config.tables.ranks)
 		q:Where("rank", name)
 	q:Execute()
 	if name ~= "user" and name ~= "admin" and name ~= "superadmin" then
@@ -67,18 +67,18 @@ function maestro.ranksetperms(name, perms)
 	local r = maestro.rankget(name)
 	r.perms = perms
 	for k, v in pairs(perms) do
-		local s = mysql:Select("maestro_perms")
+		local s = mysql:Select(maestro.config.tables.perms)
 			s:Where("rank", name)
 			s:Where("perm", perm)
 			s:Callback(function(res, status, id)
 				if type(res) == "table" and #res > 0 then
-					local q = mysql:Update("maestro_perms")
+					local q = mysql:Update(maestro.config.tables.perms)
 						q:Update("value", v)
 						q:Where("rank", name)
 						q:Where("perm", k)
 					q:Execute()
 				else
-					local q = mysql:Insert("maestro_perms")
+					local q = mysql:Insert(maestro.config.tables.perms)
 						q:Insert("rank", name)
 						q:Insert("perm", k)
 						q:Insert("value", v)
@@ -103,18 +103,18 @@ function maestro.rankaddperms(name, perms)
 	end
 	r.perms = newperms
 	for k, v in pairs(newperms) do
-		local s = mysql:Select("maestro_perms")
+		local s = mysql:Select(maestro.config.tables.perms)
 			s:Where("rank", name)
 			s:Where("perm", perm)
 			s:Callback(function(res, status, id)
 				if type(res) == "table" and #res > 0 then
-					local q = mysql:Update("maestro_perms")
+					local q = mysql:Update(maestro.config.tables.perms)
 						q:Update("value", true)
 						q:Where("rank", name)
 						q:Where("perm", k)
 					q:Execute()
 				else
-					local q = mysql:Insert("maestro_perms")
+					local q = mysql:Insert(maestro.config.tables.perms)
 						q:Insert("rank", name)
 						q:Insert("perm", k)
 						q:Insert("value", true)
@@ -135,18 +135,18 @@ function maestro.rankremoveperms(name, perms)
 	end
 	r.perms = newperms
 	for k, v in pairs(perms) do
-		local s = mysql:Select("maestro_perms")
+		local s = mysql:Select(maestro.config.tables.perms)
 			s:Where("rank", name)
 			s:Where("perm", perm)
 			s:Callback(function(res, status, id)
 				if type(res) == "table" and #res > 0 then
-					local q = mysql:Update("maestro_perms")
+					local q = mysql:Update(maestro.config.tables.perms)
 						q:Update("value", false)
 						q:Where("rank", name)
 						q:Where("perm", k)
 					q:Execute()
 				else
-					local q = mysql:Insert("maestro_perms")
+					local q = mysql:Insert(maestro.config.tables.perms)
 						q:Insert("rank", name)
 						q:Insert("perm", k)
 						q:Insert("value", false)
@@ -159,7 +159,7 @@ function maestro.rankremoveperms(name, perms)
 end
 function maestro.rankresetperms(name)
 	maestro.ranks[name].perms = {}
-	local q = mysql:Delete("maestro_perms")
+	local q = mysql:Delete(maestro.config.tables.perms)
 		q:Where("rank", name)
 	q:Execute()
 	maestro.ranksetinherits(name, maestro.ranks[name].inherits)
@@ -171,7 +171,7 @@ end
 function maestro.ranksetinherits(name, inherits)
 	local r = maestro.ranks[name]
 	r.inherits = inherits
-	local q = mysql:Update("maestro_ranks")
+	local q = mysql:Update(maestro.config.tables.ranks)
 		q:Update("inherits", inherits)
 		q:Where("rank", name)
 	q:Execute()
@@ -180,18 +180,18 @@ end
 function maestro.rankflag(rank, name, bool)
 	if maestro.ranks[rank] then
 		maestro.ranks[rank].flags[name] = bool
-		local s = mysql:Select("maestro_flags")
+		local s = mysql:Select(maestro.config.tables.flags)
 			s:Where("rank", name)
 			s:Where("flag", name)
 			s:Callback(function(res, status, id)
 				if type(res) == "table" and #res > 0 then
-					local q = mysql:Update("maestro_flags")
+					local q = mysql:Update(maestro.config.tables.flags)
 						q:Update("value", bool)
 						q:Where("rank", rank)
 						q:Where("flag", name)
 					q:Execute()
 				else
-					local q = mysql:Insert("maestro_flags")
+					local q = mysql:Insert(maestro.config.tables.flags)
 						q:Insert("rank", rank)
 						q:Insert("flag", name)
 						q:Insert("value", bool and 1)
@@ -207,7 +207,7 @@ function maestro.rankgetcantarget(name, str)
 end
 function maestro.ranksetcantarget(name, str)
 	maestro.ranks[name].cantarget = str
-	local q = mysql:Update("maestro_ranks")
+	local q = mysql:Update(maestro.config.tables.ranks)
 		q:Update("cantarget", str)
 		q:Where("rank", name)
 	q:Execute()
@@ -215,7 +215,7 @@ function maestro.ranksetcantarget(name, str)
 end
 function maestro.rankresetcantarget(name)
 	maestro.ranks[name].cantarget = "<^"
-	local q = mysql:Update("maestro_ranks")
+	local q = mysql:Update(maestro.config.tables.ranks)
 		q:Update("cantarget", str)
 		q:Where("rank", name)
 	q:Execute()
@@ -229,7 +229,7 @@ function maestro.rankgetpermcantarget(name, perm)
 end
 function maestro.ranksetpermcantarget(name, perm, str)
 	maestro.ranks[name].perms[perm] = str
-	local q = mysql:Update("maestro_perms")
+	local q = mysql:Update(maestro.config.tables.perms)
 		q:Update("value", str)
 		q:Where("rank", name)
 		q:Where("perm", perm)
@@ -238,7 +238,7 @@ function maestro.ranksetpermcantarget(name, perm, str)
 end
 function maestro.rankresetpermcantarget(name, perm)
 	maestro.ranks[name].perms[perm] = true
-	local q = mysql:Update("maestro_perms")
+	local q = mysql:Update(maestro.config.tables.perms)
 		q:Update("value", true)
 		q:Where("rank", name)
 		q:Where("perm", perm)
@@ -250,7 +250,7 @@ function maestro.rankgetcanrank(name, str)
 end
 function maestro.ranksetcanrank(name, str)
 	maestro.ranks[name].canrank = str
-	local q = mysql:Update("maestro_ranks")
+	local q = mysql:Update(maestro.config.tables.ranks)
 		q:Update("canrank", str)
 		q:Where("rank", name)
 	q:Execute()
@@ -258,7 +258,7 @@ function maestro.ranksetcanrank(name, str)
 end
 function maestro.rankresetcanrank(name)
 	maestro.ranks[name].canrank = "!>^"
-	local q = mysql:Update("maestro_ranks")
+	local q = mysql:Update(maestro.config.tables.ranks)
 		q:Update("canrank", "!>^")
 		q:Where("rank", name)
 	q:Execute()
@@ -281,7 +281,7 @@ function maestro.rankrename(name, to)
 		end
 	end
 	maestro.ranks[name] = nil
-	local q = mysql:Update("maestro_ranks")
+	local q = mysql:Update(maestro.config.tables.ranks)
 		q:Update("inherits", to)
 		q:Where("inherits", name)
 	q:Execute()
@@ -290,18 +290,18 @@ end
 function maestro.rankcolor(name, r, g, b)
 	if not r then return maestro.ranks[name].color end
 	maestro.ranks[name].color = Color(r, g, b)
-	local q = mysql:Update("maestro_ranks")
+	local q = mysql:Update(maestro.config.tables.ranks)
 		q:Where("rank", name)
 		q:Update("color", string.format("%03d %03d %03d", r, g, b))
 	q:Execute()
 end
 function maestro.RESETRANKS()
 	maestro.ranks = {}
-	local q = mysql:Delete("maestro_ranks")
+	local q = mysql:Delete(maestro.config.tables.ranks)
 	q:Execute()
-	local q = mysql:Delete("maestro_flags")
+	local q = mysql:Delete(maestro.config.tables.flags)
 	q:Execute()
-	local q = mysql:Delete("maestro_perms")
+	local q = mysql:Delete(maestro.config.tables.perms)
 	q:Execute()
 	maestro.rankadd("user", "user", {help = true, who = true, msg = true, menu = true, motd = true, admin = true, tutorial = true, ranks = true})
 	--forgive me padre
@@ -359,7 +359,7 @@ local function bool(str)
 	return str
 end
 maestro.hook("DatabaseConnected", "ranks", function()
-	local q = mysql:Create("maestro_ranks")
+	local q = mysql:Create(maestro.config.tables.ranks)
         q:Create("rank", "VARCHAR(255) NOT NULL")
         q:Create("inherits", "VARCHAR(255) NOT NULL")
         q:Create("cantarget", "VARCHAR(255) NOT NULL")
@@ -367,14 +367,14 @@ maestro.hook("DatabaseConnected", "ranks", function()
 		q:Create("color", "VARCHAR(11) NOT NULL")
         q:PrimaryKey("rank")
     q:Execute()
-    local q = mysql:Create("maestro_perms")
+    local q = mysql:Create(maestro.config.tables.perms)
         q:Create("id", "INT NOT NULL AUTO_INCREMENT");
         q:Create("rank", "VARCHAR(255) NOT NULL")
         q:Create("perm", "VARCHAR(255) NOT NULL")
         q:Create("value", "VARCHAR(255) NOT NULL")
         q:PrimaryKey("id")
     q:Execute()
-    local q = mysql:Create("maestro_flags")
+    local q = mysql:Create(maestro.config.tables.flags)
         q:Create("id", "INT NOT NULL AUTO_INCREMENT");
         q:Create("rank", "VARCHAR(255) NOT NULL")
         q:Create("flag", "VARCHAR(255) NOT NULL")
@@ -382,7 +382,7 @@ maestro.hook("DatabaseConnected", "ranks", function()
         q:PrimaryKey("id")
     q:Execute()
 
-	local q = mysql:Select("maestro_ranks")
+	local q = mysql:Select(maestro.config.tables.ranks)
 		q:Callback(function(res, status, id)
 			if type(res) == "table" and #res > 0 then
 				for i = 1, #res do
@@ -403,7 +403,7 @@ maestro.hook("DatabaseConnected", "ranks", function()
 							return maestro.ranks[r.inherits].flags[key]
 						end
 					end})
-					local q = mysql:Select("maestro_perms")
+					local q = mysql:Select(maestro.config.tables.perms)
 						q:Where("rank", name)
 						q:Callback(function(res, status, id)
 							if type(res) ~= "table" then return end
@@ -413,7 +413,7 @@ maestro.hook("DatabaseConnected", "ranks", function()
 							end
 						end)
 					q:Execute()
-					local q = mysql:Select("maestro_flags")
+					local q = mysql:Select(maestro.config.tables.flags)
 						q:Where("rank", name)
 						q:Callback(function(res, status, id)
 							if type(res) ~= "table" then return end
@@ -431,7 +431,7 @@ maestro.hook("DatabaseConnected", "ranks", function()
 			end
 		end)
 	q:Execute()
-	timer.Simple(1, function()
+	timer.Simple(5, function()
 		for k, v in pairs(CAMI.GetUsergroups()) do
 			if maestro.ranks[v.Name] then continue end
 			maestro.rankadd(v.Name, v.Inherits)

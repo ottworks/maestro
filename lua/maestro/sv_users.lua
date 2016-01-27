@@ -27,20 +27,20 @@ function maestro.userrank(id, rank, source)
 			maestro.users[id].rank = rank
 			if rank == "user" then
 				maestro.users[id] = nil
-				local q = mysql:Delete("maestro_users")
+				local q = mysql:Delete(maestro.config.tables.users)
 					q:Where("steamid", id)
 				q:Execute()
 			else
-				local q = mysql:Select("maestro_users")
+				local q = mysql:Select(maestro.config.tables.users)
 					q:Where("steamid", id)
 					q:Callback(function(res, status)
 						if type(res) == "table" and #res > 0 then
-							local q = mysql:Update("maestro_users")
+							local q = mysql:Update(maestro.config.tables.users)
 								q:Where("steamid", id)
 								q:Update("rank", rank)
 							q:Execute()
 						else
-							local q = mysql:Insert("maestro_users")
+							local q = mysql:Insert(maestro.config.tables.users)
 								q:Insert("steamid", id)
 								q:Insert("rank", rank)
 							q:Execute()
@@ -77,12 +77,12 @@ function maestro.RESETUSERS()
 		maestro.userrank(ply, "user")
 	end
 	maestro.users = {}
-	local q = mysql:Delete("maestro_users")
+	local q = mysql:Delete(maestro.config.tables.users)
 	q:Execute()
 end
 
 maestro.hook("DatabaseConnected", "users", function()
-	local q = mysql:Create("maestro_users")
+	local q = mysql:Create(maestro.config.tables.users)
 		q:Create("id", "INT NOT NULL AUTO_INCREMENT")
         q:Create("steamid", "BIGINT NOT NULL")
         q:Create("rank", "VARCHAR(255) NOT NULL")

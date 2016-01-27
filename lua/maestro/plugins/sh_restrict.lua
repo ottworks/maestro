@@ -21,11 +21,11 @@ maestro.command("itemrestrict", {"rank", "item:optional"}, function(caller, rank
     end})
     r.items[item] = false
     maestro.broadcastranks()
-    local q = mysql:Delete("maestro_items")
+    local q = mysql:Delete(maestro.config.tables.items)
         q:Where("rank", rank)
         q:Where("item", item)
     q:Execute()
-    local q = mysql:Insert("maestro_items")
+    local q = mysql:Insert(maestro.config.tables.items)
         q:Insert("rank", rank)
         q:Insert("item", item)
         q:Insert("value", false)
@@ -57,11 +57,11 @@ maestro.command("itemallow", {"rank", "item:optional"}, function(caller, rank, i
     end})
     r.items[item] = true
     maestro.broadcastranks()
-    local q = mysql:Delete("maestro_items")
+    local q = mysql:Delete(maestro.config.tables.items)
         q:Where("rank", rank)
         q:Where("item", item)
     q:Execute()
-    local q = mysql:Insert("maestro_items")
+    local q = mysql:Insert(maestro.config.tables.items)
         q:Insert("rank", rank)
         q:Insert("item", item)
         q:Insert("value", true)
@@ -93,7 +93,7 @@ maestro.command("itemreset", {"rank", "item:optional"}, function(caller, rank, i
     end})
     r.items[item] = nil
     maestro.broadcastranks()
-    local q = mysql:Delete("maestro_items")
+    local q = mysql:Delete(maestro.config.tables.items)
         q:Where("rank", rank)
         q:Where("item", item)
     q:Execute()
@@ -132,7 +132,7 @@ for rank, r in pairs(maestro.ranks) do
         end
     end})
 end
-local q = mysql:Create("maestro_items")
+local q = mysql:Create(maestro.config.tables.items)
     q:Create("rank", "VARCHAR(255) NOT NULL")
     q:Create("item", "VARCHAR(255) NOT NULL")
     q:Create("value", "BOOLEAN NOT NULL")
@@ -144,7 +144,7 @@ local function bool(str)
 	if tonumber(str) == 0 then return false end
 	return str
 end
-local q = mysql:Select("maestro_items")
+local q = mysql:Select(maestro.config.tables.items)
     q:Callback(function(res, status)
         if type(res) == "table" and #res > 0 then
             for i = 1, #res do

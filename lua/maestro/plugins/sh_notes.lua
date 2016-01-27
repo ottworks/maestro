@@ -2,7 +2,7 @@ local notes = {}
 
 local function donotes(caller, id, nick)
     maestro.chat(caller, Color(255, 255, 255), "Notes on ", maestro.blue, nick, Color(255, 255, 255), "(", maestro.blue, util.SteamIDFrom64(id), Color(255, 255, 255), "):")
-    local q = mysql:Select("maestro_notes")
+    local q = mysql:Select(maestro.config.tables.notes)
         q:Where("steamid", id)
         q:Callback(function(res, status)
             if type(res) == "table" then
@@ -15,12 +15,12 @@ local function donotes(caller, id, nick)
     q:Execute()
 end
 local function noterm(id, num, caller)
-    local q = mysql:Select("maestro_notes")
+    local q = mysql:Select(maestro.config.tables.notes)
         q:Where("steamid", id)
         q:Where("id", num)
         q:Callback(function(res, status, last)
             if last then
-                local q = mysql:Delete("maestro_notes")
+                local q = mysql:Delete(maestro.config.tables.notes)
                     q:Where("steamid", id)
                     q:Where("id", num)
                 q:Execute()
@@ -56,7 +56,7 @@ maestro.command("note", {"player:target", "text"}, function(caller, targets, txt
     local id = targets[1]:SteamID64()
     local admin = caller and caller:Nick() or ""
     local adminid = caller and caller:SteamID64() or 0
-    local q = mysql:Insert("maestro_notes")
+    local q = mysql:Insert(maestro.config.tables.notes)
         q:Insert("steamid", id)
         q:Insert("admin", admin)
         q:Insert("adminid", adminid)
@@ -70,7 +70,7 @@ maestro.command("noteid", {"steamid", "text"}, function(caller, id, txt)
     id = util.SteamIDTo64(id)
     local admin = caller and caller:Nick() or ""
     local adminid = caller and caller:SteamID64() or 0
-    local q = mysql:Insert("maestro_notes")
+    local q = mysql:Insert(maestro.config.tables.notes)
         q:Insert("steamid", id)
         q:Insert("admin", admin)
         q:Insert("adminid", adminid)
@@ -105,7 +105,7 @@ maestro.hook("PlayerInitialSpawn", "notes", function(ply)
 end)
 
 if not SERVER then return end
-local q = mysql:Create("maestro_notes")
+local q = mysql:Create(maestro.config.tables.notes)
     q:Create("id", "INT NOT NULL AUTO_INCREMENT")
     q:Create("steamid", "BIGINT NOT NULL")
     q:Create("admin", "VARCHAR(32) NOT NULL")

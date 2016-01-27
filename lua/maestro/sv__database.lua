@@ -1,14 +1,6 @@
 include("mysql.lua")
-local config = {}
 
-config.module = "sqlite" --sqlite, mysqloo, or tmysql4
-config.host = "localhost"
-config.username = ""
-config.password = ""
-config.database = "maestro"
-config.port = 3306
-config.socket = ""
-
+local config = maestro.config
 
 hook.Add("maestro_postload", "database", function()
 	mysql:SetModule(config.module)
