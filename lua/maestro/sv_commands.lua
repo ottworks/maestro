@@ -154,7 +154,14 @@ function maestro.runcmd(silent, cmd, args, ply)
 		return
 	end
 	local cmdret = {maestro.commands[cmd].callback(ply, unpack(args))}
-	local err, msg = table.remove(cmdret, 1), table.remove(cmdret, 1)
+	local err, msg = cmdret[1], cmdret[2]
+	cmdret[1] = nil
+	cmdret[2] = nil
+	local cmd2 = {}
+	for k, v in pairs(cmdret) do
+		cmd2[k - 2] = v
+	end
+	cmdret = cmd2
 	if err then
 		handleError(ply, cmd, msg)
 	elseif msg then
@@ -173,6 +180,7 @@ function maestro.runcmd(silent, cmd, args, ply)
 			table.insert(ret, t[i])
 			if num then --normal argument
 				local a = cmdret[num] or args[num]
+				print(cmdret[num], args[num])
 				handleMultiple(a, ret, cmd, num)
 			else --it's a vararg
 				table.insert(ret, maestro.orange)
