@@ -27,6 +27,7 @@ local function dojail(ply, state)
         p3.CanTool = ct
 
         jails[ply] = {p1, p2, p3}
+        ply:ExitVehicle()
         ply:SetPos(ply:GetPos() + Vector(0, 0, 4))
     elseif jails[ply] then
         for i = 1, #jails[ply] do

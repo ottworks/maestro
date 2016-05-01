@@ -193,7 +193,9 @@ function maestro.targetrank(val, plyrank)
 	local name = string.sub(val, cursor)
 	local ret = {}
 	if all then
-		ret = table.Copy(maestro.ranks)
+		for rank in pairs(maestro.ranks) do
+			ret[rank] = true
+		end
 	elseif greater then
 		if self then
 			name = plyrank

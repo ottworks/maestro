@@ -86,7 +86,7 @@ Creates an entity and sets properties on it.
 Keyvalues are formatted as such:
 key:value
 Flags are numbers.]])
-maestro.command("fire", {"input", "param", "number:delay(optional)"}, function(caller, input, param, delay)
+maestro.command("fire", {"input", "param:optional", "number:delay(optional)"}, function(caller, input, param, delay)
 	if not caller then
 		return true, "You cannot fire an ent from the console!"
 	end
