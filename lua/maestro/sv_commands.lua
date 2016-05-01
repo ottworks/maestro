@@ -180,7 +180,6 @@ function maestro.runcmd(silent, cmd, args, ply)
 			table.insert(ret, t[i])
 			if num then --normal argument
 				local a = cmdret[num] or args[num]
-				print(cmdret[num], args[num])
 				handleMultiple(a, ret, cmd, num)
 			else --it's a vararg
 				table.insert(ret, maestro.orange)
@@ -267,7 +266,6 @@ end
 concommand.Add("ms", function(ply, cmd, args2, txt)
 	local args = maestro.split(txt)
 	local cmd = args[1]
-	print(cmd)
 	table.remove(args, 1)
 	cmd = string.lower(cmd)
 	cmd = maestro.commandaliases[cmd] or cmd
@@ -278,7 +276,6 @@ end)
 concommand.Add("mss", function(ply, cmd, args2, txt)
 	local args = maestro.split(txt)
 	local cmd = args[1]
-	print(cmd)
 	table.remove(args, 1)
 	cmd = string.lower(cmd)
 	cmd = maestro.commandaliases[cmd] or cmd
