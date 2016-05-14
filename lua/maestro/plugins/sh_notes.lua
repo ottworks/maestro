@@ -18,8 +18,8 @@ local function noterm(id, num, caller)
     local q = mysql:Select(maestro.config.tables.notes)
         q:Where("steamid", id)
         q:Where("id", num)
-        q:Callback(function(res, status, last)
-            if last then
+        q:Callback(function(res, status)
+            if res then
                 local q = mysql:Delete(maestro.config.tables.notes)
                     q:Where("steamid", id)
                     q:Where("id", num)

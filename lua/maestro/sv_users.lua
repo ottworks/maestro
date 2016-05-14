@@ -1,7 +1,6 @@
 maestro.users = {}
 
 function maestro.userrank(id, rank, source)
-	print("userrank", id, rank, source)
 	if rank then
 		local ply
 		if type(id) == "Player" then

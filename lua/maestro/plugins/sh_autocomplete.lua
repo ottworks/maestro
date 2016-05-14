@@ -21,14 +21,14 @@ function ma:DrawSuggestions()
 		surface.SetFont('ChatFont')
 		for _, v in ipairs(self.sug) do
 			local tx, ty = surface.GetTextSize(v)
-			draw.AAText(v, "ChatFont", cx, cy, Color(255, 255, 255, 255))
+			draw.AAText("!" .. string.sub(v, 3), "ChatFont", cx, cy, Color(255, 255, 255, 255))
 			cy = cy + ty
 		end
 	end
 end
 function ma:Autocomplete(s)
 	if string.match(s, "^!") and #self.sug > 0 then
-		return self.sug[1]
+		return "!" .. string.sub(self.sug[1], 3)
 	end
 end
 function ma:ChatOpen(t)
