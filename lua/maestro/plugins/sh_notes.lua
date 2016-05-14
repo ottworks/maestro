@@ -39,7 +39,7 @@ maestro.command("notes", {"player:target"}, function(caller, targets)
         return true, "Query matched more than one player."
     end
     local ply = targets[1]
-    donotes(caller, ply:SteamID64(), ply:Nick())
+    donotes(caller, ply:SteamID64() or 0, ply:Nick())
 end, [[
 Gets any notes that have been taken on a player.]])
 maestro.command("notesid", {"steamid"}, function(caller, id)
@@ -53,9 +53,9 @@ maestro.command("note", {"player:target", "text"}, function(caller, targets, txt
     elseif #targets > 1 then
         return true, "Query matched more than one player."
     end
-    local id = targets[1]:SteamID64()
+    local id = targets[1]:SteamID64() or 0
     local admin = caller and caller:Nick() or ""
-    local adminid = caller and caller:SteamID64() or 0
+    local adminid = caller and caller:SteamID64() or 0 or 0
     local q = mysql:Insert(maestro.config.tables.notes)
         q:Insert("steamid", id)
         q:Insert("admin", admin)
@@ -69,7 +69,7 @@ Takes a note on a player.]])
 maestro.command("noteid", {"steamid", "text"}, function(caller, id, txt)
     id = util.SteamIDTo64(id)
     local admin = caller and caller:Nick() or ""
-    local adminid = caller and caller:SteamID64() or 0
+    local adminid = caller and caller:SteamID64() or 0 or 0
     local q = mysql:Insert(maestro.config.tables.notes)
         q:Insert("steamid", id)
         q:Insert("admin", admin)
@@ -86,7 +86,7 @@ maestro.command("noteremove", {"player:target", "number:noteid"}, function(calle
     elseif #targets > 1 then
         return true, "Query matched more than one player."
     end
-    local id = targets[1]:SteamID64()
+    local id = targets[1]:SteamID64() or 0
     return noterm(id, num, caller)
 end)
 maestro.command("noteremoveid", {"steamid", "number:noteid"}, function(caller, id, num)

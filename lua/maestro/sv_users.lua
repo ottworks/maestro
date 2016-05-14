@@ -1,13 +1,14 @@
 maestro.users = {}
 
 function maestro.userrank(id, rank, source)
+	print("userrank", id, rank, source)
 	if rank then
 		local ply
 		if type(id) == "Player" then
 			ply = id
-			id = id:SteamID64()
+			id = id:SteamID64() or 0
 		else
-			ply = player.GetBySteamID64(ply)
+			ply = player.GetBySteamID64(ply) or 0
 		end
 		if not id then
 			return
@@ -54,7 +55,7 @@ function maestro.userrank(id, rank, source)
 		end
 	else
 		if type(id) == "Player" and IsValid(id) then
-			id = id:SteamID64()
+			id = id:SteamID64() or 0
 		end
 		if not maestro.users[id] then
 			return "user"

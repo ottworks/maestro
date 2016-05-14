@@ -26,25 +26,6 @@ function ma:DrawSuggestions()
 		end
 	end
 end
-function ma:GetSugCmds(message)
-	if string.Left(message, 1) == "!" then
-		local cmd = string.sub(message, 2, (string.find(message, " ") or (#message + 1)) - 1)
-		self.sug = { }
-		for k, v in pairs(maestro.commands) do
-			if v and string.sub(k, 0, #cmd) == string.lower(cmd) and #self.sug < 4 then
-				local a = table.concat(v.args, "> <")
-				if a == "" then
-					table.insert(self.sug, { command = "!" .. k })
-				else
-					table.insert(self.sug, { command = "!" .. k .. " <" .. a .. ">" })
-				end
-			end
-		end
-		table.SortByMember(self.sug, "command", function(a, b) return a < b end)
-	else
-		self.sug = {}
-	end
-end
 function ma:Autocomplete(s)
 	if string.match(s, "^!") and #self.sug > 0 then
 		return self.sug[1]

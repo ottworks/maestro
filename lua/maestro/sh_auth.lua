@@ -35,12 +35,12 @@ local function auth(ply, steam)
 			end
 			local name = maestro.userrank(steam)
 			if game.SinglePlayer() or ply:IsListenServerHost() then
-				steam = ply:SteamID64()
+				steam = ply:SteamID64() or 0
 				name = "root"
-				maestro.userrank(ply, "root", "init")
+				maestro.userrank(ply, "root")
 			end
 			if not name then
-				maestro.userrank(steam, "user", "init")
+				maestro.userrank(steam, "user")
 			elseif not maestro.rankget(name).flags.anonymous then
 				ply:SetNWString("rank", name or "user")
 			end

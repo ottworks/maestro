@@ -4,18 +4,18 @@ function maestro.ban(id, time, reason, adminid)
 	local ply
 	if type(id) == "Player" then
 		ply = id
-		id = id:SteamID64()
+		id = id:SteamID64() or 0
 	end
-	if player.GetBySteamID and player.GetBySteamID64(id) then
-		ply = player.GetBySteamID64(id)
+	if player.GetBySteamID and player.GetBySteamID64(id) or 0 then
+		ply = player.GetBySteamID64(id) or 0
 	end
 	local admin
 	if type(id) == "Player" then
 		admin = adminid
-		adminid = adminid:SteamID64()
+		adminid = adminid:SteamID64() or 0
 	end
-	if player.GetBySteamID and player.GetBySteamID64(adminid) then
-		admin = player.GetBySteamID64(adminid)
+	if player.GetBySteamID and player.GetBySteamID64(adminid) or 0 then
+		admin = player.GetBySteamID64(adminid) or 0
 	end
 	if ply then
 		if time == 0 then

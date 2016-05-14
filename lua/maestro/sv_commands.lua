@@ -47,7 +47,7 @@ local function convertTo(val, t, ply, cmd)
 	elseif t == "time" then
 		return maestro.toseconds(val)
 	elseif t == "steamid" and IsValid(ply) then
-		local ret = maestro.cantargetid(ply:SteamID64(), val, cmd)
+		local ret = maestro.cantargetid(ply:SteamID64() or 0, val, cmd)
 		if not ret then
 			return false, "You can't target this SteamID!"
 		end
