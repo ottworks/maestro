@@ -1,3 +1,4 @@
+local function LocalPlayer() end
 function maestro.autocomplete(base, str)
 	base = base .. " "
 	str = string.sub(str, 2, -1)
@@ -5,25 +6,25 @@ function maestro.autocomplete(base, str)
 	local t = {}
 	if #args == 0 then
 		for k, v in pairs(maestro.commands) do
-			if maestro.rankget(maestro.userrank(LocalPlayer())).perms[k] then
+			if SERVER or maestro.rankget(maestro.userrank(LocalPlayer())).perms[k] then
 				table.insert(t, base .. k)
 			end
 		end
 		for k, v in pairs(maestro.commandaliases) do
-			if maestro.rankget(maestro.userrank(LocalPlayer())).perms[v] then
+			if SERVER or maestro.rankget(maestro.userrank(LocalPlayer())).perms[v] then
 				table.insert(t, base .. k)
 			end
 		end
 	elseif #args == 1 then
 		for k, v in pairs(maestro.commands) do
-			if maestro.rankget(maestro.userrank(LocalPlayer())).perms[k] then
+			if SERVER or maestro.rankget(maestro.userrank(LocalPlayer())).perms[k] then
 				if string.sub(k, 1, #args[1]):lower() == args[1]:lower() then
 					table.insert(t, base .. k)
 				end
 			end
 		end
 		for k, v in pairs(maestro.commandaliases) do
-			if maestro.rankget(maestro.userrank(LocalPlayer())).perms[v] then
+			if SERVER or maestro.rankget(maestro.userrank(LocalPlayer())).perms[v] then
 				if string.sub(k, 1, #args[1]):lower() == args[1]:lower() then
 					table.insert(t, base .. k)
 				end
@@ -65,9 +66,14 @@ function maestro.autocomplete(base, str)
 				end
 			elseif typ == "rank" then
 				local ranks = {}
-				local cr = maestro.rankget(maestro.userrank(LocalPlayer())).canrank
-				if cr then
-					ranks = maestro.targetrank(cr, maestro.userrank(LocalPlayer()))
+				local cr
+				if SERVER then
+					ranks = maestro.targetrank("*", "root")
+				else
+					cr = maestro.rankget(maestro.userrank(LocalPlayer())).canrank
+					if cr then
+						ranks = maestro.targetrank(cr, maestro.userrank(LocalPlayer()))
+					end
 				end
 				for rank in pairs(ranks) do
 					if string.sub(rank, 1, #args[#args]):lower() == args[#args]:lower() then
