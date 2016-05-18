@@ -264,7 +264,7 @@ function maestro.command(cmd, args, callback, help, tgt)
 end
 
 concommand.Add("ms", function(ply, cmd, args2, txt)
-	if IsValid(ply) then
+	if IsValid(ply) and not ply:IsListenServerHost() then
 		ply:ChatPrint("Hi! Due to a bug with singleplayer, you need to restart your game to be able to use console commands again.")
 		return
 	end
@@ -278,7 +278,7 @@ concommand.Add("ms", function(ply, cmd, args2, txt)
 	end
 end, maestro.autocomplete)
 concommand.Add("mss", function(ply, cmd, args2, txt)
-	if IsValid(ply) then
+	if IsValid(ply) and not ply:IsListenServerHost() then
 		ply:ChatPrint("Hi! Due to a bug with singleplayer, you need to restart your game to be able to use console commands again.")
 		return
 	end
