@@ -1,4 +1,4 @@
-local function LocalPlayer() end
+local LocalPlayer = LocalPlayer or function() end
 function maestro.autocomplete(base, str)
 	base = base .. " "
 	str = string.sub(str, 2, -1)
