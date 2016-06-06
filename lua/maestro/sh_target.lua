@@ -84,7 +84,7 @@ function maestro.target(val, ply, cmd)
 	if all then
 		ret = toLookup(player.GetAll())
 	elseif id then
-		ret[player.GetBySteamID(name) or player.GetBySteamID64(name) or 0 or player.GetByID(name)] = true
+		ret[player.GetBySteamID(name) or player.GetBySteamID64(name) or player.GetByID(name)] = true
 	elseif picker and ply then
 		local tr = util.TraceLine{
 			start = ply:GetShootPos(),
