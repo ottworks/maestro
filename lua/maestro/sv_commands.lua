@@ -269,7 +269,7 @@ concommand.Add("ms", function(ply, cmd, args2, txt)
 		return
 	end
 	local args = maestro.split(txt)
-	local cmd = args[1]
+	local cmd = args[1] or ""
 	table.remove(args, 1)
 	cmd = string.lower(cmd)
 	cmd = maestro.commandaliases[cmd] or cmd
