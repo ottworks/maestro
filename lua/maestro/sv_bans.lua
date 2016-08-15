@@ -14,8 +14,8 @@ function maestro.ban(id, time, reason, adminid)
 		admin = adminid
 		adminid = adminid:SteamID64() or 0
 	end
-	if player.GetBySteamID and player.GetBySteamID64(adminid) or 0 then
-		admin = player.GetBySteamID64(adminid) or 0
+	if player.GetBySteamID and player.GetBySteamID64(adminid) then
+		admin = player.GetBySteamID64(adminid)
 	end
 	if ply then
 		if time == 0 then
