@@ -25,6 +25,9 @@ local function dojail(ply, state)
         p1.CanTool = ct
         p2.CanTool = ct
         p3.CanTool = ct
+        p1:SetNWBool("maestro_jail", true)
+        p2:SetNWBool("maestro_jail", true)
+        p3:SetNWBool("maestro_jail", true)
 
         jails[ply] = {p1, p2, p3}
         ply:ExitVehicle()
@@ -63,11 +66,9 @@ maestro.command("jail", {"player:target", "boolean:state(optional)", "time:optio
             dojail(ply, jailed[ply])
             if state and time then
                 timer.Create("jailtimer_" .. ply:EntIndex(), time, 1, function()
-                    if IsValid(ply) then
-                        if jailed[ply] then
-                            jailed[ply] = false
-                            dojail(ply, false)
-                        end
+                    if IsValid(ply) and jailed[ply] then
+                        jailed[ply] = false
+                        dojail(ply, false)
                     end
                 end)
             end
@@ -80,7 +81,6 @@ maestro.command("jail", {"player:target", "boolean:state(optional)", "time:optio
         end
         return false, "unjailed %1"
     end
-    local ply = targets[1]
 end, [[
 Jails a player for an optional amount of time.]])
 maestro.hook("Think", "jail", function()
@@ -103,6 +103,16 @@ maestro.hook("Think", "jail", function()
             dojail(ply, false)
             jailed[ply] = nil
         end
+    end
+end)
+maestro.hook("PhysgunPickup", "jail", function(ply, ent)
+    if ent:GetNWBool("maestro_jail", false) then
+        return false
+    end
+end)
+maestro.hook("CanTool", "jail", function(ply, tr)
+    if IsValid(tr.Entity) and tr.Entity:GetNWBool("maestro_jail", false) then
+        return false
     end
 end)
 maestro.command("jailtp", {"player:target", "time:optional"}, function(caller, targets, time)
