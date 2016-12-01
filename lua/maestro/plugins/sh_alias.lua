@@ -23,6 +23,7 @@ Sets a player's name. Call without a name to restore.]])
 local PLAYER = FindMetaTable("Player")
 PLAYER.NickOld = PLAYER.NickOld or PLAYER.Nick
 function PLAYER:Nick()
+    if not IsValid(self) then return "No Name Available" end
     return self:GetNWBool("maestro_alias_enabled") == true and self:GetNWString("maestro_alias") or self:NickOld()
 end
 PLAYER.Name = PLAYER.Nick
