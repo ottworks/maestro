@@ -113,6 +113,10 @@ function maestro.runcmd(silent, cmd, args, ply)
 	end
 	local endarg
 	for i = 1, #args do
+		if args[i]:len() == 0 then
+			continue
+		end
+		
 		local arg = maestro.commands[cmd].args[i]
 		if not arg then
 			if not endarg then
