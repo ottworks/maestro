@@ -36,7 +36,7 @@
 ![Scaling](http://i.imgur.com/P3tPcpn.jpg)
 
 
-[Maestro on Facepunch](https://facepunch.com/showthread.php?t=1481504) 
+[Maestro on Facepunch](https://gmod.facepunch.com/f/gmodaddon/jiuj/Maestro-an-admin-mod-that-isn-t-ULX/1/) 
 
 [Maestro on the Workshop](http://steamcommunity.com/sharedfiles/filedetails/?id=519350361)
 
