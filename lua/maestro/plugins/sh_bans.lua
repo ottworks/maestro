@@ -10,7 +10,7 @@ maestro.command("ban", {"player:target", "time", "reason"}, function(caller, tar
 end, [[
 Bans the player for the specified time and reason.]])
 maestro.command("banid", {"steamid", "time", "reason"}, function(caller, id, time, reason)
-	maestro.ban(id, time, reason, caller)
+	maestro.ban(util.SteamIDTo64(id), time, reason, caller)
 	return false, "banned %1 for %2 (%3)"
 end, [[
 Bans the SteamID for the specified time and reason.
