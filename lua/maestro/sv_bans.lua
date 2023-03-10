@@ -58,8 +58,9 @@ function maestro.ban(id, time, reason, adminid)
 			end
 		end)
 	q:Execute()
-
+	maestro.bans[id] = true
 end
+
 function maestro.unban(id, reason, adminid)
 	local q = mysql:Update(maestro.config.tables.bans)
 		q:Update("unbanid", adminid or 0)
@@ -75,6 +76,7 @@ function maestro.unban(id, reason, adminid)
 		q:Where("until", 0)
 		q:Where("unban", "")
 	q:Execute()
+	maestro.bans[id] = nil
 end
 
 maestro.hook("CheckPassword", "bans", function(id64)
@@ -90,6 +92,9 @@ maestro.hook("CheckPassword", "bans", function(id64)
 				local last = res[1]
 				local unban = " (" .. maestro.time(last["until"] - os.time(), 2) .. " remaining)"
 				game.ConsoleCommand("kickid " .. id .. " Banned: " .. string.sub(last.reason:gsub(";", ":"), 1, 255 - 8 - #unban) .. unban .. "\n")
+				maestro.bans[id64] = true
+			else
+				maestro.bans[id64] = nil
 			end
 		end)
 	q:Execute()
@@ -102,6 +107,9 @@ maestro.hook("CheckPassword", "bans", function(id64)
 				local last = res[1]
 				local unban = "\n(" .. maestro.time(last["until"] - os.time(), 2) .. " remaining)"
 				game.ConsoleCommand("kickid " .. id .. " Permabanned: " .. last.reason:gsub(";", ":") .. "\n")
+				maestro.bans[id64] = true
+			else
+				maestro.bans[id64] = nil
 			end
 		end)
 	q:Execute()
