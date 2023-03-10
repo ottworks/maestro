@@ -10,7 +10,7 @@ function maestro.ban(id, time, reason, adminid)
 		ply = player.GetBySteamID64(id) or 0
 	end
 	local admin
-	if type(id) == "Player" then
+	if type(adminid) == "Player" then
 		admin = adminid
 		adminid = adminid:SteamID64() or 0
 	end
