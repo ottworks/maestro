@@ -90,7 +90,7 @@ function maestro.target(val, ply, cmd)
 			start = ply:GetShootPos(),
 			endpos = ply:GetShootPos() + ply:EyeAngles():Forward() * 1024,
 			filter = function(ent)
-				return ent:GetClass() ~= "Player"
+				return ent:GetClass() == "player" and ent ~= ply
 			end,
 		}
 		if IsValid(tr.Entity) and tr.Entity:IsPlayer() then
